@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Pull the user from the database
 // (Assume this part of the code will be implemented later)
 
+
+
 // WIDGET 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});  
@@ -13,6 +15,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final TextEditingController _usernameController = TextEditingController(text: 'JamesHocking542');
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +30,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
               return Center(
                 child: Container(
+                  
                   margin: EdgeInsets.only(top: 50.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Color.fromARGB(255, 174, 219, 255),
+                    gradient: LinearGradient(
+                      colors: [Color.fromARGB(255, 174, 219, 255), Colors.white], // Gradient colors
+                      begin: Alignment.topLeft, // Start position of the gradient
+                      end: Alignment.bottomRight, // End position of the gradient
+                    ),
                   ),
                   height: 370,
                   width: 0.9 * screenWidth,
@@ -66,9 +75,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 270, // Set the width of the container
                             child: TextField(
                               style: TextStyle(color: Colors.black),
-                              controller: TextEditingController(text: 'JamesHocking542'), // Default username
+                              controller: _usernameController, // Default username
                               decoration: InputDecoration(
                                 labelText: 'Change your username',
+                                labelStyle: TextStyle(color: Colors.black),
                                 border: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.black), // Border color
                                     ),
