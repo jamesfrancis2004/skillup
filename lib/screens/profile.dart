@@ -30,9 +30,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 174, 219, 255),
                   ),
-                  height: 400,
+                  height: 370,
                   width: 0.9 * screenWidth,
                   child: Padding(
                     padding: EdgeInsets.only(top: 20.0), // Margin at the top
@@ -44,16 +44,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           Icon(
                             Icons.person,
                             size: 100, // Size of the icon
-                            color: Colors.white, // Color of the icon
+                            color: Colors.black, // Color of the icon
                           ),
                           Column(children: [
                             Text(
                               'JamesHocking542',
-                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
                             ),
                             Text(
                               'jameshocking542@gmail.com',
-                              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
+                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700),
                             ),
                           ]),
                         ]),
@@ -63,18 +63,27 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                           Center(
                           child: Container(
-                            width: 300, // Set the width of the container
+                            width: 270, // Set the width of the container
                             child: TextField(
+                              style: TextStyle(color: Colors.black),
                               controller: TextEditingController(text: 'JamesHocking542'), // Default username
                               decoration: InputDecoration(
                                 labelText: 'Change your username',
-                                border: OutlineInputBorder(),
+                                border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color when focused
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color when enabled
+                                    ),
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                            icon: Icon(Icons.check, color: Colors.white, size: 30), // Checkmark icon
+                            icon: Icon(Icons.check, color: Colors.black, size: 30), // Checkmark icon
                             onPressed: () {
                               // Handle button press
                               ScaffoldMessenger.of(context).showSnackBar(
