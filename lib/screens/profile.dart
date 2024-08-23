@@ -93,7 +93,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         IconButton(
-                            icon: Icon(Icons.check, color: Colors.black, size: 30), // Checkmark icon
+                            icon: Icon(
+                                Icons.check, // Send message icon
+                                color: Colors.black, // Icon color
+                                size: 30.0, // Icon size
+                              ), // Checkmark icon
                             onPressed: () {
                               // Handle button press
                               ScaffoldMessenger.of(context).showSnackBar(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // WIDGET 
 class FriendsPage extends StatefulWidget {
   const FriendsPage({super.key});  
@@ -26,11 +25,9 @@ class _FriendsPageState extends State<FriendsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).colorScheme.primary,
-      child: RefreshIndicator(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: RefreshIndicator(
         color: Theme.of(context).colorScheme.onTertiaryContainer,
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         onRefresh: () async {
@@ -39,46 +36,72 @@ class _FriendsPageState extends State<FriendsPage> {
             FriendsPage.scrollToTop();
           });
         },
-        child: ListView(
+        child: SingleChildScrollView(
           controller: FriendsPage._scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            Container(
-              height: 100,
-              width: 100,
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  Text(
-                    "Send Friend Request",
-                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
-                  ),
-                  Container(
-                            width: 270, // Set the width of the container
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Text(
+                      "Send Friend Request",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(right: 8.0), // Add margin between the text field and the icon
                             child: TextField(
-                              style: TextStyle(color: Colors.black),
-                              controller: _friendSearchController, // Default username
+                              style: TextStyle(color: Colors.white),
+                              controller: _friendSearchController,
                               decoration: InputDecoration(
-                                labelText: 'Change your username',
-                                labelStyle: TextStyle(color: Colors.black),
+                                labelText: "Enter Friend's Username",
+                                labelStyle: TextStyle(color: Colors.white),
                                 border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black), // Border color
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black), // Border color when focused
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black), // Border color when enabled
-                                    ),
+                                  borderSide: BorderSide(color: Colors.white), // Border color
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white), // Border color when focused
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white), // Border color when enabled
+                                ),
                               ),
                             ),
                           ),
-                ],
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.send, // Send message icon
+                            color: Colors.white, // Icon color
+                            size: 30.0, // Icon size
+                          ),
+                          onPressed: () {
+                            // Handle button press
+                            print('Send button pressed');
+                            print('Entered text: ${_friendSearchController.text}');
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height:20),
+                    const Text(
+                      "Current Friends",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
+                    )
+                    
+                  ],
+                ),
               ),
-            ),
-          ]
-        )
-      )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
