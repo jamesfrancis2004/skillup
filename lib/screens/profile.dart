@@ -35,26 +35,54 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 400,
                   width: 0.9 * screenWidth,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 50.0), // Margin at the top
+                    padding: EdgeInsets.only(top: 20.0), // Margin at the top
                     child: Column(
                       children: [
-                        Row(children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Icon(
+                            Icons.person,
+                            size: 100, // Size of the icon
+                            color: Colors.white, // Color of the icon
+                          ),
                           Column(children: [
-                            const Text(
+                            Text(
                               'JamesHocking542',
-                              style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w700),
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
                             ),
-                            const Text(
+                            Text(
                               'jameshocking542@gmail.com',
                               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                             ),
                           ]),
-                          Icon(
-                            Icons.person,
-                            size: 100, // Size of the icon
-                            color: Colors.blue, // Color of the icon
-                          ),
                         ]),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Center(
+                          child: Container(
+                            width: 300, // Set the width of the container
+                            child: TextField(
+                              controller: TextEditingController(text: 'JamesHocking542'), // Default username
+                              decoration: InputDecoration(
+                                labelText: 'Change your username',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.check, color: Colors.white, size: 30), // Checkmark icon
+                            onPressed: () {
+                              // Handle button press
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Checkmark button pressed')),
+                              );
+                            },
+                          ),
+                        ],),            
                         SizedBox(height: 50),
                         ElevatedButton(
                           style: TextButton.styleFrom(
