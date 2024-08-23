@@ -77,8 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      // User.getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.name)});
-      addFriends('9iCkGILei2p4sG17tZ7o');
+      getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.friends)});
     });
   }
 

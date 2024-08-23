@@ -4,12 +4,14 @@ class User {
   final String id;
   final String name;
   final String email;
+  final List<dynamic> friends;
 
   // Constructor
   User({
     required this.id,
     required this.name,
     required this.email,
+    required this.friends,
   });
 
   // Factory constructor to create a User object from a Firestore document
@@ -20,6 +22,7 @@ class User {
           data['name'] ?? '', // Default to an empty string if the name is null
       email: data['email'] ??
           '', // Default to an empty string if the email is null
+      friends: data['friends'] ?? [],
     );
   }
 
