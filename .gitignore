@@ -48,3 +48,4 @@ pubspec.lock
 linux/flutter
 windows/flutter
 macos/flutter
+ios/Podfile.lock

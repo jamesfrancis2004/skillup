@@ -38,16 +38,13 @@ flashErrorAlert(BuildContext context, String error, String errorMessage) {
 
 class SignUpController {
   static bool validSignUpInputs(
-      String firstName,
-      String lastName,
+      String username,
       String email,
       String password,
       String confirmPassword,
       BuildContext context) {
-    if (firstName == "") {
-      flashErrorAlert(context, "No First Name", "Please Enter First Name");
-    } else if (lastName == "") {
-      flashErrorAlert(context, "No Last Name", "Please Enter Last Name");
+    if (username == "") {
+      flashErrorAlert(context, "No Username", "Please Enter Username");
     } else if (email == "") {
       flashErrorAlert(context, "No Email Address", "Please Enter Your Email");
     } else {
@@ -72,8 +69,7 @@ class SignUpController {
 
 
 class _SignUpPageState extends State<SignUpPage> {
-  String firstName = "";
-  String lastName = "";
+  String username = "";
   String email = "";
   String password = "";
   String confirmPassword = "";
@@ -116,63 +112,27 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 22.0
                       )
                   ),
-                  Padding (
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13.0,
-                                  ),
-                                  onChanged: (text) {
-                                    firstName = text;
-                                  },
-                                  decoration: InputDecoration(
-                                      hintText: "First Name",
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
-                                      )
-                                  )
-                              ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.03,
-                            ),
-                            Expanded(
-                                child: TextField(
-                                    onChanged: (text) {
-                                      lastName = text;
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Last Name",
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10.0),
-                                          borderSide: BorderSide.none,
-                                        )
-                                    ),
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13.0,
-                                    )
-                                )
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height / 80,
-                            ),
-
-                          ],
-
-                      ),
-
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 80,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      username = text;
+                    },
+                    style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13.0,
                     ),
+                    decoration: InputDecoration(
+                      hintText: "Username",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 80,
                   ),
@@ -274,8 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ElevatedButton(
                       onPressed: () async {
                         if (SignUpController.validSignUpInputs(
-                          firstName,
-                          lastName,
+                          username,
                           email,
                           password,
                           confirmPassword,
@@ -290,7 +249,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             await FirebaseFirestore.instance.collection("users")
                                 .doc(userCredential.user?.uid).set(
                                 {
-                                  'name': firstName,
+                                  'name': username,
                                   'friends': [],
                                   'email': email,
                                 });
