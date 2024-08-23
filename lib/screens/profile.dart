@@ -31,11 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
               return Center(
                 child: Container(
                   
-                  margin: EdgeInsets.only(top: 50.0),
+                  margin: const EdgeInsets.only(top: 50.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [Color.fromARGB(255, 174, 219, 255), Colors.white], // Gradient colors
                       begin: Alignment.topLeft, // Start position of the gradient
                       end: Alignment.bottomRight, // End position of the gradient
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 370,
                   width: 0.9 * screenWidth,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 20.0), // Margin at the top
+                    padding: const EdgeInsets.only(top: 20.0), // Margin at the top
                     child: Column(
                       children: [
                         const Row(

@@ -19,11 +19,11 @@ class FriendsPage extends StatefulWidget {
   }
 }
 
-
-
-
-// STATE
+// STATE 
 class _FriendsPageState extends State<FriendsPage> {
+
+  final TextEditingController _friendSearchController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,7 +46,35 @@ class _FriendsPageState extends State<FriendsPage> {
             Container(
               height: 100,
               width: 100,
-              color: Colors.red, 
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    "Send Friend Request",
+                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
+                  ),
+                  Container(
+                            width: 270, // Set the width of the container
+                            child: TextField(
+                              style: TextStyle(color: Colors.black),
+                              controller: _friendSearchController, // Default username
+                              decoration: InputDecoration(
+                                labelText: 'Change your username',
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color when focused
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Border color when enabled
+                                    ),
+                              ),
+                            ),
+                          ),
+                ],
+              ),
             ),
           ]
         )
