@@ -21,11 +21,12 @@ class CurrentSkill {
 
 // Create function to find the skill by date
   static Future<CurrentSkill> create() async {
-
     // Query the Firestore collection to find a document where 'date' is equal to 1
     final querySnapshot = await FirebaseFirestore.instance
         .collection('skills') // Assuming your collection is named 'skills'
-        .where('selected', isEqualTo: 1) // Assuming 'date' is the field storing the integer value
+        .where('selected',
+            isEqualTo:
+                1) // Assuming 'date' is the field storing the integer value
         .limit(1) // Get only the first matching document
         .get();
 
@@ -45,34 +46,6 @@ class CurrentSkill {
       throw Exception('Skill not found with date set to 1!');
     }
   }
-
-  // // Create function to find the skill by date
-  // static Future<CurrentSkill> create() async {
-  //   // Query the Firestore collection to find a document where 'date' is equal to 1
-  //   final querySnapshot = await FirebaseFirestore.instance
-  //       .collection('skills') // Assuming your collection is named 'skills'
-  //       .where('selected',
-  //           isEqualTo:
-  //               1) // Assuming 'date' is the field storing the integer value
-  //       .limit(1) // Get only the first matching document
-  //       .get();
-
-  //   if (querySnapshot.docs.isNotEmpty) {
-  //     final doc = querySnapshot.docs.first;
-  //     final data = doc.data();
-
-  //     return CurrentSkill._(
-  //       category: data['category'],
-  //       challenge1: data['challenge1'],
-  //       challenge2: data['challenge2'],
-  //       challenge3: data['challenge3'],
-  //       description: data['description'],
-  //       imageUrl: data['image_url'],
-  //     );
-  //   } else {
-  //     throw Exception('Skill not found with date set to 1!');
-  //   }
-  // }
 
   static Future<void> updateSkill() async {
     final skills = FirebaseFirestore.instance.collection('skills');
