@@ -102,6 +102,5 @@ class _AppScaffoldState extends State<AppScaffold> {
     
     context.go(NavigationRoutes.bottomNavBarPaths[index]);
   }
-
 }
 
