@@ -204,7 +204,9 @@ class _ExplorePageState extends State<ExplorePage> {
     String? mediaUrl;
 
     if (_selectedMedia != null) {
-      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}_${_isImage ? 'image' : 'video'}';
+      String fileName = 'uploads/${DateTime
+          .now()
+          .millisecondsSinceEpoch}_${_isImage ? 'image' : 'video'}';
       try {
         final ref = FirebaseStorage.instance.ref().child(fileName);
         await ref.putFile(File(_selectedMedia!.path));
@@ -265,7 +267,8 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<String> _getUsername(String uid) async {
     try {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+          'users').doc(uid).get();
       if (userDoc.exists) {
         return userDoc['name'] ?? 'Unknown User';
       } else {
@@ -277,6 +280,203 @@ class _ExplorePageState extends State<ExplorePage> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xff00274d), // Dark Blue
+            Color(0xff001f3f), // Even Darker Blue
+            Color(0xff000a1b), // Nearly Black
+          ],
+          begin: Alignment.center,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: (MediaQuery
+                          .of(context)
+                          .size
+                          .height - toolbarHeight - topBarExpandedHeight) *
+                          0.75,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                      child: SizedBox(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('messages')
+                              .orderBy('timestamp', descending: false)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            var messages = snapshot.data!.docs;
+                            return ListView.builder(
+                              controller: _scrollController,
+                              itemCount: messages.length,
+                              itemBuilder: (context, index) {
+                                var message = messages[index];
+                                bool isOutgoing = message['uid'] ==
+                                    FirebaseAuth.instance.currentUser?.uid;
+                                return FutureBuilder<String>(
+                                  future: _getUsername(message['uid']),
+                                  builder: (context, usernameSnapshot) {
+                                    String username = usernameSnapshot.data ??
+                                        'Unknown User';
+                                    return Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          isOutgoing
+                                              ? OutgoingMessage(
+                                            username: "You",
+                                            message: message['message'],
+                                            datetime: message['timestamp']
+                                                .toDate()
+                                                .toString(),
+                                            mediaUrl: message['mediaUrl'],
+                                            isImage: message['isImage'],
+                                          )
+                                              : IncomingMessage(
+                                            username: username,
+                                            message: message['message'],
+                                            datetime: message['timestamp']
+                                                .toDate()
+                                                .toString(),
+                                            mediaUrl: message['mediaUrl'],
+                                            isImage: message['isImage'],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Color(0xffffffff).withOpacity(0.2),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_selectedMedia != null)
+                          _isImage
+                              ? Image.file(
+                            File(_selectedMedia!.path),
+                            fit: BoxFit.cover,
+                            height: 150,
+                            width: double.infinity,
+                          )
+                              : VideoPlayerWidget(
+                            videoPath: _selectedMedia!.path,
+                          ),
+                        if (_selectedMedia != null)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: _textController,
+                              decoration: InputDecoration(
+                                hintText: "Add a caption...",
+                                fillColor: Color(0xffffffff).withOpacity(0.2),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        if (_selectedMedia != null)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _selectedMedia = null;
+                                  _textController.clear();
+                                });
+                              },
+                              child: Text(
+                                'Remove',
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (_selectedMedia == null)
+                          TextField(
+                            controller: _textController,
+                            decoration: InputDecoration(
+                              hintText: "Send a message",
+                              filled: true,
+                              fillColor: Color(0xffffffff).withOpacity(0.2),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            minLines: 1,
+                            maxLines: 5,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.attach_file),
+                  onPressed: () {
+                    _showAttachmentOptions(context);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () async {
+                    await _uploadMediaAndSendMessage();
+                    _textController.clear();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+  /*
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -457,7 +657,7 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 }
 
-
+*/
 
 
 
