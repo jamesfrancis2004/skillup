@@ -5,6 +5,8 @@ class CurrentUser {
   String name;
   String email;
   List<dynamic> friends;
+  List<dynamic> inboundRequests;
+  List<dynamic> outboundRequests;
 
   // Constructor
   CurrentUser._({
@@ -12,6 +14,8 @@ class CurrentUser {
     this.name = '',
     this.email = '',
     this.friends = const [],
+    this.inboundRequests = const [],
+    this.outboundRequests = const [],
   });
 
   static Future<CurrentUser> create(String id) async {
@@ -25,6 +29,8 @@ class CurrentUser {
         name: data['name'],
         email: data['email'],
         friends: data['friends'],
+        inboundRequests: data['inboundRequests'],
+        outboundRequests: data['outboundRequests'],
       );
     } else {
       throw Exception('User not found!');
@@ -40,8 +46,15 @@ class CurrentUser {
     }
 
     await friendDocRef.update({
-      'inbound_requests': FieldValue.arrayUnion([id])
+      'inboundRequests': FieldValue.arrayUnion([id])
     });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(newFriendId)
+        .update({
+      'outboundRequests': FieldValue.arrayUnion([newFriendId])
+    });
+    outboundRequests.add(newFriendId);
 
     return true;
   }
@@ -55,15 +68,16 @@ class CurrentUser {
     }
 
     await friendDocRef.update({
-      'outbound_requests': FieldValue.arrayRemove([id])
+      'outboundRequests': FieldValue.arrayRemove([id])
     });
-
     await FirebaseFirestore.instance
         .collection('users')
         .doc(acceptedFriendId)
         .update({
-      'inbound_requests': FieldValue.arrayRemove([acceptedFriendId])
+      'inboundRequests': FieldValue.arrayRemove([acceptedFriendId])
     });
+    inboundRequests.remove(acceptedFriendId);
+
     return true;
   }
 
