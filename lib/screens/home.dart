@@ -25,7 +25,7 @@ const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
 const double _subheadingGradientHeight = 3;
 const double _subheadingGradientWidth = 60;
 
-const double filterHorizontalInset = 0;
+const double _filterHorizontalInset = 0;
 
 
 // WIDGET 
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               height: _verticalSpacing,
             ),
 
-            // Third title
+            // Resources title
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
@@ -268,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
@@ -286,10 +286,69 @@ class _HomePageState extends State<HomePage> {
                       gradient: highlightGradient
                     )
                   ),
-
                 ]
               )
             ),
+
+            // Resources
+            Padding(
+              padding: const EdgeInsets.only(
+                left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal),
+              child: Column(
+                children: [
+
+                  // Challenge 1
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+
+                  // Padding
+                  const SizedBox(
+                    height: _challengesVerticalSpacing
+                  ),
+
+                  // Challenge 2
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+
+                  // Padding
+                  const SizedBox(
+                    height: _challengesVerticalSpacing
+                  ),
+
+                  // Challenge 3
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+                ],
+              )
+            ),
+
+            // Bottom spacing
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 4,
+            ),
+
           ]
         )
       )
