@@ -2,12 +2,14 @@
 import 'dart:ffi';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:skillup/config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 // CONFIG ... 
@@ -46,6 +48,7 @@ class _SimpleChallengeTile extends StatefulWidget {
 }
 
 class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +145,33 @@ class ChallengeTile extends StatefulWidget {
 
 class _ChallengeTileState extends State<ChallengeTile> {
 
+  Future<void> _set_challenge_complete() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      // Handle the case when the user is not authenticated
+      return;
+    }
+
+    final userDoc = FirebaseFirestore.instance.collection("users").doc(userId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final userSnapshot = await transaction.get(userDoc);
+
+      if (!userSnapshot.exists) {
+        // Handle the case when the user document does not exist
+        return;
+      }
+
+      final data = userSnapshot.data() ?? {};
+      final currentValue = data[widget.tier] as int? ?? 0;
+
+      transaction.update(userDoc, {widget.tier: currentValue + 1});
+    }).catchError((error) {
+      // Handle any errors that occur during the transaction
+      print("Error updating challenge completion: $error");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -177,7 +207,8 @@ class _ChallengeTileState extends State<ChallengeTile> {
           Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.startToEnd,  // Swipe left to right
-            onDismissed: (direction) {
+            onDismissed: (direction) async {
+              await _set_challenge_complete();
               if (direction == DismissDirection.endToStart) {
                 print("Dismissed :)");  // Run script when swiped left
               }

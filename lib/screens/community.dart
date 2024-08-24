@@ -53,7 +53,7 @@ class OutgoingMessage extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
                 Text(
                   datetime,
                   style: GoogleFonts.montserrat(
