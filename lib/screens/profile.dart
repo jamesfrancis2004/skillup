@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../router.dart';
 
@@ -187,9 +188,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () {
                             // Delete account functionality
                           },
-                          child: const Text(
+                          child: Text(
                             'Delete Account',
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat (
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w900,
@@ -210,4 +211,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
