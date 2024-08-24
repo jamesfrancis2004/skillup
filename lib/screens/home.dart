@@ -56,7 +56,21 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).colorScheme.primary,
+
+      //color: Theme.of(context).colorScheme.primary,
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors:  [
+                Color(0xff00274d), // Dark Blue
+                Color(0xff001f3f), // Even Darker Blue
+                Color(0xff000a1b)  // Nearly Black
+              ],
+
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
+            )
+        ),
+
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.onTertiaryContainer,
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,

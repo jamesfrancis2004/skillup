@@ -272,6 +272,18 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
+      ),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -282,13 +294,14 @@ class _ExplorePageState extends State<ExplorePage> {
                 "Community",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                   fontSize: 25,
                 ),
               ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.black,
+                  color: Colors.black.withOpacity(0.4),
                 ),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.60,
@@ -352,7 +365,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.grey[200],
+                        color: Color(0xffffffff).withOpacity(0.2),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +388,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 controller: _textController,
                                 decoration: InputDecoration(
                                   hintText: "Add a caption...",
-                                  fillColor: Colors.grey,
+                                  fillColor: Color(0xffffffff).withOpacity(0.2),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -393,7 +406,12 @@ class _ExplorePageState extends State<ExplorePage> {
                                     _textController.clear();
                                   });
                                 },
-                                child: Text('Remove'),
+                                child: Text(
+                                    'Remove',
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                  )
+                                ),
                               ),
                             ),
                           if (_selectedMedia == null)
@@ -402,7 +420,7 @@ class _ExplorePageState extends State<ExplorePage> {
                               decoration: InputDecoration(
                                 hintText: "Send a message",
                                 filled: true,
-                                fillColor: Colors.grey,
+                                fillColor: Color(0xffffffff).withOpacity(0.2),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
