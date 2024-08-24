@@ -7,6 +7,8 @@ import 'package:skillup/screens/explore.dart';
 import 'package:skillup/screens/contribute.dart';
 import 'package:skillup/screens/community.dart';
 import 'package:skillup/screens/profile.dart';
+import 'package:skillup/Widgets/authentication/login.dart';
+import 'package:skillup/Widgets/authentication/signup.dart';
 
 
 // ROUTER ...
@@ -71,9 +73,8 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter buildRouter() {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: NavigationRoutes.home,
+    initialLocation: NavigationRoutes.login,
     routes: [
-
       // StatefulShellRoute to preserve page states between navigation
       StatefulShellRoute.indexedStack(
         builder: (BuildContext context, GoRouterState state,  StatefulNavigationShell navigationShell){
@@ -132,6 +133,8 @@ GoRouter buildRouter() {
           ),
         ]
       ),
+      GoRoute(path: NavigationRoutes.login, builder:(context, state) => const LoginPage()),
+      GoRoute(path: NavigationRoutes.signUp, builder:(context, state) => const SignUpPage())
     ],
   );
 
