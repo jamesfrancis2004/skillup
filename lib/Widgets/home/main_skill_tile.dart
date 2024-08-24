@@ -21,6 +21,7 @@ const double _gradientBorderWidth = 1.0;
 // Variables
 
 const String skill = "Baking";
+const String imageUrl = "https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg";
 
 
 // MAIN SKILL TILE ...
@@ -41,7 +42,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
   @override
   void initState() {
     super.initState();
-    _skillDataFuture = skill;
+    _skillDataFuture = imageUrl; // skill
   }
 
   @override
@@ -58,9 +59,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
             // Background image for the widget
             CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: (
-                Theme.of(context).brightness == Brightness.light ?
-                _skillDataFuture : 'https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg'), // https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg
+              imageUrl: _skillDataFuture, // https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg
               placeholder: (context, url) => SkeletonAnimation(
                 shimmerColor: Theme.of(context).colorScheme.onTertiaryContainer,
                 child: Container(
