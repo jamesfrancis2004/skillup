@@ -469,6 +469,9 @@ class _ExplorePageState extends State<ExplorePage> {
               ],
             ),
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 80,
+          )
         ],
       ),
     );
