@@ -31,7 +31,7 @@ class _AttemptPage extends State<AttemptPage> {
 
   // Method to retrieve posts based on friends' UIDs and the challenge
   // In the _postsStream() method:
-  Stream<List<QueryDocumentSnapshot>> _postsStream() {
+  Stream<List<Map<String, dynamic>>> _postsStream() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return FirebaseFirestore.instance
@@ -54,15 +54,15 @@ class _AttemptPage extends State<AttemptPage> {
             .snapshots();
       }).toList();
 
-      // Combine all the individual streams into one using CombineLatestStream
       return CombineLatestStream.list(friendsPostsStreams).map((snapshots) {
-        List<QueryDocumentSnapshot> allDocs = [];
+        List<Map<String, dynamic>> allDocs = [];
 
         for (var snapshot in snapshots) {
-          allDocs.addAll(snapshot.docs);
+          for (var doc in snapshot.docs) {
+            allDocs.add(doc.data() as Map<String, dynamic>);
+          }
         }
 
-        // Sort all documents by timestamp
         allDocs.sort((a, b) {
           Timestamp timestampA = a['timestamp'] as Timestamp;
           Timestamp timestampB = b['timestamp'] as Timestamp;
@@ -73,6 +73,7 @@ class _AttemptPage extends State<AttemptPage> {
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +101,9 @@ class _AttemptPage extends State<AttemptPage> {
                           }
                           ),
                   Expanded(
-                      child: StreamBuilder<List<QueryDocumentSnapshot>>(
+                      child: StreamBuilder<List<Map<String, dynamic>>>(
                         stream: _postsStream(),
-                        builder: (BuildContext context, AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
+                        builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
@@ -120,12 +121,18 @@ class _AttemptPage extends State<AttemptPage> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               var post = snapshot.data![index];
+
+                              // Safely access fields with default values
+                              String mediaUrl = post.containsKey('mediaUrl') ? post['mediaUrl'] : '';
+                              String description = post.containsKey('description') ? post['description'] : '';
+                              String mediaType = post.containsKey('mediaType') ? post['mediaType'] : 'unknown';
+
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 16.0),
                                 child: PostSubmissionContainer(
-                                  mediaUrl: post['mediaUrl'] ?? '',
-                                  description: post['description'] ?? '',
-                                  mediaType: post['mediaType'] ?? '',
+                                  mediaUrl: mediaUrl,
+                                  description: description,
+                                  mediaType: mediaType,
                                   // You can add more fields from the post document as needed
                                 ),
                               );
