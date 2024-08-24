@@ -34,14 +34,14 @@ const double majorVerticalSpacing = 30;
 Color getMedalColour(String tier) {
   switch (tier) {
     case "bronze":
-      return Color(0xFFFFD700); 
+      return const Color(0xFFFFD700); 
     case "silver":
-      return Color(0xFFC0C0C0);
+      return const Color(0xFFC0C0C0);
     case "gold":
-      return Color(0xFFCD7F32);
+      return const Color(0xFFCD7F32);
     default:
       print("ERROR - Invalid tier given. Recieved [$tier].");
-      return Color(0xFFFFFFFF);
+      return const Color(0xFFFFFFFF);
   }
 }
 

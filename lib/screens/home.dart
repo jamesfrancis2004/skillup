@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Challenges
-            Column(
+            const Column(
               children: [
 
                 // Challenge 1
