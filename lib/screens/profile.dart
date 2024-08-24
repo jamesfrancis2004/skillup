@@ -192,9 +192,34 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(height: 20),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            MedalTally(
+                              medalType: "gold"
+                            ),
+                            SizedBox(
+                              width: 25
+                            ),
+                            MedalTally(
+                              medalType: "silver"
+                            ),
+                            SizedBox(
+                              width: 25
+                            ),
+                            MedalTally(
+                              medalType: "bronze"
+                            ),
+                          ]
+                        ),
                       if (_isEditing)
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.only(
+                            left: 20.0,
+                            right: 20.0,
+                            top: 20.0
+                          ),
                           child: TextField(
                             controller: _usernameController,
                             style: GoogleFonts.montserrat(
@@ -272,9 +297,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                      MedalTally(medalType: "gold"),
-                      MedalTally(medalType: "silver"),
-                      MedalTally(medalType: "bronze"),
                     ],
                   ),
                 ),
