@@ -54,6 +54,8 @@ dev_dependencies:
   google_fonts: ^6.2.1
   firebase_auth: ^4.18.0
   cloud_firestore:
+  image_picker:
+  video_player:
 
 
 
