@@ -287,13 +287,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               email: email,
                               password: password,
                             );
-                            /*await FirebaseFirestore.instance.collection("users")
+                            await FirebaseFirestore.instance.collection("users")
                                 .doc(userCredential.user?.uid).set(
                                 {
                                   'name': firstName,
                                   'friends': [],
                                   'email': email,
-                                });*/
+                                });
                             return context.go(NavigationRoutes.home);
                           } on FirebaseAuthException catch (e) {
                             print(e.message);

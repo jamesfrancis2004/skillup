@@ -75,7 +75,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter buildRouter() {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: NavigationRoutes.home,
+    initialLocation: NavigationRoutes.login,
     routes: [
       // StatefulShellRoute to preserve page states between navigation
       StatefulShellRoute.indexedStack(
