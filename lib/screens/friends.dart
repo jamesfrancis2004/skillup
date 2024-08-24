@@ -46,6 +46,7 @@ class _FriendsPageState extends State<FriendsPage> {
   final TextEditingController _friendSearchController = TextEditingController(text: '');
   late CurrentUser user;
   var showRequestError = false;
+  bool _isUserDataLoaded = false;
 
   @override
   void initState() {
@@ -55,7 +56,9 @@ class _FriendsPageState extends State<FriendsPage> {
 
   Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
-    setState(() {});
+    setState(() {
+      _isUserDataLoaded = true;
+    });
   }
 
   Future<String> _getNameFromId(String id) async {
@@ -83,7 +86,7 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: RefreshIndicator(
+      body: _isUserDataLoaded ? RefreshIndicator(
         color: Theme.of(context).colorScheme.onTertiaryContainer,
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         onRefresh: () async {
@@ -583,7 +586,9 @@ class _FriendsPageState extends State<FriendsPage> {
             ],
           ),
         ),
-      ),
+      ) : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }
