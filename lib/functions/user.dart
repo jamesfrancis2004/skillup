@@ -139,7 +139,6 @@ class CurrentUser {
   }
 
   Future<bool> deleteFriend(String friendId) async {
-
     final friendDocRef =
         FirebaseFirestore.instance.collection('users').doc(friendId);
     final friendDoc = await friendDocRef.get();
@@ -155,8 +154,6 @@ class CurrentUser {
     });
 
     return true;
-
-
   }
 
   Future<bool> sendFriendRequest(String friendName) async {
@@ -176,16 +173,20 @@ class CurrentUser {
       return false;
     }
 
-    if (friendDoc['outboundRequests'].contains(id)) { // already requested me 
+    if (friendDoc['friends'].contains(id) || friends.contains(friendId)) {
+      // we are already friends
+      return false;
+    }
+    if (friendDoc['outboundRequests'].contains(id)) {
+      // already requested me
       final status = await acceptFriendRequest(friendId);
       return status;
     }
 
-    if (friendDoc['inboundRequests'].contains(id)) { // i have already asked
+    if (friendDoc['inboundRequests'].contains(id)) {
+      // i have already asked
       return false;
     }
-
-
 
     await friendDocRef.update({
       'inboundRequests': FieldValue.arrayUnion([id])
@@ -215,7 +216,7 @@ class CurrentUser {
       'friends': FieldValue.arrayUnion([friendId])
     });
     inboundRequests.remove(friendId);
-    
+
     await FirebaseFirestore.instance.collection('users').doc(id).update({
       'friends': FieldValue.arrayUnion([friendId])
     });
