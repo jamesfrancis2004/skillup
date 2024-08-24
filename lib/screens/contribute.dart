@@ -97,6 +97,74 @@ class _ContributePageState extends State<ContributePage> {
     super.dispose();
   }
 
+  void _sendContent() async {
+    try {
+      // Determine the selected challenge based on index
+      String challengeField;
+      switch (_selectedChallengeIndex) {
+        case 1:
+          challengeField = "challenge2";
+          break;
+        case 2:
+          challengeField = "challenge3";
+          break;
+        case 0:
+        default:
+          challengeField = "challenge1";
+          break;
+      }
+
+      // Define the media type and path
+      String mediaType;
+      String mediaPath;
+      if (_imagePath != null) {
+        mediaType = 'image';
+        mediaPath = _imagePath!;
+      } else if (_videoFile != null) {
+        mediaType = 'video';
+        mediaPath = _videoFile!.path;
+      } else {
+        throw Exception('No media selected');
+      }
+
+      // Prepare data for Firestore
+      final data = {
+        'timestamp': Timestamp.now(),
+        'media_path': mediaPath,
+        'media_type': mediaType,
+        'description': _textController.text,
+      };
+
+      // Get the current user's ID
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (userId == null) {
+        throw Exception('User not authenticated');
+      }
+
+      // Push data to Firestore in the respective challenge subcollection
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection(challengeField)
+          .add(data);
+
+      // Reset fields after sending
+      setState(() {
+        _imagePath = null;
+        _videoFile = null;
+        _textController.clear();
+        _selectedChallenge = challenge1;
+        _selectedChallengeIndex = 0;
+      });
+
+      print('Content sent successfully');
+    } catch (e) {
+      print('Error sending content: $e');
+    }
+  }
+
+
   Future<void> _takePhoto() async {
     try {
       final image = await _controller.takePicture();
@@ -133,22 +201,6 @@ class _ContributePageState extends State<ContributePage> {
     }
   }
 
-  void _sendContent() {
-    // Implement the send functionality here
-    print('Send button pressed');
-    print('Caption: ${_textController.text}');
-    print('Image Path: $_imagePath');
-    print('Video File: $_videoFile');
-    print('Selected Challenge Index: $_selectedChallengeIndex');
-    // Reset fields after sending
-    setState(() {
-      _imagePath = null;
-      _videoFile = null;
-      _textController.clear();
-      _selectedChallenge = skill?.challenge1;
-      _selectedChallengeIndex = 0;
-    });
-  }
 
   void _removeMedia() {
     setState(() {
