@@ -129,6 +129,26 @@ class CurrentUser {
     return true;
   }
 
+  Future<bool> deleteFriend(String friendId) async {
+    final friendDocRef =
+        FirebaseFirestore.instance.collection('users').doc(friendId);
+    final friendDoc = await friendDocRef.get();
+    if (!friendDoc.exists) {
+      return false;
+    }
+
+    await friendDocRef.update({
+      'friends': FieldValue.arrayRemove([id])
+    });
+    await FirebaseFirestore.instance.collection('users').doc(id).update({
+      'friends': FieldValue.arrayRemove([friendId])
+    });
+
+    return true;
+
+
+  }
+
   Future<bool> sendFriendRequest(String friendName) async {
     if (friendName == name) {
       return false;
@@ -136,7 +156,6 @@ class CurrentUser {
 
     final friendId = await getIdFromName(friendName);
     if (friendId == null) {
-      print("Cant find ID");
       return false;
     }
 
@@ -144,11 +163,9 @@ class CurrentUser {
         FirebaseFirestore.instance.collection('users').doc(friendId);
     final friendDoc = await friendDocRef.get();
     if (!friendDoc.exists) {
-      print("Friend doesnt exist");
       return false;
     }
 
-    print("HEREHHRE!");
     if (friendDoc['outboundRequests'].contains(id)) { // already requested me 
       final status = await acceptFriendRequest(friendId);
       return status;
