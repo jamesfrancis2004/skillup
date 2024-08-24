@@ -81,6 +81,10 @@ const _colorSchemeDark = ColorScheme(
   
   brightness: Brightness.dark,
 
+  // Backcompatability
+  background: Color.fromARGB(255, 23, 23, 23),
+  onBackground: Color.fromARGB(255, 250, 250, 250),
+
   // Main background and stuff
   primary: Color.fromARGB(255, 23, 23, 23),
   onPrimary: Color.fromARGB(255, 250, 250, 250),
