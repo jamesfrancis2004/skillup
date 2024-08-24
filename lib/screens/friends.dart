@@ -61,7 +61,7 @@ class _FriendsPageState extends State<FriendsPage> {
   // Function to update whether showing error
   void getStatusOfRequest(String name) async {
     // Simulate API call
-    bool requestStatus = user.sendFriendRequest(name); // Simulating network delay
+    bool requestStatus = await user.sendFriendRequest(name); // Simulating network delay
     setState(() {
       showRequestError = !requestStatus; // Update state to show the error
     });
