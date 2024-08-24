@@ -145,7 +145,7 @@ class CurrentUser {
     if (!friendDoc.exists) {
       return false;
     }
-    if (friendDoc['outboundRequests'].includes(friendId)) {
+    if (friendDoc['outboundRequests'].contains(friendId)) {
       final status = await acceptFriendRequest(friendId);
       return status;
     }
