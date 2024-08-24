@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:skillup/app.dart';
+import 'package:skillup/functions/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const App());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -74,8 +77,39 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      // User.getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.friends)});
     });
   }
+
+  Future<void> addFriends(String newFriendId) async {
+    String currentUser = "UKMSDBXQcVrlArQ1utbi";
+    final DocumentReference userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(currentUser);
+
+    DocumentSnapshot userDoc = await userDocRef.get();
+
+    List<dynamic> friendIds = List<dynamic>.from(userDoc['friends'] ?? []);
+    if (!friendIds.contains(newFriendId)) {
+      // Add the new friend's ID to the list
+      friendIds.add(newFriendId);
+
+      // Update the user's document with the new friend list
+      await userDocRef.update({
+        'friends': friendIds,
+      });
+
+      print('Friend added successfully!');
+    } else {
+      print('This user is already your friend.');
+    }
+  }
+
+  // Future<void> saveUser(User user) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(user.id)
+  //       .set(user.toFirestore());
+  // }
 
   @override
   Widget build(BuildContext context) {
