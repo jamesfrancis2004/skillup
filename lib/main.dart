@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:skillup/app.dart';
+import 'package:skillup/functions/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const App());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -74,7 +77,25 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.name)});
     });
+  }
+
+  Future<User?> getUser(String userId) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (doc.exists) {
+      return User.fromFirestore(doc.data()!, doc.id);
+    } else {
+      return null; // Handle the case where the document doesn't exist
+    }
+  }
+
+  Future<void> saveUser(User user) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.id)
+        .set(user.toFirestore());
   }
 
   @override
