@@ -109,13 +109,13 @@ class _FriendsPageState extends State<FriendsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
+                      _buildCurrentFriendsSection(),
+                      SizedBox(height: 20),
                       _buildAddFriendsSection(),
                       SizedBox(height: 20),
                       _buildPendingRequestsSection(),
                       SizedBox(height: 20),
                       _buildSentRequestsSection(),
-                      SizedBox(height: 20),
-                      _buildCurrentFriendsSection(),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -123,6 +123,295 @@ class _FriendsPageState extends State<FriendsPage> {
               ),
             )
           : Center(child: CircularProgressIndicator()),
+    );
+  }
+
+    Widget _buildSentRequestsSection() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0, bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Sent Requests",
+                  style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontSize: 15.0)),
+              const Padding(
+                padding: EdgeInsets.only(right: filterHorizontalInset),
+                child: SizedBox(width: 0, height: 0),
+              ),
+            ],
+          ),
+          Container(
+            height: _subheadingGradientHeight,
+            width: _subheadingGradientWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: highlightGradient,
+            ),
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('users').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}',
+                      style: TextStyle(color: Colors.red)),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Text('No outgoing requests',
+                      style: TextStyle(color: Colors.white)),
+                );
+              } else {
+                var userDoc = snapshot.data!.docs
+                    .where((doc) =>
+                        doc.id == FirebaseAuth.instance.currentUser!.uid)
+                    .firstOrNull;
+
+                List<String> userList = [];
+                if (userDoc != null) {
+                  userList =
+                      List<String>.from(userDoc["outboundRequests"] ?? []);
+                }
+
+                return Column(
+                  children: userList.map((requestId) {
+                    return FutureBuilder<String>(
+                      future: _getNameFromId(requestId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListTile(
+                            title: Text(
+                              'Loading...',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: null,
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return ListTile(
+                            title: Text(
+                              'Error',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: null,
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          String name = snapshot.data ?? 'Unknown';
+                          return ListTile(
+                            title: Text(
+                              name,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: () async {
+                                    bool success = await user.cancelFriendRequest(requestId);
+                                    if (success) {
+                                      setState(() {
+                                        // Optionally update the UI to reflect the rejection
+                                        userList.remove(requestId);
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Friend request rejected')),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Failed to reject friend request')),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }).toList(),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCurrentFriendsSection() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0, bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Current Friends",
+                  style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontSize: 32.0)),
+              const Padding(
+                padding: EdgeInsets.only(right: filterHorizontalInset),
+                child: SizedBox(width: 0, height: 0),
+              ),
+            ],
+          ),
+          Container(
+            height: _subheadingGradientHeight,
+            width: _subheadingGradientWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: highlightGradient,
+            ),
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('users').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}',
+                      style: TextStyle(color: Colors.red)),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Text('No incoming requests',
+                      style: TextStyle(color: Colors.white)),
+                );
+              } else {
+                var userDoc = snapshot.data!.docs
+                    .where((doc) =>
+                        doc.id == FirebaseAuth.instance.currentUser!.uid)
+                    .firstOrNull;
+
+                List<String> userList = [];
+                if (userDoc != null) {
+                  userList =
+                      List<String>.from(userDoc["friends"] ?? []);
+                }
+
+                return Column(
+                  children: userList.map((requestId) {
+                    return FutureBuilder<String>(
+                      future: _getNameFromId(requestId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListTile(
+                            title: Text(
+                              'Loading...',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.check, color: Colors.green),
+                                  onPressed: null,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: null,
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return ListTile(
+                            title: Text(
+                              'Error',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.check, color: Colors.green),
+                                  onPressed: null,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: null,
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          String name = snapshot.data ?? 'Unknown';
+                          return ListTile(
+                            title: Text(
+                              name,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.red),
+                                  onPressed: () async {
+                                    bool success = await user.deleteFriend(requestId);
+                                    if (success) {
+                                      setState(() {
+                                        // Optionally update the UI to reflect the rejection
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Friend request rejected')),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Failed to reject friend request')),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }).toList(),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -340,303 +629,6 @@ class _FriendsPageState extends State<FriendsPage> {
                                       setState(() {
                                         // Optionally update the UI to reflect the rejection
                                         userList.remove(requestId);
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text('Friend request rejected')),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text('Failed to reject friend request')),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    );
-                  }).toList(),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSentRequestsSection() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0, bottom: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Sent Requests",
-                  style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontSize: 15.0)),
-              const Padding(
-                padding: EdgeInsets.only(right: filterHorizontalInset),
-                child: SizedBox(width: 0, height: 0),
-              ),
-            ],
-          ),
-          Container(
-            height: _subheadingGradientHeight,
-            width: _subheadingGradientWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: highlightGradient,
-            ),
-          ),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}',
-                      style: TextStyle(color: Colors.red)),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return Center(
-                  child: Text('No outgoing requests',
-                      style: TextStyle(color: Colors.white)),
-                );
-              } else {
-                var userDoc = snapshot.data!.docs
-                    .where((doc) =>
-                        doc.id == FirebaseAuth.instance.currentUser!.uid)
-                    .firstOrNull;
-
-                List<String> userList = [];
-                if (userDoc != null) {
-                  userList =
-                      List<String>.from(userDoc["outboundRequests"] ?? []);
-                }
-
-                return Column(
-                  children: userList.map((requestId) {
-                    return FutureBuilder<String>(
-                      future: _getNameFromId(requestId),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ListTile(
-                            title: Text(
-                              'Loading...',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.check, color: Colors.green),
-                                  onPressed: null,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: null,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return ListTile(
-                            title: Text(
-                              'Error',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.check, color: Colors.green),
-                                  onPressed: null,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: null,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          String name = snapshot.data ?? 'Unknown';
-                          return ListTile(
-                            title: Text(
-                              name,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: () async {
-                                    bool success = await user.cancelFriendRequest(requestId);
-                                    if (success) {
-                                      setState(() {
-                                        // Optionally update the UI to reflect the rejection
-                                        userList.remove(requestId);
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text('Friend request rejected')),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text('Failed to reject friend request')),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    );
-                  }).toList(),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCurrentFriendsSection() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0, bottom: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Current Friends",
-                  style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontSize: 15.0)),
-              const Padding(
-                padding: EdgeInsets.only(right: filterHorizontalInset),
-                child: SizedBox(width: 0, height: 0),
-              ),
-            ],
-          ),
-          Container(
-            height: _subheadingGradientHeight,
-            width: _subheadingGradientWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: highlightGradient,
-            ),
-          ),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}',
-                      style: TextStyle(color: Colors.red)),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return Center(
-                  child: Text('No incoming requests',
-                      style: TextStyle(color: Colors.white)),
-                );
-              } else {
-                var userDoc = snapshot.data!.docs
-                    .where((doc) =>
-                        doc.id == FirebaseAuth.instance.currentUser!.uid)
-                    .firstOrNull;
-
-                List<String> userList = [];
-                if (userDoc != null) {
-                  userList =
-                      List<String>.from(userDoc["friends"] ?? []);
-                }
-
-                return Column(
-                  children: userList.map((requestId) {
-                    return FutureBuilder<String>(
-                      future: _getNameFromId(requestId),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ListTile(
-                            title: Text(
-                              'Loading...',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.check, color: Colors.green),
-                                  onPressed: null,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: null,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return ListTile(
-                            title: Text(
-                              'Error',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.check, color: Colors.green),
-                                  onPressed: null,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: null,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          String name = snapshot.data ?? 'Unknown';
-                          return ListTile(
-                            title: Text(
-                              name,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
-                                  onPressed: () async {
-                                    bool success = await user.deleteFriend(requestId);
-                                    if (success) {
-                                      setState(() {
-                                        // Optionally update the UI to reflect the rejection
                                       });
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
