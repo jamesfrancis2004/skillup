@@ -139,36 +139,11 @@ class CurrentUser {
     return true;
   }
 
-  Future<void> addFriends(String newFriendId) async {
-    final docRef =
-        FirebaseFirestore.instance.collection('users').doc(id);
-
-    final doc = await docRef.get();
-    if (doc.exists) {
-      List<String> friendIds = List<String>.from(doc['friendIds'] ?? []);
-
-      if (!friendIds.contains(newFriendId)) {
-        // Add the new friend's ID to the list
-        friendIds.add(newFriendId);
-
-        // Update the user's document with the new friend list
-        await docRef.update({
-          'friendIds': friendIds,
-        });
-
-        print('Friend added successfully!');
-      } else {
-        print('This user is already your friend.');
-      }
-    } else {
-      print('User document does not exist.');
-    }
-  }
-
   Future<void> deleteUserFromFirestore() async {
     try {
       // Reference to the user's document in Firestore
-      final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(id);
+      final DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(id);
 
       // Delete the user's document
       await userDocRef.delete();
@@ -183,10 +158,12 @@ class CurrentUser {
 // Method to remove the user from all friends lists
   Future<void> removeUserFromAllFriendsLists() async {
     try {
-      final CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+      final CollectionReference usersRef =
+          FirebaseFirestore.instance.collection('users');
 
       // Query all user documents where 'friends' contains this user's UID
-      QuerySnapshot querySnapshot = await usersRef.where('friends', arrayContains: id).get();
+      QuerySnapshot querySnapshot =
+          await usersRef.where('friends', arrayContains: id).get();
 
       // Iterate over all documents that contain this user's UID in their 'friends' list
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
