@@ -12,13 +12,10 @@ import 'package:skillup/Widgets/authentication/signup.dart';
 
 import 'Widgets/Authentication/forgot_password.dart';
 
-
 // ROUTER ...
-
 
 // Class to keep routing paths in a centralised location
 class NavigationRoutes {
-
   // Raw routes
   static const String home = '/home';
   static const String explore = '/explore';
@@ -51,15 +48,13 @@ class NavigationRoutes {
   // Mapping routes to their index in the bottom nav bar
   // Routes must be specified with their associated index in the bottom nav bar
   static const Map<String, int> indexInBottomNavBar = {
-    NavigationRoutes.home       : 0,
-    NavigationRoutes.explore    : 1,
-    NavigationRoutes.contribute : 2,
-    NavigationRoutes.community  : 3,
-    NavigationRoutes.profile    : 4,
+    NavigationRoutes.home: 0,
+    NavigationRoutes.explore: 1,
+    NavigationRoutes.contribute: 2,
+    NavigationRoutes.community: 3,
+    NavigationRoutes.profile: 4,
   };
-
 }
-
 
 /* Useful links
 
@@ -79,70 +74,59 @@ GoRouter buildRouter() {
     routes: [
       // StatefulShellRoute to preserve page states between navigation
       StatefulShellRoute.indexedStack(
-        builder: (BuildContext context, GoRouterState state,  StatefulNavigationShell navigationShell){
-          return AppScaffold(child: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(
-            routes: [
+          builder: (BuildContext context, GoRouterState state,
+              StatefulNavigationShell navigationShell) {
+            return AppScaffold(child: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(routes: [
               GoRoute(
-                path: NavigationRoutes.home, 
-                pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const HomePage()
-                )
-              ),
-            ]
-          ),
-          StatefulShellBranch(
-            routes: [
+                  path: NavigationRoutes.home,
+                  pageBuilder:
+                      _CustomTransitions.getInstantTransitionPageBuilder(
+                          child: const HomePage())),
+            ]),
+            StatefulShellBranch(routes: [
               GoRoute(
-                path: NavigationRoutes.explore, 
-                pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const FriendsPage()
-                )
-              ),
-            ]
-          ),
-          StatefulShellBranch(
-            routes: [
+                  path: NavigationRoutes.explore,
+                  pageBuilder:
+                      _CustomTransitions.getInstantTransitionPageBuilder(
+                          child: const FriendsPage())),
+            ]),
+            StatefulShellBranch(routes: [
               GoRoute(
-                path: NavigationRoutes.contribute, 
-                pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const ContributePage()
-                )
-              ),
-            ]
-          ),
-          StatefulShellBranch(
-            routes: [
+                  path: NavigationRoutes.contribute,
+                  pageBuilder:
+                      _CustomTransitions.getInstantTransitionPageBuilder(
+                          child: const ContributePage())),
+            ]),
+            StatefulShellBranch(routes: [
               GoRoute(
-                path: NavigationRoutes.community, 
-                pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const ExplorePage()
-                )
-              ),
-            ]
-          ),
-          StatefulShellBranch(
-            routes: [
+                  path: NavigationRoutes.community,
+                  pageBuilder:
+                      _CustomTransitions.getInstantTransitionPageBuilder(
+                          child: const ExplorePage())),
+            ]),
+            StatefulShellBranch(routes: [
               GoRoute(
-                path: NavigationRoutes.profile, 
-                pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const ProfilePage()
-                )
-              ),
-            ]
-          ),
-        ]
-      ),
-      GoRoute(path: NavigationRoutes.login, builder:(context, state) => const LoginPage()),
-      GoRoute(path: NavigationRoutes.signUp, builder:(context, state) => const SignUpPage()),
-      GoRoute(path: NavigationRoutes.forgotPassword, builder:(context, state) => const ForgotPassword())
+                  path: NavigationRoutes.profile,
+                  pageBuilder:
+                      _CustomTransitions.getInstantTransitionPageBuilder(
+                          child: const ProfilePage())),
+            ]),
+          ]),
+      GoRoute(
+          path: NavigationRoutes.login,
+          builder: (context, state) => const LoginPage()),
+      GoRoute(
+          path: NavigationRoutes.signUp,
+          builder: (context, state) => const SignUpPage()),
+      GoRoute(
+          path: NavigationRoutes.forgotPassword,
+          builder: (context, state) => const ForgotPassword())
     ],
   );
-
 }
-
 
 // CUSTOM TRANSITIONS ...
 
@@ -156,33 +140,27 @@ GoRouter buildRouter() {
      Used to give the effect of skipping all transitions.
      Used in place where a transition object is required but no animation is wanted.
 
-*/ 
+*/
 class _CustomTransitions {
-  
-
   // Instant page transition
-  static CustomTransitionPage 
-    getInstantTransitionPage({required BuildContext context, required GoRouterState state, required Widget child}) {
-      return CustomTransitionPage(
+  static CustomTransitionPage getInstantTransitionPage(
+      {required BuildContext context,
+      required GoRouterState state,
+      required Widget child}) {
+    return CustomTransitionPage(
         key: state.pageKey,
         child: child,
         transitionDuration: const Duration(milliseconds: 0),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
-          position: animation.drive(
-            Tween<Offset>(
-              begin: const Offset(0, 0), 
-              end: const Offset(0, 0)
-            )
-          ),
-          child: child
-        )
-      );
-    }
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            SlideTransition(
+                position: animation.drive(Tween<Offset>(
+                    begin: const Offset(0, 0), end: const Offset(0, 0))),
+                child: child));
+  }
 
-  static Page<dynamic> Function (BuildContext context, GoRouterState state) 
-    getInstantTransitionPageBuilder({required Widget child}) {
-      return (context, state) => _CustomTransitions.getInstantTransitionPage(
+  static Page<dynamic> Function(BuildContext context, GoRouterState state)
+      getInstantTransitionPageBuilder({required Widget child}) {
+    return (context, state) => _CustomTransitions.getInstantTransitionPage(
         context: context, state: state, child: child);
-    }
-
+  }
 }
