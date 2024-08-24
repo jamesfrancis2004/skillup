@@ -58,6 +58,18 @@ class _FriendsPageState extends State<FriendsPage> {
     setState(() {});
   }
 
+  Future<String> _getNameFromId(String id) async {
+    try {
+      String? name = await CurrentUser.getNameFromId(id);
+
+      // Handle the possibility that `name` might be null
+      return name ?? 'Unknown'; // Replace 'Unknown' with a suitable default value if needed
+    } catch (e) {
+      // Handle any errors that might occur during the asynchronous call
+      return 'Error'; // You can return an error message or handle it differently
+    }
+  }
+
   // Function to update whether showing error
   void getStatusOfRequest(String name) async {
     // Simulate API call
@@ -240,35 +252,101 @@ class _FriendsPageState extends State<FriendsPage> {
 
 
 
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: user.inboundRequests.map((request) {
-                        return ListTile(
-                          title: Text(
-                            request, // Display the username of the incoming request
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.check, color: Colors.green),
-                                onPressed: () {
-                                  // Accept friend request logic
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.close, color: Colors.red),
-                                onPressed: () {
-                                  // Decline friend request logic
-                                },
-                              ),
-                            ],
-                          ),
+                        return FutureBuilder<String>(
+                          future: _getNameFromId(request), // Get the name from ID
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return ListTile(
+                                title: Text(
+                                  'Loading...', // Placeholder text while loading
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.check, color: Colors.green),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return ListTile(
+                                title: Text(
+                                  'Error', // Placeholder text in case of error
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.check, color: Colors.green),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              String name = snapshot.data ?? 'Unknown'; // Handle null value
+                              return ListTile(
+                                title: Text(
+                                  name, // Display the username of the incoming request
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.check, color: Colors.green),
+                                      onPressed: () async {
+                                        bool success = await user.acceptFriendRequest(request);
+                                        if (success) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Friend request rejected')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Failed to reject friend request')),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: () async {
+                                        bool success = await user.rejectFriendRequest(request);
+                                        if (success) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Friend request rejected')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Failed to reject friend request')),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         );
                       }).toList(),
                     ),
+
                     const SizedBox(height: 20),
 
 
@@ -321,20 +399,68 @@ class _FriendsPageState extends State<FriendsPage> {
                     ),
 
 
-                    Column(
+                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: user.outboundRequests.map((request) {
-                        return ListTile(
-                          title: Text(
-                            request, // Display the username of the outgoing request
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.cancel, color: Colors.red),
-                            onPressed: () {
-                              // Cancel friend request logic
-                            },
-                          ),
+                        return FutureBuilder<String>(
+                          future: _getNameFromId(request), // Asynchronous function to get the name
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return ListTile(
+                                title: Text(
+                                  'Loading...', // Loading state
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return ListTile(
+                                title: Text(
+                                  'Error', // Error state
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              );
+                            } else {
+                              return ListTile(
+                                title: Text(
+                                  snapshot.data ?? 'Unknown', // Display the fetched name or 'Unknown'
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: () async {
+                                        bool success = await user.cancelFriendRequest(request);
+                                        if (success) {
+                                          setState(() {
+                                            // Optionally update the UI to reflect the rejection
+                                            user.inboundRequests.remove(request);
+                                          });
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Friend request rejected')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Failed to reject friend request')),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         );
                       }).toList(),
                     ),
@@ -395,19 +521,61 @@ class _FriendsPageState extends State<FriendsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: user.friends.map((request) {
-                        return ListTile(
-                          title: Text(
-                            request, // Display the username of the outgoing request
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.cancel, color: Colors.red),
-                            onPressed: () {
-                              // Cancel friend request logic
-                            },
-                          ),
+                        return FutureBuilder<String>(
+                          future: _getNameFromId(request), // Asynchronous function to get the name
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return ListTile(
+                                title: Text(
+                                  'Loading...', // Loading state
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: null, // Disable while loading
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return ListTile(
+                                title: Text(
+                                  'Error', // Error state
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              );
+                            } else {
+                              return ListTile(
+                                title: Text(
+                                  snapshot.data ?? 'Unknown', // Display the fetched name or 'Unknown'
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.check, color: Colors.green),
+                                      onPressed: () {
+                                        // Accept friend request logic
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red),
+                                      onPressed: () {
+                                        // Decline friend request logic
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         );
                       }).toList(),
+                  
                     ),// Display current friends similarly
                   ],
                 ),

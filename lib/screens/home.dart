@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
               children: [
 
                 // Challenge 1
-                const ChallengeTile(),
+                const ChallengeTile(tier: 'gold', description: 'Bake pretzels', finished: false),
 
                 // Padding
                 const SizedBox(
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 2
-                const ChallengeTile(),
+                const ChallengeTile(tier: 'silver', description: 'Bake sour dough', finished: false),
 
                 // Padding
                 const SizedBox(
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 3
-                const ChallengeTile(),
+                const ChallengeTile(tier: 'bronze', description: 'Bake banana bread', finished: false),
               ],
             ),
 
