@@ -29,6 +29,23 @@ const double horizontalInset = 20;
 const double majorVerticalSpacing = 30;
 
 
+// CHALLENGE CONFIG ...
+
+Color getMedalColour(String tier) {
+  switch (tier) {
+    case "bronze":
+      return Color(0xFFFFD700); 
+    case "silver":
+      return Color(0xFFC0C0C0);
+    case "gold":
+      return Color(0xFFCD7F32);
+    default:
+      print("ERROR - Invalid tier given. Recieved [$tier].");
+      return Color(0xFFFFFFFF);
+  }
+}
+
+
 // TEXT THEMES ...
 
 // https://api.flutter.dev/flutter/material/TextTheme-class.html
