@@ -188,9 +188,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () {
                             // Delete account functionality
                           },
-                          child: const Text(
+                          child: Text(
                             'Delete Account',
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat (
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w900,
