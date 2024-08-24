@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -147,11 +148,19 @@ class _ContributePageState extends State<ContributePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Contribute"),
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
       ),
-      body: Padding(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -178,7 +187,9 @@ class _ContributePageState extends State<ContributePage> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: PostSubmissionContainer(
+                          mediaUrl: post['mediaUrl'] ?? '',
                           description: post['description'] ?? '',
+                          mediaType: post['mediaType'] ?? '',
                           // You can add more fields from the post document as needed
                         ),
                       );
@@ -284,7 +295,99 @@ class _ContributePageState extends State<ContributePage> {
 }
 
 
+class PostSubmissionContainer extends StatelessWidget {
+  final String description;
+  final String? mediaUrl;
+  final String mediaType; // "image" or "video"
 
+  const PostSubmissionContainer({
+    Key? key,
+    required this.description,
+    this.mediaUrl,
+    required this.mediaType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8.0),
+        color: Colors.white.withOpacity(0.20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Media display
+          mediaType == 'image'
+              ? mediaUrl != null
+              ? CachedNetworkImage(
+            imageUrl: mediaUrl!,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
+          )
+              : Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: Center(child: Text('No image available')),
+          )
+              : mediaType == 'video'
+              ? mediaUrl != null
+              ? VideoPlayerWidget(videoPath: mediaUrl!)
+              : Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: Center(child: Text('No video available')),
+          )
+              : Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: Center(child: Text('Unsupported media type')),
+          ),
+          SizedBox(height: 16),
+          // Text description
+          Text(
+            description,
+            style: GoogleFonts.montserrat(
+              fontSize: 13.0,
+            ),
+          ),
+          SizedBox(height: 16),
+          // Approval buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Handle approval action
+                },
+                child: Text("Approve"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+              ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle non-approval action
+                },
+                child: Text("Reject"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+/*
 
 // Custom Widget for Post Submission
 class PostSubmissionContainer extends StatelessWidget {
@@ -350,5 +453,7 @@ class PostSubmissionContainer extends StatelessWidget {
     );
   }
 }
+
+ */
 
 
