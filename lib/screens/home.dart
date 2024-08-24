@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:skillup/widgets/home/main_skill_tile.dart';
 
 /* 
 
@@ -7,6 +8,10 @@ import 'package:flutter/material.dart';
   Current setup is designed to only work with 1 instance of HomePage at any time
 
 */ 
+
+
+// CONFIG
+const double _selectorRowInsetHorizontal = 20;
 
 
 // WIDGET 
@@ -49,11 +54,15 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           controller: HomePage._scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            Container(
-              height: 100,
-              width: 100,
-              color: Colors.amber, 
+          children: const [
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal),
+              child: MainSkillTile()
             ),
           ]
         )
