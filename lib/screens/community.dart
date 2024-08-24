@@ -4,9 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+import '../Widgets/video_player.dart';
 
 class OutgoingMessage extends StatelessWidget {
   final String username;
@@ -58,7 +59,7 @@ class OutgoingMessage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             if (mediaUrl != null && isImage == true)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -157,17 +158,12 @@ class IncomingMessage extends StatelessWidget {
     );
   }
 }
-
-
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
   @override
   _ExplorePageState createState() => _ExplorePageState();
 }
-
-
-
 
 class _ExplorePageState extends State<ExplorePage> {
   final ImagePicker _picker = ImagePicker();
@@ -259,10 +255,35 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 
+  Future<String> _getUsername(String uid) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        return userDoc['name'] ?? 'Unknown User';
+      } else {
+        return 'Unknown User';
+      }
+    } catch (e) {
+      print('Failed to fetch username: $e');
+      return 'Unknown User';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
+      ),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -271,15 +292,16 @@ class _ExplorePageState extends State<ExplorePage> {
             children: [
               Text(
                 "Community",
-                style: GoogleFonts.montserrat(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                   fontSize: 25,
                 ),
               ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.black,
+                  color: Colors.black.withOpacity(0.4),
                 ),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.60,
@@ -298,29 +320,35 @@ class _ExplorePageState extends State<ExplorePage> {
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           var message = messages[index];
-                          bool isOutgoing = message['uid'] ==
-                              FirebaseAuth.instance.currentUser?.uid;
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: isOutgoing
-                                ? OutgoingMessage(
-                              username: "You",
-                              message: message['message'],
-                              datetime: message['timestamp']
-                                  .toDate()
-                                  .toString(),
-                              mediaUrl: message['mediaUrl'],
-                              isImage: message['isImage'],
-                            )
-                                : IncomingMessage(
-                              username: "Someone",
-                              message: message['message'],
-                              datetime: message['timestamp']
-                                  .toDate()
-                                  .toString(),
-                              mediaUrl: message['mediaUrl'],
-                              isImage: message['isImage'],
-                            ),
+                          bool isOutgoing = message['uid'] == FirebaseAuth.instance.currentUser?.uid;
+                          return FutureBuilder<String>(
+                            future: _getUsername(message['uid']),
+                            builder: (context, usernameSnapshot) {
+                              String username = usernameSnapshot.data ?? 'Unknown User';
+                              return Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    isOutgoing
+                                        ? OutgoingMessage(
+                                      username: "You",
+                                      message: message['message'],
+                                      datetime: message['timestamp'].toDate().toString(),
+                                      mediaUrl: message['mediaUrl'],
+                                      isImage: message['isImage'],
+                                    )
+                                        : IncomingMessage(
+                                      username: username,
+                                      message: message['message'],
+                                      datetime: message['timestamp'].toDate().toString(),
+                                      mediaUrl: message['mediaUrl'],
+                                      isImage: message['isImage'],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           );
                         },
                       );
@@ -337,7 +365,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.grey[200],
+                        color: Color(0xffffffff).withOpacity(0.2),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,7 +388,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 controller: _textController,
                                 decoration: InputDecoration(
                                   hintText: "Add a caption...",
-                                  fillColor: Colors.grey,
+                                  fillColor: Color(0xffffffff).withOpacity(0.2),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -378,7 +406,12 @@ class _ExplorePageState extends State<ExplorePage> {
                                     _textController.clear();
                                   });
                                 },
-                                child: Text('Remove'),
+                                child: Text(
+                                    'Remove',
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                  )
+                                ),
                               ),
                             ),
                           if (_selectedMedia == null)
@@ -387,7 +420,7 @@ class _ExplorePageState extends State<ExplorePage> {
                               decoration: InputDecoration(
                                 hintText: "Send a message",
                                 filled: true,
-                                fillColor: Colors.grey,
+                                fillColor: Color(0xffffffff).withOpacity(0.2),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
@@ -426,77 +459,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
 
 
-class VideoPlayerWidget extends StatefulWidget {
-  final String videoPath; // This is the URL of the video
 
-  const VideoPlayerWidget({Key? key, required this.videoPath}) : super(key: key);
 
-  @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
-}
-
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.network(widget.videoPath);
-    _initializeVideoPlayerFuture = _controller.initialize();
-    _controller.setLooping(true);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initializeVideoPlayerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              ),
-              VideoProgressIndicator(
-                _controller,
-                allowScrubbing: true,
-                padding: EdgeInsets.all(8.0),
-              ),
-              IconButton(
-                icon: Icon(
-                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  });
-                },
-              ),
-            ],
-          );
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error loading video'));
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-}
 
 

@@ -56,7 +56,21 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).colorScheme.primary,
+
+      //color: Theme.of(context).colorScheme.primary,
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors:  [
+                Color(0xff00274d), // Dark Blue
+                Color(0xff001f3f), // Even Darker Blue
+                Color(0xff000a1b)  // Nearly Black
+              ],
+
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
+            )
+        ),
+
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.onTertiaryContainer,
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
@@ -187,34 +201,28 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Challenges
-            const Padding(
-              padding: const EdgeInsets.only(
-                left: horizontalInset, 
-                right: horizontalInset
-              ),
-              child: Column(
-                children: [
+            Column(
+              children: [
 
-                  // Challenge 1
-                  const ChallengeTile(),
+                // Challenge 1
+                const ChallengeTile(tier: 'gold', description: 'Bake pretzels', finished: false),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 2
-                  const ChallengeTile(),
+                // Challenge 2
+                const ChallengeTile(tier: 'silver', description: 'Bake sour dough', finished: false),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 3
-                  const ChallengeTile(),
-                ],
-              )
+                // Challenge 3
+                const ChallengeTile(tier: 'bronze', description: 'Bake banana bread', finished: false),
+              ],
             ),
 
             // Padding

@@ -28,6 +28,21 @@ class _ContributePageState extends State<ContributePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Contribute",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            ),
+          ]
+        )
+      ),/*
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       color: Theme.of(context).colorScheme.primary,
@@ -52,6 +67,7 @@ class _ContributePageState extends State<ContributePage> {
           ]
         )
       )
+      */
     );
   }
 }

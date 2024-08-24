@@ -37,12 +37,12 @@ class CurrentUser {
     }
   }
 
-  static Future<bool> getNameFromId(String userId) async {
+  static Future<String?> getNameFromId(String userId) async {
     final doc =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     if (!doc.exists) {
-      return false;
+      return null;
     }
 
     return doc.data()!['name'];
@@ -158,6 +158,11 @@ class CurrentUser {
       'friends': FieldValue.arrayUnion([friendId])
     });
     inboundRequests.remove(friendId);
+    
+    await FirebaseFirestore.instance.collection('users').doc(id).update({
+      'friends': FieldValue.arrayUnion([friendId])
+    });
+    friends.add(friendId);
 
     return true;
   }
