@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Pull the user from the database
+// (Assume this part of the code will be implemented later)
+
+// WIDGET
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -11,7 +15,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late CurrentUser user;
-  final TextEditingController _usernameController = TextEditingController(text: "");
+  final TextEditingController _usernameController =
+      TextEditingController(text: "");
   bool _isUserDataLoaded = false;
 
   @override
@@ -24,7 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
     setState(() {
       _isUserDataLoaded = true;
-      _usernameController.text = user.name ?? ''; // Optionally set the initial text
+      _usernameController.text =
+          user.name ?? ''; // Optionally set the initial text
     });
   }
 
@@ -47,7 +53,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: const LinearGradient(
-                            colors: [Color.fromARGB(255, 174, 219, 255), Colors.white],
+                            colors: [
+                              Color.fromARGB(255, 174, 219, 255),
+                              Colors.white
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -96,19 +105,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: Container(
                                       width: 270,
                                       child: TextField(
-                                        style: const TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                         controller: _usernameController,
                                         decoration: const InputDecoration(
                                           labelText: 'Change your username',
-                                          labelStyle: TextStyle(color: Colors.black),
+                                          labelStyle:
+                                              TextStyle(color: Colors.black),
                                           border: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.black),
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.black),
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
                                           ),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.black),
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
                                           ),
                                         ),
                                       ),
@@ -121,8 +135,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       size: 30.0,
                                     ),
                                     onPressed: () {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Checkmark button pressed')),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Checkmark button pressed')),
                                       );
                                     },
                                   ),
@@ -131,7 +148,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               SizedBox(height: 50),
                               ElevatedButton(
                                 style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
                                 ),
                                 onPressed: () {
                                   // Log out functionality
