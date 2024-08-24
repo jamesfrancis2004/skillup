@@ -117,20 +117,32 @@ class _ContributePageState extends State<ContributePage> {
       // Define the media type and path
       String mediaType;
       String mediaPath;
+      File? mediaFile;
       if (_imagePath != null) {
         mediaType = 'image';
         mediaPath = _imagePath!;
+        mediaFile = File(mediaPath);
       } else if (_videoFile != null) {
         mediaType = 'video';
         mediaPath = _videoFile!.path;
+        mediaFile = File(mediaPath);
       } else {
         throw Exception('No media selected');
       }
 
+      // Upload media to Firebase Storage
+      final storageRef = FirebaseStorage.instance.ref().child('user_media')
+          .child(FirebaseAuth.instance.currentUser!.uid)
+          .child('${DateTime.now().millisecondsSinceEpoch}.$mediaType');
+
+      final uploadTask = storageRef.putFile(mediaFile!);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+
       // Prepare data for Firestore
       final data = {
         'timestamp': Timestamp.now(),
-        'media_path': mediaPath,
+        'media_path': downloadUrl,
         'media_type': mediaType,
         'description': _textController.text,
       };
@@ -163,7 +175,6 @@ class _ContributePageState extends State<ContributePage> {
       print('Error sending content: $e');
     }
   }
-
 
   Future<void> _takePhoto() async {
     try {
