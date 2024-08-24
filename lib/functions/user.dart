@@ -37,19 +37,6 @@ class User {
   //   };
   // }
 
-  Future<void> fetchUserData() async {
-    final doc =
-        await FirebaseFirestore.instance.collection('users').doc(id).get();
-    if (doc.exists) {
-      final data = doc.data()!;
-      name = data['name'];
-      email = data['email'];
-      friends = data['friends'];
-    } else {
-      return null; // Handle the case where the document doesn't exist
-    }
-  }
-
   Future<void> addFriends(String newFriendId) async {
     String currentUser = "9iCkGILei2p4sG17tZ7o";
 
