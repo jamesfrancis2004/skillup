@@ -264,7 +264,7 @@ Widget build(BuildContext context) {
             hint: Text('Select Challenge'),
           ),
         ),
-        Platform.isIOS ? SizedBox(width:0,height:0) : Expanded(
+        true ? SizedBox(width:0,height:0) : Expanded(
           child: FutureBuilder<void>(
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
