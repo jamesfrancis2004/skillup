@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
               children: [
 
                 // Challenge 1
-                ChallengeTile(tier: 'bronze', description: skill.challenge3, finished: false),
+                ChallengeTile(tier: 'bronze', description: skill.challenge1, finished: false),
 
                 // Padding
                 const SizedBox(
@@ -251,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 3
-                ChallengeTile(tier: 'gold', description: skill.challenge1, finished: false),
+                ChallengeTile(tier: 'gold', description: skill.challenge3, finished: false),
               ],
             ),
 

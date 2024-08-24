@@ -149,6 +149,7 @@ class _ChallengeTileState extends State<ChallengeTile> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
       // Handle the case when the user is not authenticated
+      print("user id is null");
       return;
     }
 
