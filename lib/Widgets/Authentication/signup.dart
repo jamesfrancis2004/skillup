@@ -88,7 +88,11 @@ class _SignUpPageState extends State<SignUpPage> {
         body: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-              colors: [Color(0xff82f0ff), Color(0xff4c9dd8), Color(0xff0861a8)],
+                  colors:  [
+                    Color(0xff00274d), // Dark Blue
+                    Color(0xff001f3f), // Even Darker Blue
+                    Color(0xff000a1b)  // Nearly Black
+                  ],
               // colors: [Colors.grey.shade100, Colors.grey.shade500],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -118,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               decoration: InputDecoration(
                                 hintText: "Username",
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: const Color(0xffffffff).withOpacity(0.2),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
@@ -139,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               decoration: InputDecoration(
                                 hintText: "Email",
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: const Color(0xffffffff).withOpacity(0.2),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
@@ -162,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               decoration: InputDecoration(
                                   hintText: "Password",
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: const Color(0xffffffff).withOpacity(0.2),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide.none,
@@ -195,7 +199,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               decoration: InputDecoration(
                                   hintText: "Confirm Password",
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: const Color(0xffffffff).withOpacity(0.2),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide.none,
@@ -222,6 +226,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               height: MediaQuery.of(context).size.height / 200,
                             ),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xffffffff).withOpacity(0.2),
+                                ),
                                 onPressed: () async {
                                   if (SignUpController.validSignUpInputs(
                                     username,
@@ -263,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       Text("Sign Up",
                                           style: GoogleFonts.montserrat(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black,
+                                            color: Color.fromARGB(255, 174, 219, 255),
                                           )),
                                     ])),
                             Padding(
@@ -275,8 +282,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text("Already have an account?",
-                                          style: TextStyle(
+                                      Text("Already have an account?",
+                                          style: GoogleFonts.montserrat(
                                             color: Colors.white,
                                             fontSize: 13.0,
                                           )),

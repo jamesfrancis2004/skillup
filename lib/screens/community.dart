@@ -59,7 +59,7 @@ class OutgoingMessage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             if (mediaUrl != null && isImage == true)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),

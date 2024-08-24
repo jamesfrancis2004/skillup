@@ -27,9 +27,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xff82f0ff),Color(0xff4c9dd8),Color(0xff0861a8)],
+                  colors: [
+                    Color(0xff00274d), // Dark Blue
+                    Color(0xff001f3f), // Even Darker Blue
+                    Color(0xff000a1b)  // Nearly Black
+                  ],
                   // colors: [Colors.grey.shade100, Colors.grey.shade500],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -63,7 +67,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               decoration: InputDecoration(
                                   hintText: "Email",
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: const Color(0xffffffff).withOpacity(0.2),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide.none,
@@ -81,10 +85,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       onPressed: () {
                                         return context.go(NavigationRoutes.login);
                                       },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xffffffff).withOpacity(0.2),
+                                      ),
                                       child: Text(
                                           "Back",
                                           style: GoogleFonts.montserrat(
-                                            color: Colors.black,
+                                            color: Color.fromARGB(255, 174, 219, 255),
                                             fontWeight: FontWeight.bold,
                                           )
                                       ),
@@ -103,10 +110,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             flashErrorAlert(context, "Password Reset Error", "Invalid Email Address");
                                           }
                                         },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xffffffff).withOpacity(0.2),
+                                        ),
                                         child: Text(
                                             "Submit",
                                             style: GoogleFonts.montserrat(
-                                              color: Colors.black,
+                                              color: Color.fromARGB(255, 174, 219, 255),
                                               fontWeight: FontWeight.bold,
                                             )
                                         )
