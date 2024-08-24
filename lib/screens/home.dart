@@ -25,7 +25,7 @@ const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
 const double _subheadingGradientHeight = 3;
 const double _subheadingGradientWidth = 60;
 
-const double filterHorizontalInset = 0;
+const double _filterHorizontalInset = 0;
 
 
 // WIDGET 
@@ -75,10 +75,11 @@ class _HomePageState extends State<HomePage> {
               height: _verticalSpacing,
             ),
 
-            // Challenges title
+            // Current goal title
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
                 bottom: 15
               ),
               child: Column(
@@ -94,12 +95,12 @@ class _HomePageState extends State<HomePage> {
                         "Current Goal",
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold, 
-                          color: Theme.of(context).colorScheme.onBackground, 
+                          color: Theme.of(context).colorScheme.onPrimary, 
                           fontSize: 15.0
                         )
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
@@ -139,6 +140,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
                 bottom: 15
               ),
               child: Column(
@@ -154,12 +156,12 @@ class _HomePageState extends State<HomePage> {
                         "Challenges",
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold, 
-                          color: Theme.of(context).colorScheme.onBackground, 
+                          color: Theme.of(context).colorScheme.onPrimary, 
                           fontSize: 15.0
                         )
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
@@ -239,6 +241,112 @@ class _HomePageState extends State<HomePage> {
             // Padding
             const SizedBox(
               height: _verticalSpacing,
+            ),
+
+            // Resources title
+            Padding(
+              padding: const EdgeInsets.only(
+                left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
+                bottom: 15
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  // The title of the row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Resources",
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold, 
+                          color: Theme.of(context).colorScheme.onPrimary, 
+                          fontSize: 15.0
+                        )
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: _filterHorizontalInset),
+                        child: SizedBox(
+                          width: 0,
+                          height: 0
+                        )
+                      ),
+                    ]
+                  ),
+
+                  // The gradient subheading 
+                  Container(
+                    height: _subheadingGradientHeight,
+                    width: _subheadingGradientWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: highlightGradient
+                    )
+                  ),
+                ]
+              )
+            ),
+
+            // Resources
+            Padding(
+              padding: const EdgeInsets.only(
+                left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal),
+              child: Column(
+                children: [
+
+                  // Challenge 1
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+
+                  // Padding
+                  const SizedBox(
+                    height: _challengesVerticalSpacing
+                  ),
+
+                  // Challenge 2
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+
+                  // Padding
+                  const SizedBox(
+                    height: _challengesVerticalSpacing
+                  ),
+
+                  // Challenge 3
+                  SizedBox(
+                    height: _challengesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _challengeBackgroundColour,
+                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
+                      ),
+                    )
+                  ),
+                ],
+              )
+            ),
+
+            // Bottom spacing
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 4,
             ),
 
           ]
