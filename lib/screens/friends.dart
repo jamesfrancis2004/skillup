@@ -106,8 +106,8 @@ class _FriendsPageState extends State<FriendsPage> {
                   padding: const EdgeInsets.only(
                       left: _selectorRowInsetHorizontal,
                       right: _selectorRowInsetHorizontal,
-                      top: 16,
-                      bottom: 16),
+                      top: 10
+                      ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -282,10 +282,12 @@ class _FriendsPageState extends State<FriendsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Current Friends",
-                  style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontSize: 32.0)),
+                style: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.bold, 
+                  color: Theme.of(context).colorScheme.onPrimary, 
+                  fontSize: 15.0
+                )
+              ),
               const Padding(
                 padding: EdgeInsets.only(right: filterHorizontalInset),
                 child: SizedBox(width: 0, height: 0),
