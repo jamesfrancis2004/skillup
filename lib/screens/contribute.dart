@@ -233,11 +233,19 @@ class _ContributePageState extends State<ContributePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Contribute'),
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
       ),
-      body: Column(
+      child: Column(
         children: [
           // Dropdown for selecting the challenge
           Padding(
