@@ -62,5 +62,36 @@ class CurrentSkill {
         zeroSelectedDocs[Random().nextInt(zeroSelectedDocs.length)];
     await skills.doc(randomDoc.id).update({'selected': 1});
     await skills.doc(oneSnapshotDocs[0].id).update({'selected': 0});
+
+    final usersSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    for (var doc in usersSnapshot.docs) {
+      final data = doc.data();
+      final challengesCompleted = data['challengesCompleted'];
+      if (challengesCompleted[0]) {
+        int medalCount = data['bronze'];
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(doc.id)
+            .update({'bronze': medalCount + 1});
+      }
+      if (challengesCompleted[1]) {
+        int medalCount = data['silver'];
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(doc.id)
+            .update({'silver': medalCount + 1});
+      }
+      if (challengesCompleted[2]) {
+        int medalCount = data['gold'];
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(doc.id)
+            .update({'gold': medalCount + 1});
+      }
+      await FirebaseFirestore.instance.collection('users').doc(doc.id).update({
+        'challengesCompleted': [false, false, false],
+      });
+    }
   }
 }
