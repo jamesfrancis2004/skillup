@@ -42,9 +42,20 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: _isUserDataLoaded
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
+      ),
+      child: _isUserDataLoaded
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
