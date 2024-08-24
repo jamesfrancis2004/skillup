@@ -40,12 +40,11 @@ class _ContributePageState extends State<ContributePage> {
   bool _isSkillInitialized = false;
   String? _selectedChallenge;
   int _selectedChallengeIndex = 0;
-  bool cameraIsInitialised = false;
 
   @override
   void initState() {
     super.initState();
-    if (Platform.isIOS) {
+    if (true) {
       _loadCameras();
     }
     _loadSkill();
@@ -88,7 +87,6 @@ class _ContributePageState extends State<ContributePage> {
       ResolutionPreset.high,
     );
     _initializeControllerFuture = _controller.initialize();
-    cameraIsInitialised = true;
     setState(() {});
   }
 
@@ -266,7 +264,7 @@ class _ContributePageState extends State<ContributePage> {
               hint: Text('Select Challenge'),
             ),
           ),
-          cameraIsInitialised ? Expanded(
+          Expanded(
             child: FutureBuilder<void>(
               future: _initializeControllerFuture,
               builder: (context, snapshot) {
@@ -279,7 +277,7 @@ class _ContributePageState extends State<ContributePage> {
                 }
               },
             ),
-          ) : SizedBox(width: 0, height: 0),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
