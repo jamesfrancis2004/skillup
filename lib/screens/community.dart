@@ -9,6 +9,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../Widgets/video_player.dart';
 
+import 'package:skillup/config.dart';
+import 'package:skillup/overlays/app_bar_solid.dart';
+
+
 class OutgoingMessage extends StatelessWidget {
   final String username;
   final String message;
@@ -290,13 +294,13 @@ class _ExplorePageState extends State<ExplorePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.65,
+                height: (MediaQuery.of(context).size.height - toolbarHeight - topBarExpandedHeight) * 0.75,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.black.withOpacity(0.4),
                 ),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.73,
+                  // height: MediaQuery.of(context).size.height * 0.73,
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('messages')
@@ -348,6 +352,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                 ),
               ),
+
               SizedBox(
                 height: MediaQuery.of(context).size.height / 70,
               ),
