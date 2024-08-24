@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-<<<<<<< HEAD
-import 'package:skillup/functions/skills.dart';
-=======
 import 'package:google_fonts/google_fonts.dart';
->>>>>>> ui
 import 'package:skillup/functions/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../router.dart';
@@ -141,137 +138,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-<<<<<<< HEAD
-                        height: 370,
-                        width: 0.9 * screenWidth,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.person,
-                                    size: 100,
-                                    color: Colors.black,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        user.name ?? '',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      Text(
-                                        user.email ?? '',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      width: 270,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                        controller: _usernameController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Change your username',
-                                          labelStyle:
-                                              TextStyle(color: Colors.black),
-                                          border: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                      size: 30.0,
-                                    ),
-                                    onPressed: () async {
-                                      await FirebaseFirestore.instance
-                                          .collection("users")
-                                          .doc(FirebaseAuth.instance.currentUser?.uid)
-                                          .update({
-                                        'name': _usernameController.text,
-                                      });
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                'Checkmark button pressed')),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 50),
-                              ElevatedButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ),
-                                onPressed: () {
-                                  FirebaseAuth.instance.signOut();
-                                  context.go(NavigationRoutes.login);
-
-                                  // Log out functionality
-                                },
-                                child: const Text(
-                                  'Log Out',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              ElevatedButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  // Delete account functionality
-                                },
-                                child: const Text(
-                                  'Delete Account',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ],
-=======
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -310,7 +176,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
->>>>>>> ui
                           ),
                         ),
                       ),
@@ -323,9 +188,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () {
                             // Delete account functionality
                           },
-                          child: const Text(
+                          child: Text(
                             'Delete Account',
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat (
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w900,
@@ -346,4 +211,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
