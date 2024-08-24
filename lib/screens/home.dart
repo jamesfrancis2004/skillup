@@ -21,7 +21,7 @@ const double _challengesVerticalSpacing = 10;
 const double _resourcesVerticalSpacing = 10;
 const double _resourcesHeight = 60;
 const double _resourcesBorderRadius = 4.0;
-const Color _resourcesBackgroundColour = Color.fromARGB(255, 70, 70, 75);
+const Color _resourcesBackgroundColour = Color.fromARGB(255, 94, 127, 147);
 
 const double _subheadingGradientHeight = 3;
 const double _subheadingGradientWidth = 60;
