@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:skillup/router.dart';
 import 'package:skillup/config.dart';
 import 'package:skillup/screens/home.dart';
-import 'package:skillup/widgets/app_bar_solid.dart';
+import 'package:skillup/overlays/app_bar_solid.dart';
 
 
 /* Docs / useful info
