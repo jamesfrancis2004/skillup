@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skillup/functions/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-
-// WIDGET 
+// WIDGET
 class FriendsPage extends StatefulWidget {
-  const FriendsPage({super.key});  
-  
+  const FriendsPage({super.key});
+
   @override
   State<FriendsPage> createState() => _FriendsPageState();
 
@@ -19,38 +20,50 @@ class FriendsPage extends StatefulWidget {
   }
 }
 
-
-
-
 // STATE
 class _FriendsPageState extends State<FriendsPage> {
+  User? u = FirebaseAuth.instance.currentUser;
+
+  // Method to print user information
+  void printUserInfo() {
+    if (u != null) {
+      print('User ID: ${u!.uid}');
+      print('User Email: ${u!.email}');
+      // Add more fields if needed
+    } else {
+      print('No user is currently logged in.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).colorScheme.primary,
-      child: RefreshIndicator(
-        color: Theme.of(context).colorScheme.onTertiaryContainer,
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-        onRefresh: () async {
-          await Future.delayed(const Duration(milliseconds: 1500));
-          setState(() {
-            FriendsPage.scrollToTop();
-          });
-        },
-        child: ListView(
-          controller: FriendsPage._scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            Container(
-              height: 100,
-              width: 100,
-              color: Colors.red, 
-            ),
-          ]
-        )
-      )
-    );
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        color: Theme.of(context).colorScheme.primary,
+        child: RefreshIndicator(
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+            onRefresh: () async {
+              await Future.delayed(const Duration(milliseconds: 1500));
+              setState(() {
+                FriendsPage.scrollToTop();
+              });
+            },
+            child: ListView(
+                controller: FriendsPage._scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.red,
+                  ),
+                  // Add the button here
+                  ElevatedButton(
+                    onPressed: printUserInfo, // Call the method when pressed
+                    child: Text('Print User Info'),
+                  ),
+                ])));
   }
 }

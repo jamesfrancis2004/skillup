@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class CurrentUser {
   final String id;
   String name;
   String email;
   List<dynamic> friends;
 
   // Constructor
-  User({
+  CurrentUser({
     required this.id,
     this.name = '',
     this.email = '',
