@@ -37,6 +37,7 @@ class _FriendsPageState extends State<FriendsPage> {
   Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
     setState(() {});
+    
   }
 
   @override

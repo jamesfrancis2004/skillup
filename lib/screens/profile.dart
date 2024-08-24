@@ -22,10 +22,18 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    user = CurrentUser(id: FirebaseAuth.instance.currentUser!.uid);
-    user.fetchUserData();
+    _loadUserData();
   }
 
+  Future<void> _loadUserData() async {
+    user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {});
+    if (user.name != null) {
+      setState(() {
+        _usernameController.text = user.name!;
+      });
+    }
+  }
   // final TextEditingController _usernameController = TextEditingController(text: user.name);
 
   @override
