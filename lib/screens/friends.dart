@@ -2,6 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:skillup/config.dart';
+
+const double _selectorRowInsetHorizontal = 20;
+const double _verticalSpacing = 30;
+
+const double _challengesVerticalSpacing = 10;
+const double _challengesHeight = 60;
+const double _challengeBorderRadius = 4.0;
+const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
+
+const double _subheadingGradientHeight = 3;
+const double _subheadingGradientWidth = 60;
+
+const double filterHorizontalInset = 0;
+
 const outgoingRequests = ["Bob", "CHOIC", "Daniel"];
 const incomingRequests = ["Daniel", "James", "Josh"];
 
@@ -73,10 +90,59 @@ class _FriendsPageState extends State<FriendsPage> {
                 child: Column(
                   children: [
                     SizedBox(height: 20),
-                    Text(
-                      "Send Friend Request",
-                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    
+
+
+                  // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: _selectorRowInsetHorizontal, 
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Add Friends",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
+
+                          // The gradient subheading 
+                          Container(
+                            height: _subheadingGradientHeight,
+                            width: _subheadingGradientWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: highlightGradient
+                            )
+                          ),
+
+                        ]
+                      )
                     ),
+
+
+
+
                     SizedBox(height: 20),
                     Row(
                       children: [
@@ -129,10 +195,58 @@ class _FriendsPageState extends State<FriendsPage> {
                           )
                         : SizedBox(height: 1),
                     SizedBox(height: 20),
-                    const Text(
-                      "Pending Requests",
-                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    
+                    
+                    // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: _selectorRowInsetHorizontal, 
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Pending Request",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
+
+                          // The gradient subheading 
+                          Container(
+                            height: _subheadingGradientHeight,
+                            width: _subheadingGradientWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: highlightGradient
+                            )
+                          ),
+
+                        ]
+                      )
                     ),
+
+
+
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: incomingRequests.map((request) {
@@ -162,10 +276,57 @@ class _FriendsPageState extends State<FriendsPage> {
                       }).toList(),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Sent Requests",
-                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+
+
+
+                    // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: _selectorRowInsetHorizontal, 
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Sent Requests",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
+
+                          // The gradient subheading 
+                          Container(
+                            height: _subheadingGradientHeight,
+                            width: _subheadingGradientWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: highlightGradient
+                            )
+                          ),
+
+                        ]
+                      )
                     ),
+
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: outgoingRequests.map((request) {
@@ -184,10 +345,59 @@ class _FriendsPageState extends State<FriendsPage> {
                       }).toList(),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Current Friends",
-                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
+
+
+
+                    // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: _selectorRowInsetHorizontal, 
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Current Friends",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
+
+                          // The gradient subheading 
+                          Container(
+                            height: _subheadingGradientHeight,
+                            width: _subheadingGradientWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: highlightGradient
+                            )
+                          ),
+
+                        ]
+                      )
                     ),
+
+
+
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: outgoingRequests.map((request) {
