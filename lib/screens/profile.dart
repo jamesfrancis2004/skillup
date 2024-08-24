@@ -30,15 +30,15 @@ class _MedalTallyState extends State<MedalTally> {
     super.initState();
     switch (widget.medalType) {
       case 'gold':
-        _medalIcon = Icons.emoji_events;
+        _medalIcon = Icons.workspace_premium;
         _medalColor = Colors.amber;
         break;
       case 'silver':
-        _medalIcon = Icons.emoji_events;
+        _medalIcon = Icons.workspace_premium;
         _medalColor = Colors.grey;
         break;
       case 'bronze':
-        _medalIcon = Icons.emoji_events;
+        _medalIcon = Icons.workspace_premium;
         _medalColor = Colors.brown;
         break;
       default:
