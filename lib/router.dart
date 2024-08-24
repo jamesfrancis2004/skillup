@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:skillup/overlays/root.dart';
 import 'package:skillup/screens/home.dart';
-import 'package:skillup/screens/explore.dart';
+import 'package:skillup/screens/friends.dart';
 import 'package:skillup/screens/contribute.dart';
 import 'package:skillup/screens/community.dart';
 import 'package:skillup/screens/profile.dart';
@@ -96,7 +96,7 @@ GoRouter buildRouter() {
               GoRoute(
                 path: NavigationRoutes.explore, 
                 pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const SearchPage()
+                  child: const FriendsPage()
                 )
               ),
             ]
