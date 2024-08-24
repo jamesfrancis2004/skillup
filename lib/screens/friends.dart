@@ -68,15 +68,6 @@ class _FriendsPageState extends State<FriendsPage> {
     });
   }
 
-  // Function to update whether showing error
-  void getStatusOfRequest(String name) async {
-    // Simulate API call
-    user.sendFriendRequest(name); // Simulating network delay
-    setState(() {
-      showRequestError = true; // Update state to show the error
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
