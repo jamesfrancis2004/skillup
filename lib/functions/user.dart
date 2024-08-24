@@ -8,6 +8,9 @@ class CurrentUser {
   List<dynamic> inboundRequests;
   List<dynamic> outboundRequests;
   List<dynamic> challengesCompleted;
+  int bronze;
+  int silver;
+  int gold;
 
   // Constructor
   CurrentUser._({
@@ -18,6 +21,9 @@ class CurrentUser {
     this.inboundRequests = const [],
     this.outboundRequests = const [],
     this.challengesCompleted = const [false, false, false],
+    this.bronze = 0,
+    this.silver = 0,
+    this.gold = 0,
   });
 
   static Future<CurrentUser> create(String id) async {
@@ -34,6 +40,9 @@ class CurrentUser {
         inboundRequests: data['inboundRequests'],
         outboundRequests: data['outboundRequests'],
         challengesCompleted: data['challengesCompleted'],
+        bronze: data["bronze"],
+        silver: data["silver"],
+        gold: data["gold"],
       );
     } else {
       throw Exception('User not found!');
@@ -130,6 +139,7 @@ class CurrentUser {
   }
 
   Future<bool> deleteFriend(String friendId) async {
+
     final friendDocRef =
         FirebaseFirestore.instance.collection('users').doc(friendId);
     final friendDoc = await friendDocRef.get();

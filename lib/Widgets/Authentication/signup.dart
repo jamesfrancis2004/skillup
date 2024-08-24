@@ -258,6 +258,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                           false,
                                           false,
                                         ],
+                                        'bronze': 0,
+                                        'silver': 0,
+                                        'gold': 0,
                                       });
                                       return context.go(NavigationRoutes.home);
                                     } on FirebaseAuthException catch (e) {
