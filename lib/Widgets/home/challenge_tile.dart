@@ -12,15 +12,8 @@ import 'package:skillup/config.dart';
 
 // CONFIG ... 
 
-const double _textHorizontalInset = 10.0;
-const double _testVerticalInset = 5.0;
-const double _mainSkillTileHeight = 150.0;
 const double _borderRadius = 4.0;
-const double _gradientBorderWidth = 1.0;
-
-const double _challengesVerticalSpacing = 10;
-const double _challengesHeight = 60;
-const double _challengeBorderRadius = 4.0;
+const double _height = 60;
 const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
 
 
@@ -52,11 +45,6 @@ class ChallengeTile extends StatefulWidget {
 
 class _ChallengeTileState extends State<ChallengeTile> {
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,18 +52,13 @@ class _ChallengeTileState extends State<ChallengeTile> {
         left: horizontalInset, 
         right: horizontalInset,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        child: SizedBox(
-          height: _challengesHeight,
-          child: Container(
-            decoration: BoxDecoration(
-              color: _challengeBackgroundColour,
-              borderRadius: BorderRadius.circular(_challengeBorderRadius),
-            ),
-          ),
+      child: Container(
+        height: _height,
+        decoration: BoxDecoration(
+          color: _challengeBackgroundColour,
+          borderRadius: BorderRadius.circular(_borderRadius),
         ),
-      )
+      ),
     );
   }
 }
