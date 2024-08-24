@@ -290,21 +290,13 @@ class _ExplorePageState extends State<ExplorePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Community",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.black.withOpacity(0.4),
                 ),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.60,
+                  height: MediaQuery.of(context).size.height * 0.73,
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('messages')
