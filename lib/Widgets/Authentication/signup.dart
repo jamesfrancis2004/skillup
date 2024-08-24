@@ -246,6 +246,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                         'friends': [],
                                         'inboundRequests': [],
                                         'outboundRequests': [],
+                                        'challengesCompleted': [
+                                          false,
+                                          false,
+                                          false,
+                                        ],
                                       });
                                       return context.go(NavigationRoutes.home);
                                     } on FirebaseAuthException catch (e) {
