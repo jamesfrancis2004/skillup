@@ -167,11 +167,14 @@ class ExplorePage extends StatefulWidget {
 }
 
 
+
+
 class _ExplorePageState extends State<ExplorePage> {
   final ImagePicker _picker = ImagePicker();
   XFile? _selectedMedia;
   bool _isImage = true;
   TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -256,6 +259,7 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -290,6 +294,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       }
                       var messages = snapshot.data!.docs;
                       return ListView.builder(
+                        controller: _scrollController,
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           var message = messages[index];
@@ -419,6 +424,8 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 
+
+
 class VideoPlayerWidget extends StatefulWidget {
   final String videoPath; // This is the URL of the video
 
@@ -491,45 +498,5 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
   }
 }
-/*
-class VideoPlayerWidget extends StatefulWidget {
-  final String videoPath; // This is the URL of the video
-
-  const VideoPlayerWidget({Key? key, required this.videoPath}) : super(key: key);
-
-  @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
-}
-
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.network(widget.videoPath)
-      ..initialize().then((_) {
-        setState(() {});
-      });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
-    )
-        : Center(child: CircularProgressIndicator());
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-}
-
- */
 
 
