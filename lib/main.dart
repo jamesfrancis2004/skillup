@@ -77,26 +77,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.friends)});
+      // User.getUser('1dS0BtUZf0E1N4LmIznn').then((user) => {print(user?.friends)});
     });
   }
 
-  Future<User?> getUser(String userId) async {
-    final doc =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    if (doc.exists) {
-      return User.fromFirestore(doc.data()!, doc.id);
-    } else {
-      return null; // Handle the case where the document doesn't exist
-    }
-  }
+  // Future<User?> getUser(String userId) async {
+  //   final doc =
+  //       await FirebaseFirestore.instance.collection('users').doc(userId).get();
+  //   if (doc.exists) {
+  //     return User.fromFirestore(doc.data()!, doc.id);
+  //   } else {
+  //     return null; // Handle the case where the document doesn't exist
+  //   }
+  // }
 
-  Future<void> saveUser(User user) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.id)
-        .set(user.toFirestore());
-  }
+  // Future<void> saveUser(User user) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(user.id)
+  //       .set(user.toFirestore());
+  // }
 
   @override
   Widget build(BuildContext context) {
