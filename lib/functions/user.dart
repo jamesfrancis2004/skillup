@@ -68,18 +68,19 @@ class CurrentUser {
   }
 
   Future<void> addFriends(String newFriendId) async {
-    final doc =
-        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    final docRef =
+        FirebaseFirestore.instance.collection('users').doc(id);
 
+    final doc = await docRef.get();
     if (doc.exists) {
-      List<String> friendIds = List<String>.from(userDoc['friendIds'] ?? []);
+      List<String> friendIds = List<String>.from(doc['friendIds'] ?? []);
 
       if (!friendIds.contains(newFriendId)) {
         // Add the new friend's ID to the list
         friendIds.add(newFriendId);
 
         // Update the user's document with the new friend list
-        await userDocRef.update({
+        await docRef.update({
           'friendIds': friendIds,
         });
 
@@ -89,6 +90,46 @@ class CurrentUser {
       }
     } else {
       print('User document does not exist.');
+    }
+  }
+
+  Future<void> deleteUserFromFirestore() async {
+    try {
+      // Reference to the user's document in Firestore
+      final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(id);
+
+      // Delete the user's document
+      await userDocRef.delete();
+
+      print('User document with ID $id deleted successfully from Firestore.');
+    } catch (e) {
+      print('Failed to delete user document: $e');
+    }
+  }
+
+  // Method to remove the user from all friends lists
+// Method to remove the user from all friends lists
+  Future<void> removeUserFromAllFriendsLists() async {
+    try {
+      final CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+
+      // Query all user documents where 'friends' contains this user's UID
+      QuerySnapshot querySnapshot = await usersRef.where('friends', arrayContains: id).get();
+
+      // Iterate over all documents that contain this user's UID in their 'friends' list
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        List<String> friends = List<String>.from(doc['friends']);
+        friends.remove(id);
+
+        // Update the document with the new friends list
+        await doc.reference.update({
+          'friends': friends,
+        });
+      }
+
+      print('User with ID $id removed from all friends lists successfully!');
+    } catch (e) {
+      print('Failed to remove user from friends lists: $e');
     }
   }
 }

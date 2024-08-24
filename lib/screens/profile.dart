@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:skillup/functions/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Pull the user from the database
 // (Assume this part of the code will be implemented later)
@@ -16,7 +17,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _usernameController = TextEditingController(text: 'JamesHocking542');
-  
+  late CurrentUser user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +138,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           'Delete Account',
                           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
                         ),
-                          onPressed: () {},
+                          onPressed: () {
+                            user.deleteUserFromFirestore();
+                            user.removeUserFromAllFriendsLists();
+                          },
                         ),
                       ],
                     ),
