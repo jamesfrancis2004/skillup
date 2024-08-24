@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       const Padding(
-                        padding: const EdgeInsets.only(right: filterHorizontalInset),
+                        padding: EdgeInsets.only(right: filterHorizontalInset),
                         child: SizedBox(
                           width: 0,
                           height: 0
