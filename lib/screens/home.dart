@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:skillup/widgets/home/main_skill_tile.dart';
 import 'package:skillup/widgets/home/challenge_tile.dart';
+import 'package:skillup/functions/skills.dart';
+import 'package:skillup/functions/user.dart';
 import 'package:skillup/config.dart';
 
 
@@ -50,6 +53,30 @@ class HomePage extends StatefulWidget {
 
 // STATE
 class _HomePageState extends State<HomePage> {
+  late CurrentSkill skill;
+  late CurrentUser user;
+  bool _isUserDataLoaded = false;
+  bool _isSkillDataLoaded = false;
+
+  @override
+    void initState() {
+      super.initState();
+      _loadSkillData();
+    }
+
+  Future<void> _loadSkillData() async {
+    skill = await CurrentSkill.create();
+    setState(() {
+      _isSkillDataLoaded = true;
+    });
+  }
+
+  Future<void> _loadUserData() async {
+    user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {
+      _isUserDataLoaded = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,11 +228,11 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Challenges
-            const Column(
+            Column(
               children: [
 
                 // Challenge 1
-                const ChallengeTile(tier: 'bronze', description: 'Bake pretzels', finished: false),
+                ChallengeTile(tier: 'bronze', description: skill.challenge3, finished: false),
 
                 // Padding
                 const SizedBox(
@@ -213,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 2
-                const ChallengeTile(tier: 'silver', description: 'Bake sour dough', finished: false),
+                ChallengeTile(tier: 'silver', description: skill.challenge2, finished: false),
 
                 // Padding
                 const SizedBox(
@@ -221,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 3
-                const ChallengeTile(tier: 'gold', description: 'Bake banana bread', finished: false),
+                ChallengeTile(tier: 'gold', description: skill.challenge1, finished: false),
               ],
             ),
 
