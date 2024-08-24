@@ -39,7 +39,7 @@ class _ContributePageState extends State<ContributePage> {
   @override
   void initState() {
     super.initState();
-    _loadCameras();
+    // _loadCameras();
     _loadSkill();
   }
   Future<void> _loadSkill() async {
@@ -264,7 +264,7 @@ Widget build(BuildContext context) {
             hint: Text('Select Challenge'),
           ),
         ),
-        Expanded(
+        Platform.isIOS ? SizedBox(width:0,height:0) : Expanded(
           child: FutureBuilder<void>(
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
