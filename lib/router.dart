@@ -108,7 +108,7 @@ GoRouter buildRouter() {
               GoRoute(
                 path: NavigationRoutes.contribute, 
                 pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const CategoriesPage()
+                  child: const ContributePage()
                 )
               ),
             ]
