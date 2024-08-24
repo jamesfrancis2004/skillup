@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,6 +9,8 @@ import 'package:skillup/widgets/home/challenge_tile.dart';
 import 'package:skillup/functions/skills.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:skillup/config.dart';
+
+import '../router.dart';
 
 
 /* 
@@ -269,6 +272,19 @@ class _HomePageState extends State<HomePage> {
                 // Challenge 1
                 ChallengeTile(tier: 'bronze', description: skill.challenge3,
                     finished: this.completions[2]),
+                TextButton(
+                  child: Text(
+                      "View Friends Attempts",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.white,
+
+                      )
+                  ),
+                  onPressed: () {
+                    return context.go(NavigationRoutes.friend_attempts_gold);
+                  },
+                ),
 
                 // Padding
                 const SizedBox(
@@ -278,6 +294,19 @@ class _HomePageState extends State<HomePage> {
                 // Challenge 2
                 ChallengeTile(tier: 'silver', description: skill.challenge2,
                     finished: this.completions[1]),
+                TextButton(
+                  child: Text(
+                      "View Friends Attempts",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.white,
+
+                      )
+                  ),
+                  onPressed: () {
+                    return context.go(NavigationRoutes.friend_attempts_silver);
+                  },
+                ),
 
                 // Padding
                 const SizedBox(
@@ -287,6 +316,19 @@ class _HomePageState extends State<HomePage> {
                 // Challenge 3
                 ChallengeTile(tier: 'gold', description: skill.challenge1,
                     finished: this.completions[0]),
+                TextButton(
+                  child: Text(
+                      "View Friends Attempts",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white,
+
+                    )
+                  ),
+                  onPressed: () {
+                    return context.go(NavigationRoutes.friend_attempts_bronze);
+                  },
+                )
               ],
             ),
 

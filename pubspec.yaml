@@ -61,6 +61,8 @@ dev_dependencies:
 
   firebase_storage:
   image:
+  rxdart:
+
 
   camera: ^0.10.0  # Check for the latest version on pub.dev
   path_provider: ^2.0.0

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import 'package:skillup/overlays/root.dart';
+import 'package:skillup/screens/friend_attempts.dart';
 import 'package:skillup/screens/home.dart';
 import 'package:skillup/screens/friends.dart';
 import 'package:skillup/screens/contribute.dart';
@@ -25,7 +26,9 @@ class NavigationRoutes {
   static const String login = '/login';
   static const String signUp = '/sign-up';
   static const String forgotPassword = '/forgot-password';
-
+  static const String friend_attempts_gold = '/friends_attempt_gold';
+  static const String friend_attempts_silver = '/friends_attempt_silver';
+  static const String friend_attempts_bronze = '/friends_attempt_bronze';
   // BOTTOM NAV BAR STUFF ...
 
   // The length of the bottom nav bar routes - It's stupid but can't get it at compile time
@@ -123,7 +126,20 @@ GoRouter buildRouter(String startLocation) {
           builder: (context, state) => const SignUpPage()),
       GoRoute(
           path: NavigationRoutes.forgotPassword,
-          builder: (context, state) => const ForgotPassword())
+          builder: (context, state) => const ForgotPassword()),
+      GoRoute(
+        path: NavigationRoutes.friend_attempts_gold,
+        builder: (context, state) => const AttemptPage(challenge: 'challenge1'),
+      ),
+      GoRoute(
+        path: NavigationRoutes.friend_attempts_silver,
+        builder: (context, state) => const AttemptPage(challenge: 'challenge2'),
+      ),
+      GoRoute(
+        path: NavigationRoutes.friend_attempts_bronze,
+        builder: (context, state) => const AttemptPage(challenge: 'challenge3'),
+      ),
+
     ],
   );
 }
