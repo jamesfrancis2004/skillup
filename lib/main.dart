@@ -81,15 +81,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // Future<User?> getUser(String userId) async {
-  //   final doc =
-  //       await FirebaseFirestore.instance.collection('users').doc(userId).get();
-  //   if (doc.exists) {
-  //     return User.fromFirestore(doc.data()!, doc.id);
-  //   } else {
-  //     return null; // Handle the case where the document doesn't exist
-  //   }
-  // }
+  Future<void> addFriends(String newFriendId) async {
+    String currentUser = "UKMSDBXQcVrlArQ1utbi";
+    final DocumentReference userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(currentUser);
+
+    DocumentSnapshot userDoc = await userDocRef.get();
+
+    List<dynamic> friendIds = List<dynamic>.from(userDoc['friends'] ?? []);
+    if (!friendIds.contains(newFriendId)) {
+      // Add the new friend's ID to the list
+      friendIds.add(newFriendId);
+
+      // Update the user's document with the new friend list
+      await userDocRef.update({
+        'friends': friendIds,
+      });
+
+      print('Friend added successfully!');
+    } else {
+      print('This user is already your friend.');
+    }
+  }
 
   // Future<void> saveUser(User user) async {
   //   await FirebaseFirestore.instance

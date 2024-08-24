@@ -15,16 +15,6 @@ class User {
   });
 
   // Factory constructor to create a User object from a Firestore document
-  // factory User.fromFirestore(Map<String, dynamic> data, String id) {
-  //   return User(
-  //     id: id,
-  //     name:
-  //         data['name'] ?? '', // Default to an empty string if the name is null
-  //     email: data['email'] ??
-  //         '', // Default to an empty string if the email is null
-  //     friends: data['friends'] ?? [],
-  //   );
-  // }
 
   Future<void> fetchUserData() async {
     final doc =
@@ -47,23 +37,45 @@ class User {
   //   };
   // }
 
-  // Future<User?> getUser(String userId) async {
-  //   final doc =
-  //       await FirebaseFirestore.instance.collection('users').doc(userId).get();
-  //   if (doc.exists) {
-  //     return User.fromFirestore(doc.data()!, doc.id);
-  //   } else {
-  //     return null; // Handle the case where the document doesn't exist
-  //   }
-  // }
+  Future<void> fetchUserData() async {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    if (doc.exists) {
+      final data = doc.data()!;
+      name = data['name'];
+      email = data['email'];
+      friends = data['friends'];
+    } else {
+      return null; // Handle the case where the document doesn't exist
+    }
+  }
 
-  // Future<List<User?>> getUserFriends(String userId) async {
-  //   final userData =
-  //       await FirebaseFirestore.instance.collection('users').doc(userId).get();
-  //   if (userData.exists) {
-  //     print(userData.data());
-  //     return [];
-  //   } else {}
-  //   return [];
-  // }
+  Future<void> addFriends(String newFriendId) async {
+    String currentUser = "9iCkGILei2p4sG17tZ7o";
+
+    final DocumentReference userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(currentUser);
+
+    DocumentSnapshot userDoc = await userDocRef.get();
+
+    if (userDoc.exists) {
+      List<String> friendIds = List<String>.from(userDoc['friendIds'] ?? []);
+
+      if (!friendIds.contains(newFriendId)) {
+        // Add the new friend's ID to the list
+        friendIds.add(newFriendId);
+
+        // Update the user's document with the new friend list
+        await userDocRef.update({
+          'friendIds': friendIds,
+        });
+
+        print('Friend added successfully!');
+      } else {
+        print('This user is already your friend.');
+      }
+    } else {
+      print('User document does not exist.');
+    }
+  }
 }
