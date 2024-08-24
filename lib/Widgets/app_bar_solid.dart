@@ -50,7 +50,7 @@ class _AppBarState extends State<AppBarSolid>  {
         toolbarHeight: _expandedheight,
         backgroundColor: Theme.of(context).colorScheme.background,
         automaticallyImplyLeading: false,
-        leadingWidth: 100,
+        leadingWidth: 150,
 
         // The name on the left of the AppBar
         leading: Padding(
@@ -58,7 +58,7 @@ class _AppBarState extends State<AppBarSolid>  {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              'Sidewalk',
+              'SkillUp',
               softWrap: false,
               style: Theme.of(context).textTheme.displayMedium
             )
