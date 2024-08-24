@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,9 +42,20 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: _isUserDataLoaded
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors:  [
+              Color(0xff00274d), // Dark Blue
+              Color(0xff001f3f), // Even Darker Blue
+              Color(0xff000a1b)  // Nearly Black
+            ],
+
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+          )
+      ),
+      child: _isUserDataLoaded
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -57,14 +69,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
+                          color: Colors.black.withOpacity(0.4),
+                          /*gradient: const LinearGradient(
                             colors: [
                               Color.fromARGB(255, 174, 219, 255),
                               Colors.white
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                          ),
+                          ),*/
                         ),
                         height: 370,
                         width: 0.9 * screenWidth,
@@ -78,22 +91,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Icon(
                                     Icons.person,
                                     size: 100,
-                                    color: Colors.black,
+                                    color: Colors.white,
                                   ),
                                   Column(
                                     children: [
                                       Text(
                                         user.name ?? '',
-                                        style: TextStyle(
-                                          color: Colors.black,
+                                        style: GoogleFonts.montserrat(
+                                          color: Colors.white,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
                                       Text(
                                         user.email ?? '',
-                                        style: TextStyle(
-                                          color: Colors.black,
+                                        style: GoogleFonts.montserrat(
+                                          color: Colors.white,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -110,24 +123,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: Container(
                                       width: 270,
                                       child: TextField(
-                                        style: const TextStyle(
-                                            color: Colors.black),
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13.0,
+                                        ),
                                         controller: _usernameController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Change your username',
-                                          labelStyle:
-                                              TextStyle(color: Colors.black),
+                                        decoration: InputDecoration(
+                                          labelText: "Edit your Username",
+                                          hintText: "Username",
+                                          filled: true,
+                                          fillColor: const Color(0xffffffff).withOpacity(0.2),
                                           border: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide.none,
                                           ),
                                         ),
                                       ),
@@ -136,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   IconButton(
                                     icon: Icon(
                                       Icons.check,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       size: 30.0,
                                     ),
                                     onPressed: () async {
@@ -156,18 +164,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 50),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 70,
+                              ),
                               ElevatedButton(
                                 style: TextButton.styleFrom(
                                   backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
+                                  Theme.of(context).colorScheme.primary,
                                 ),
                                 onPressed: () {
-
                                   FirebaseAuth.instance.signOut();
-                                  context.go(NavigationRoutes.login);
-
-                                  // Log out functionality
+                                  context.go(NavigationRoutes.login);// Log out functionality
                                 },
                                 child: const Text(
                                   'Log Out',
@@ -195,6 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
+
                             ],
                           ),
                         ),
