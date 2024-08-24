@@ -47,18 +47,45 @@ class _ChallengeTileState extends State<ChallengeTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: horizontalInset, 
-        right: horizontalInset,
-      ),
-      child: Container(
-        height: _height,
-        decoration: BoxDecoration(
-          color: _challengeBackgroundColour,
-          borderRadius: BorderRadius.circular(_borderRadius),
-        ),
-      ),
+    return SizedBox(
+      height: _height,
+      child: 
+      
+      // Container(
+      //   width: 100,
+      //   height: 100,
+      //   decoration: BoxDecoration(
+      //     color: _challengeBackgroundColour,
+      //     borderRadius: BorderRadius.circular(_borderRadius),
+      //   ),
+      // ),
+      
+      ListView( 
+        scrollDirection: Axis.horizontal,
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+
+          // Padding left
+          const SizedBox(
+            width: horizontalInset
+          ),
+
+          // Main challenge tile
+          Container(
+            height: _height,
+            width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+            decoration: BoxDecoration(
+              color: _challengeBackgroundColour,
+              borderRadius: BorderRadius.circular(_borderRadius),
+            ),
+          ),
+
+          // Padding right
+          const SizedBox(
+            width: horizontalInset
+          )
+        ]
+      )
     );
   }
 }
