@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 class CurrentSkill {
   String category;
@@ -20,7 +21,6 @@ class CurrentSkill {
 
   // Create function to find the skill by date
   static Future<CurrentSkill> create() async {
-    print("Is this getting called");
     // Query the Firestore collection to find a document where 'date' is equal to 1
     final querySnapshot = await FirebaseFirestore.instance
         .collection('skills') // Assuming your collection is named 'skills'
@@ -29,8 +29,6 @@ class CurrentSkill {
                 1) // Assuming 'date' is the field storing the integer value
         .limit(1) // Get only the first matching document
         .get();
-
-    print(querySnapshot);
 
     if (querySnapshot.docs.isNotEmpty) {
       final doc = querySnapshot.docs.first;
@@ -47,5 +45,23 @@ class CurrentSkill {
     } else {
       throw Exception('Skill not found with date set to 1!');
     }
+  }
+
+  static Future<void> updateSkill() async {
+    final skills = FirebaseFirestore.instance.collection('skills');
+
+    final zeroSnapshot = await skills.where('selected', isEqualTo: 0).get();
+    final zeroSelectedDocs = zeroSnapshot.docs;
+    final oneSnapshot = await skills.where('selected', isEqualTo: 1).get();
+    final oneSnapshotDocs = oneSnapshot.docs;
+
+    if (zeroSelectedDocs.isEmpty || oneSnapshotDocs.isEmpty) {
+      return;
+    }
+
+    final randomDoc =
+        zeroSelectedDocs[Random().nextInt(zeroSelectedDocs.length)];
+    await skills.doc(randomDoc.id).update({'selected': 1});
+    await skills.doc(oneSnapshotDocs[0].id).update({'selected': 0});
   }
 }
