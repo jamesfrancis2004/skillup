@@ -51,40 +51,7 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
   @override
   Widget build(BuildContext context) {
     return (() {
-      return widget.finished ? 
-      Stack(
-        children: [
-          Container(
-            height: _height,
-            width: MediaQuery.of(context).size.width - (2 * horizontalInset),
-            decoration: BoxDecoration(
-              color: _completedChallengeBackgroundColour,
-              borderRadius: BorderRadius.circular(_borderRadius),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: horizontalInset,
-                ),
-                Icon(
-                  Icons.workspace_premium,
-                  size: 32,
-                  color: Theme.of(context).colorScheme.onPrimary
-                )
-              ],
-            ),
-          ),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width - (3.5 * horizontalInset),
-              height: _completionStrikethroughHeight,
-              color: _completionStrikethroughColour
-            )
-          )
-        ],
-      )
-      : 
-      Container(
+      Widget simpleTile = Container(
         height: _height,
         width: MediaQuery.of(context).size.width - (2 * horizontalInset),
         decoration: BoxDecoration(
@@ -104,6 +71,31 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
           ],
         ),
       );
+      
+      if (widget.finished) {
+        simpleTile = Stack(
+          children: [
+            simpleTile,
+            Container(
+              height: _height,
+              width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(100, 0, 0, 0),
+                borderRadius: BorderRadius.circular(_borderRadius),
+              ),
+            ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width - (3.5 * horizontalInset),
+                height: _completionStrikethroughHeight,
+                color: _completionStrikethroughColour
+              )
+            )
+          ],
+        );
+      }
+
+      return simpleTile;
     })();
   }
 }
