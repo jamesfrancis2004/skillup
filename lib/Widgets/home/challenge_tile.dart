@@ -72,14 +72,19 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
             const SizedBox(
               width: horizontalInset * 0.8,
             ),
-            Text(
-              widget.description,
-              style: GoogleFonts.montserrat(
-                fontWeight: FontWeight.bold, 
-                color: Theme.of(context).colorScheme.onPrimary, 
-                fontSize: 15.0
-              )
-            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - (5.5 * horizontalInset),
+              child: Text(
+                widget.description,
+                // overflow: TextOverflow.fade,
+                // softWrap: true,
+                style: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.bold, 
+                  color: Theme.of(context).colorScheme.onPrimary, 
+                  fontSize: 15.0,
+                )
+              ),
+            )
           ],
         ),
       );
