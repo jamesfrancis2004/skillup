@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-const currentFriendRequests = []; // Example empty list
+const outgoingRequests = ["Bob", "CHOIC", "Daniel"];
+const incomingRequests = ["Daniel", "James", "Josh"];
 
 // WIDGET
 class FriendsPage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _FriendsPageState extends State<FriendsPage> {
     setState(() {});
   }
 
-  // function to update whether showing error
+  // Function to update whether showing error
   void getStatusOfRequest() async {
     // Simulate API call
     await Future.delayed(Duration(seconds: 1)); // Simulating network delay
@@ -129,9 +130,81 @@ class _FriendsPageState extends State<FriendsPage> {
                         : SizedBox(height: 1),
                     SizedBox(height: 20),
                     const Text(
+                      "Pending Requests",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: incomingRequests.map((request) {
+                        return ListTile(
+                          title: Text(
+                            request, // Display the username of the incoming request
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.check, color: Colors.green),
+                                onPressed: () {
+                                  // Accept friend request logic
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.close, color: Colors.red),
+                                onPressed: () {
+                                  // Decline friend request logic
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Sent Requests",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: outgoingRequests.map((request) {
+                        return ListTile(
+                          title: Text(
+                            request, // Display the username of the outgoing request
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.cancel, color: Colors.red),
+                            onPressed: () {
+                              // Cancel friend request logic
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
                       "Current Friends",
                       style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
-                    )
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: outgoingRequests.map((request) {
+                        return ListTile(
+                          title: Text(
+                            request, // Display the username of the outgoing request
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.cancel, color: Colors.red),
+                            onPressed: () {
+                              // Cancel friend request logic
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),// Display current friends similarly
                   ],
                 ),
               ),

@@ -11,7 +11,7 @@ import 'package:skillup/config.dart';
 
 const double _textHorizontalInset = 10.0;
 const double _testVerticalInset = 5.0;
-const double _height = 150.0;
+const double _mainSkillTileHeight = 150.0;
 const double _borderRadius = 4.0;
 const double _gradientBorderWidth = 1.0;
 
@@ -49,7 +49,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100,
-      height: _height,  
+      height: _mainSkillTileHeight,  
       child: ClipRRect(
         borderRadius: BorderRadius.circular(_borderRadius),
         child: Stack(
@@ -94,7 +94,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
             
             // Text shading underlay
             Padding(
-              padding: const EdgeInsets.only(top: _height - 60),
+              padding: const EdgeInsets.only(top: _mainSkillTileHeight - 60),
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -122,7 +122,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child : Text(
-                      "Current Goal",
+                      "Baking",
                       softWrap: false,
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w800, 
@@ -166,7 +166,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child : Text(
-                  'See more',
+                  'Learn more',
                   softWrap: false,
                   style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w600, 
@@ -183,10 +183,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
               child: InkWell(
                 onTap: () => {print('pressed main skill tile')}
               ),
-            ),
-
-
-
+            )
           ]
         )
       )
