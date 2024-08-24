@@ -311,8 +311,16 @@ class _FriendsPageState extends State<FriendsPage> {
                                     IconButton(
                                       icon: Icon(Icons.check, color: Colors.green),
                                       onPressed: () async {
-                                        print("CHECKMARK BUTTON PRESSED");
-                                        // Implement accept friend request logic
+                                        bool success = await user.acceptFriendRequest(request);
+                                        if (success) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Friend request rejected')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Failed to reject friend request')),
+                                          );
+                                        }
                                       },
                                     ),
                                     IconButton(
@@ -320,10 +328,6 @@ class _FriendsPageState extends State<FriendsPage> {
                                       onPressed: () async {
                                         bool success = await user.rejectFriendRequest(request);
                                         if (success) {
-                                          setState(() {
-                                            // Optionally update the UI to reflect the rejection
-                                            user.inboundRequests.remove(request);
-                                          });
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Friend request rejected')),
                                           );
@@ -434,15 +438,22 @@ class _FriendsPageState extends State<FriendsPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.check, color: Colors.green),
-                                      onPressed: () {
-                                        // Accept friend request logic
-                                      },
-                                    ),
-                                    IconButton(
                                       icon: Icon(Icons.close, color: Colors.red),
-                                      onPressed: () {
-                                        // Decline friend request logic
+                                      onPressed: () async {
+                                        bool success = await user.cancelFriendRequest(request);
+                                        if (success) {
+                                          setState(() {
+                                            // Optionally update the UI to reflect the rejection
+                                            user.inboundRequests.remove(request);
+                                          });
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Friend request rejected')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Failed to reject friend request')),
+                                          );
+                                        }
                                       },
                                     ),
                                   ],
