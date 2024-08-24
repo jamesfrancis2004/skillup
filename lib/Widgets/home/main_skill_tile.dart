@@ -27,8 +27,13 @@ const String imageUrl = "https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_1636631
 // MAIN SKILL TILE ...
 
 class MainSkillTile extends StatefulWidget {
+  final String category;
+  final String description;
+
   const MainSkillTile({
     super.key, 
+    required this.category,
+    required this.description,
   });
   
   @override
@@ -122,7 +127,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child : Text(
-                      "Baking",
+                      widget.category,
                       softWrap: false,
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w800, 
@@ -143,7 +148,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child : Text(
-                      'Learn to bake bread',
+                      widget.description,
                       softWrap: false,
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w600, 
