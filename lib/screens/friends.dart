@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+const currentFriendRequests = []; // Example empty list
+
 // WIDGET 
 class FriendsPage extends StatefulWidget {
-  const FriendsPage({super.key});
-
+  const FriendsPage({super.key});  
+  
   @override
   State<FriendsPage> createState() => _FriendsPageState();
 
@@ -22,6 +24,7 @@ class FriendsPage extends StatefulWidget {
 
 // STATE 
 class _FriendsPageState extends State<FriendsPage> {
+
   final TextEditingController _friendSearchController = TextEditingController(text: '');
   late CurrentUser user;
 
@@ -69,7 +72,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     SizedBox(height: 20),
                     Text(
                       "Send Friend Request",
-                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 18, fontWeight: FontWeight.w900),
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -111,11 +114,35 @@ class _FriendsPageState extends State<FriendsPage> {
                       ],
                     ),
                     SizedBox(height:20),
-                    const Text(
+                    Text(
+                      "Current Friend Requests",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 18, fontWeight: FontWeight.w900),
+                    ),
+                    SizedBox(height: 10),
+                    // Conditional rendering based on friend requests
+                    currentFriendRequests.isNotEmpty
+                        ? Column(
+                            children: currentFriendRequests.map((request) {
+                              return ListTile(
+                                title: Text(
+                                  request,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                tileColor: Colors.blueAccent,
+                                contentPadding: EdgeInsets.all(8.0),
+                              );
+                            }).toList(),
+                          )
+                        : Text(
+                            "No new friend requests",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                    SizedBox(height: 20),
+                    Text(
                       "Current Friends",
                       style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
-                    )
-                    
+                    ),
+                    // You can add content here for current friends if needed
                   ],
                 ),
               ),

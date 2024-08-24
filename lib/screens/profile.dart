@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:skillup/functions/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Pull the user from the database
 // (Assume this part of the code will be implemented later)
@@ -15,8 +16,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final TextEditingController _usernameController = TextEditingController(text: 'JamesHocking542');
-  
+  late CurrentUser user;
+  final TextEditingController _usernameController = TextEditingController(text: "");
+
+  @override
+  void initState() {
+    super.initState();
+    user = CurrentUser(id: FirebaseAuth.instance.currentUser!.uid);
+    user.fetchUserData();
+  }
+
+  // final TextEditingController _usernameController = TextEditingController(text: user.name);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.only(top: 20.0), // Margin at the top
                     child: Column(
                       children: [
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                           Icon(
@@ -57,16 +68,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           Column(children: [
                             Text(
-                              'JamesHocking542',
+                              user.name ?? 'No name available',
                               style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              'jameshocking542@gmail.com',
+                              "${user.email}",
                               style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700),
                             ),
                           ]),
                         ]),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -74,9 +85,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Container(
                             width: 270, // Set the width of the container
                             child: TextField(
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               controller: _usernameController, // Default username
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Change your username',
                                 labelStyle: TextStyle(color: Colors.black),
                                 border: OutlineInputBorder(
