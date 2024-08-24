@@ -493,9 +493,9 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Bottom spacing
-            // SizedBox(
-            //   height: MediaQuery.of(context).size.height / 4,
-            // ),
+            const SizedBox(
+              height: horizontalInset * 1.5,
+            ),
 
           ]
         )
