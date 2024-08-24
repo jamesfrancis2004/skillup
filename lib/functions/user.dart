@@ -7,35 +7,29 @@ class CurrentUser {
   List<dynamic> friends;
 
   // Constructor
-  CurrentUser({
+  CurrentUser._({
     required this.id,
     this.name = '',
     this.email = '',
     this.friends = const [],
   });
 
-  // Factory constructor to create a User object from a Firestore document
-
-  Future<void> fetchUserData() async {
+  static Future<CurrentUser> create(String id) async {
     final doc =
         await FirebaseFirestore.instance.collection('users').doc(id).get();
+
     if (doc.exists) {
       final data = doc.data()!;
-      name = data['name'];
-      email = data['email'];
-      friends = data['friends'];
+      return CurrentUser._(
+        id: id,
+        name: data['name'],
+        email: data['email'],
+        friends: data['friends'],
+      );
     } else {
       throw Exception('User not found!');
     }
   }
-
-  // Method to convert a User object to a Firestore document
-  // Map<String, dynamic> toFirestore() {
-  //   return {
-  //     'name': name,
-  //     'email': email,
-  //   };
-  // }
 
   Future<void> addFriends(String newFriendId) async {
     String currentUser = "9iCkGILei2p4sG17tZ7o";
