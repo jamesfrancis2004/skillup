@@ -42,7 +42,7 @@ class _AppBarState extends State<AppBarSolid>  {
 
     // Using PreferredSize to control height of appbar
     return PreferredSize(
-      preferredSize: Size.fromHeight(kToolbarHeight),
+      preferredSize: const Size.fromHeight(kToolbarHeight),
       child: AppBar(
         shadowColor: null,
         surfaceTintColor: null,
@@ -54,7 +54,7 @@ class _AppBarState extends State<AppBarSolid>  {
 
         // The name on the left of the AppBar
         leading: Padding(
-          padding: EdgeInsets.only(left: _edgePadding, bottom: _bottomPadding),
+          padding: const EdgeInsets.only(left: _edgePadding, bottom: _bottomPadding),
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
@@ -68,7 +68,7 @@ class _AppBarState extends State<AppBarSolid>  {
         // The icon on the right of the app bar
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: _edgePadding, bottom: _bottomPadding),
+            padding: const EdgeInsets.only(right: _edgePadding, bottom: _bottomPadding),
             child: GestureDetector(
               onTap: () => {print('pressed appbar action')},
               child: Icon(

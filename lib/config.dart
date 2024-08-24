@@ -33,48 +33,6 @@ const double _displayLargeFontSize = 32.0;
 const double _displayMediumFonstSize = 24.0;
 const double _titleSmallFontSize = 8.0;
 
-// Light
-final TextTheme _textThemeLight = TextTheme(
-
-  // Used for AppBar title
-  displayMedium: GoogleFonts.montserrat(
-    textStyle: const TextStyle(
-      color: Color.fromARGB(255, 27, 37, 56),
-      fontSize: _displayMediumFonstSize,
-      fontWeight: FontWeight.w800,
-      fontStyle: FontStyle.normal
-    )
-  ),
-  
-  displaySmall: null,
-
-  headlineLarge: null,
-  headlineMedium: null,
-  headlineSmall: null,
-
-  titleLarge: null,
-  titleMedium: null,
-
-  // Used for square button title text on home page
-  titleSmall: GoogleFonts.montserrat(
-    textStyle: const TextStyle(
-      fontSize: _titleSmallFontSize,
-      fontWeight: FontWeight.w800,
-      fontStyle: FontStyle.normal
-    )
-  ),
-
-  labelLarge: null,
-  labelMedium: null,
-  labelSmall: null,
-
-  bodyLarge: null,
-  bodyMedium: null,
-  bodySmall: null,
-
-);
-
-
 // Dark
 final TextTheme _textThemeDark = TextTheme(
 
@@ -119,39 +77,6 @@ final TextTheme _textThemeDark = TextTheme(
 
 // COLOUR THEMES ...
 
-// Light
-const _colorSchemeLight = ColorScheme(
-  
-  brightness: Brightness.light,
-  
-  // Screen background colours
-  background: Color.fromARGB(255, 245, 245, 245),
-  onBackground: Color.fromARGB(255, 27, 37, 56),
-
-  primary: Color(0xFFFF00FF), // TBD
-  onPrimary: Color(0xFFFF00FF), // TBD
-  
-  secondary: Color(0xFFFF00FF), // TBD
-  onSecondary: Color(0xFFFF00FF), // TBD
-  
-  // Used for bottom app bar highlights
-  tertiary: Color.fromARGB(255, 27, 37, 56), // Default
-  onTertiary: Color.fromARGB(255, 8, 97, 168), // Selected
-
-  // Used for skeleton loader placeholders
-  tertiaryContainer: Color.fromARGB(255, 164, 164, 164), // Container background colour
-  onTertiaryContainer: Color.fromARGB(255, 192, 192, 192), // Loading highlight colour
-
-  // Buttons on background
-  surface: Color.fromARGB(255, 225, 225, 225),
-  onSurface: Color.fromARGB(255, 30, 39, 56),
-  
-  error: Color(0xFFFF0000),
-  onError: Color.fromARGB(255, 0, 0, 255),
-
-);
-
-
 // Dark
 const _colorSchemeDark = ColorScheme(
   
@@ -192,18 +117,11 @@ const _colorSchemeDark = ColorScheme(
 
 class AppTheme {
 
-  static final lightTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    colorScheme: _colorSchemeLight,
-    textTheme: _textThemeLight,
-  );
-
   static final darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: _colorSchemeDark, // Dark theme is not currently implemented properly
-    textTheme: _textThemeLight, // Dark theme is not currently implemented properly
+    textTheme: _textThemeDark, // Dark theme is not currently implemented properly
   );
 
 }

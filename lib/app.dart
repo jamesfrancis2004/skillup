@@ -18,7 +18,7 @@ class App extends StatelessWidget {
 
     // Return the current screen widget using the router
     return MaterialApp.router(
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.darkTheme,
       darkTheme: AppTheme.darkTheme,
       routerConfig: buildRouter(),
     );
