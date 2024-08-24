@@ -122,7 +122,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child : Text(
-                      "Current Goal",
+                      "Baking",
                       softWrap: false,
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w800, 
@@ -166,7 +166,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child : Text(
-                  'See more',
+                  'Learn more',
                   softWrap: false,
                   style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w600, 

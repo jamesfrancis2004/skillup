@@ -75,6 +75,53 @@ class _HomePageState extends State<HomePage> {
               height: _verticalSpacing,
             ),
 
+            // Challenges title
+            Padding(
+              padding: const EdgeInsets.only(
+                left: _selectorRowInsetHorizontal, 
+                bottom: 15
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  // The title of the row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Current Goal",
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold, 
+                          color: Theme.of(context).colorScheme.onBackground, 
+                          fontSize: 15.0
+                        )
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: filterHorizontalInset),
+                        child: SizedBox(
+                          width: 0,
+                          height: 0
+                        )
+                      ),
+                    ]
+                  ),
+
+                  // The gradient subheading 
+                  Container(
+                    height: _subheadingGradientHeight,
+                    width: _subheadingGradientWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: highlightGradient
+                    )
+                  ),
+
+                ]
+              )
+            ),
+            
             // Main skill tile
             const Padding(
               padding: EdgeInsets.only(
