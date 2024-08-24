@@ -59,6 +59,8 @@ dev_dependencies:
 
   cloud_firestore:
 
+  firebase_storage:
+
   image_picker:
   video_player:
 
