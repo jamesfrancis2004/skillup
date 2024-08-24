@@ -12,18 +12,23 @@ import 'package:skillup/functions/user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   User? user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    runApp(const App(startLocation: NavigationRoutes.login));
+    return;
+  }
 
-  if (user != null) {
+  final doc =
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+
+  if (doc.exists) {
     runApp(const App(startLocation: NavigationRoutes.home));
   } else {
     runApp(const App(startLocation: NavigationRoutes.login));
   }
-
 
   //runApp(const App());
 }
