@@ -244,8 +244,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                         'name': username,
                                         'email': email,
                                         'friends': [],
-                                        'inbound_requests': [],
-                                        'outbound_requests': [],
+                                        'inboundRequests': [],
+                                        'outboundRequests': [],
                                       });
                                       return context.go(NavigationRoutes.home);
                                     } on FirebaseAuthException catch (e) {
