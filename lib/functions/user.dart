@@ -136,6 +136,7 @@ class CurrentUser {
 
     final friendId = await getIdFromName(friendName);
     if (friendId == null) {
+      print("Cant find ID");
       return false;
     }
 
@@ -143,12 +144,21 @@ class CurrentUser {
         FirebaseFirestore.instance.collection('users').doc(friendId);
     final friendDoc = await friendDocRef.get();
     if (!friendDoc.exists) {
+      print("Friend doesnt exist");
       return false;
     }
-    if (friendDoc['outboundRequests'].contains(friendId)) {
+
+    print("HEREHHRE!");
+    if (friendDoc['outboundRequests'].contains(id)) { // already requested me 
       final status = await acceptFriendRequest(friendId);
       return status;
     }
+
+    if (friendDoc['inboundRequests'].contains(id)) { // i have already asked
+      return false;
+    }
+
+
 
     await friendDocRef.update({
       'inboundRequests': FieldValue.arrayUnion([id])
