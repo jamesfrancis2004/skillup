@@ -166,12 +166,15 @@ class _HomePageState extends State<HomePage> {
             ),
             
             // Main skill tile
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 left: horizontalInset, 
                 right: horizontalInset
               ),
-              child: MainSkillTile()
+              child: MainSkillTile(
+                category: skill.category,
+                description: skill.description,
+              )
             ),
 
             // Padding
