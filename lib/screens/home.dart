@@ -128,6 +128,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         onRefresh: () async {
           await Future.delayed(const Duration(milliseconds: 1500));
+          await _loadSkillData();
+          await _loadCompletions();
           setState(() {
             HomePage.scrollToTop();
           });
