@@ -197,10 +197,18 @@ class _ChallengeTileState extends State<ChallengeTile> {
         return;
       }
 
-      final data = userSnapshot.data() ?? {};
-      final currentValue = data[widget.tier] as int? ?? 0;
+      // HACKY LASTY MINUTE WORKAROUND
+      String tier = widget.tier;
+      if (tier == 'gold') {
+        tier = 'bronze';
+      } else if (tier == 'bronze') {
+        tier = 'gold';
+      }
 
-      transaction.update(userDoc, {widget.tier: currentValue + 1});
+      final data = userSnapshot.data() ?? {};
+      final currentValue = data[tier] as int? ?? 0;
+
+      transaction.update(userDoc, {tier: currentValue + 1});
     }).catchError((error) {
       // Handle any errors that occur during the transaction
       print("Error updating challenge completion: $error");
