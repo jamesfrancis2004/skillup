@@ -123,7 +123,7 @@ class _AttemptPage extends State<AttemptPage> {
                               var post = snapshot.data![index];
 
                               // Safely access fields with default values
-                              String mediaUrl = post.containsKey('mediaUrl') ? post['mediaUrl'] : '';
+                              String mediaUrl = post.containsKey('media_path') ? post['media_path'] : '';
                               String description = post.containsKey('description') ? post['description'] : '';
                               String mediaType = post.containsKey('mediaType') ? post['mediaType'] : 'unknown';
 
