@@ -48,6 +48,19 @@ class CurrentUser {
     return doc.data()!['name'];
   }
 
+  static Future<String?> getIdFromName(String name) async {
+    final users = FirebaseFirestore.instance.collection('users');
+    final snapshot = await users.get();
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final String tempName = data['name'];
+      if (name == tempName) {
+        return doc.id;
+      }
+    }
+    return null;
+  }
+
   Future<bool> updateName(String newName) async {
     final docRef = FirebaseFirestore.instance.collection('users').doc(id);
     final doc = await docRef.get();
@@ -97,8 +110,14 @@ class CurrentUser {
     return true;
   }
 
-  Future<bool> sendFriendRequest(String friendId) async {
-    if (friendId == id) {
+  Future<bool> sendFriendRequest(String friendName) async {
+    if (friendName == name) {
+      return false;
+    }
+
+    final friendId = await getIdFromName(friendName);
+
+    if (friendId == null) {
       return false;
     }
 
