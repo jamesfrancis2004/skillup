@@ -94,6 +94,16 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+
+  // Allow controlling scroll via HomePage
+  static final ScrollController _scrollController = ScrollController();
+  static void scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
 }
 
 
@@ -139,6 +149,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Container (
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors:  [
@@ -151,169 +163,187 @@ class _ProfilePageState extends State<ProfilePage> {
             end: Alignment.bottomCenter,
           )
       ),
-      child: _isUserDataLoaded
-          ? Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          size: 60,
-                          color: Colors.black,
+      child: RefreshIndicator(
+        color: Theme.of(context).colorScheme.onTertiaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        onRefresh: () async {
+          await Future.delayed(const Duration(milliseconds: 1500));
+          setState(() {
+          });
+        },
+        child: ListView(
+          controller: ProfilePage._scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            
+            _isUserDataLoaded
+            ? 
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black.withOpacity(0.4),
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        user.name ?? '',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        user.email ?? '',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
                           children: [
-                            MedalTally(
-                              medalType: "gold"
-                            ),
-                            SizedBox(
-                              width: 25
-                            ),
-                            MedalTally(
-                              medalType: "silver"
-                            ),
-                            SizedBox(
-                              width: 25
-                            ),
-                            MedalTally(
-                              medalType: "bronze"
-                            ),
-                          ]
-                        ),
-                      if (_isEditing)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20.0,
-                            right: 20.0,
-                            top: 20.0
-                          ),
-                          child: TextField(
-                            controller: _usernameController,
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                            decoration: InputDecoration(
-                              // labelText: "Edit your Username",
-                              hintText: "Username",
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.2),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide.none,
+                            const CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.black,
                               ),
                             ),
-                          ),
-                        ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (_isEditing)
-                            IconButton(
-                              icon: Icon(Icons.check, color: Colors.white),
-                              onPressed: _updateUsername,
+                            SizedBox(height: 16),
+                            Text(
+                              user.name ?? '',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          IconButton(
-                            icon: Icon(
-                              _isEditing ? Icons.cancel : Icons.edit,
-                              color: Colors.white,
+                            Text(
+                              user.email ?? '',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isEditing = !_isEditing;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffffffff).withOpacity(0.2),
-                        ),
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut();
-                          try {
-                            FirebaseFirestore.instance.clearPersistence();
-                          } catch (e) {
-                            print("Error clearing Firestore cache: $e");
-                          }
-                          context.go(NavigationRoutes.login);
-                        },
-                        child: Text(
-                          'Log Out',
+                            SizedBox(height: 20),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  MedalTally(
+                                    medalType: "gold"
+                                  ),
+                                  SizedBox(
+                                    width: 25
+                                  ),
+                                  MedalTally(
+                                    medalType: "silver"
+                                  ),
+                                  SizedBox(
+                                    width: 25
+                                  ),
+                                  MedalTally(
+                                    medalType: "bronze"
+                                  ),
+                                ]
+                              ),
+                            if (_isEditing)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  right: 20.0,
+                                  top: 20.0
+                                ),
+                                child: TextField(
+                                  controller: _usernameController,
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                                  decoration: InputDecoration(
+                                    // labelText: "Edit your Username",
+                                    hintText: "Username",
+                                    filled: true,
+                                    fillColor: Colors.white.withOpacity(0.2),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (_isEditing)
+                                  IconButton(
+                                    icon: Icon(Icons.check, color: Colors.white),
+                                    onPressed: _updateUsername,
+                                  ),
+                                IconButton(
+                                  icon: Icon(
+                                    _isEditing ? Icons.cancel : Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isEditing = !_isEditing;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffffffff).withOpacity(0.2),
+                              ),
+                              onPressed: () {
+                                FirebaseAuth.instance.signOut();
+                                try {
+                                  FirebaseFirestore.instance.clearPersistence();
+                                } catch (e) {
+                                  print("Error clearing Firestore cache: $e");
+                                }
+                                context.go(NavigationRoutes.login);
+                              },
+                              child: Text(
+                                'Log Out',
 
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                          ),
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            if (_isEditing)
+                              ElevatedButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  // Delete account functionality
+                                },
+                                child: Text(
+                                  'Delete Account',
+                                  style: GoogleFonts.montserrat (
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10),
-                      if (_isEditing)
-                        ElevatedButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            // Delete account functionality
-                          },
-                          child: Text(
-                            'Delete Account',
-                            style: GoogleFonts.montserrat (
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            )
+            : 
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ],
         ),
-      )
-          : Center(
-        child: CircularProgressIndicator(),
       ),
     );
   }
