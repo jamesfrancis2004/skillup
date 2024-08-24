@@ -402,7 +402,6 @@ class _ProfilePageState extends State<ProfilePage> {
       _usernameController.text =
           user.name ?? ''; // Optionally set the initial text
     });
-    print("here");
   }
 
   @override
