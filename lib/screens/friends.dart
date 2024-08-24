@@ -129,6 +129,14 @@ class _FriendsPageState extends State<FriendsPage> {
                         : SizedBox(height: 1),
                     SizedBox(height: 20),
                     const Text(
+                      "Pending Requests",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    const Text(
+                      "Sent Requests",
+                      style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    const Text(
                       "Current Friends",
                       style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
                     )
