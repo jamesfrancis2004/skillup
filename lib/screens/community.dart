@@ -470,7 +470,7 @@ class _ExplorePageState extends State<ExplorePage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 100,
+            height: MediaQuery.of(context).size.height / 200,
           )
         ],
       ),
