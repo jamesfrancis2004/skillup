@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontSize: 16.0,
                             ),
                             decoration: InputDecoration(
-                              labelText: "Edit your Username",
+                              // labelText: "Edit your Username",
                               hintText: "Username",
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.2),
