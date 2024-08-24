@@ -151,9 +151,43 @@ class _ChallengeTileState extends State<ChallengeTile> {
       // Handle the case when the user is not authenticated
       return;
     }
+    int index;
+    if (widget.tier == "gold") {
+      index = 0;
+    } else if (widget.tier == "silver") {
+      index = 1;
+    } else {
+      index = 2;
+    }
+
 
     final userDoc = FirebaseFirestore.instance.collection("users").doc(userId);
+    final userDocRef = FirebaseFirestore.instance.collection("users").doc(userId);
 
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final userDoc = await transaction.get(userDocRef);
+
+        if (!userDoc.exists) {
+          throw Exception("User document does not exist.");
+        }
+
+        final data = userDoc.data();
+        final challengesCompleted = List<dynamic>.from(data?['challengesCompleted'] ?? []);
+
+        // Update the specific index in the array
+        if (index >= 0 && index < challengesCompleted.length) {
+          challengesCompleted[index] = true;
+        } else {
+          throw Exception("Index out of bounds.");
+        }
+
+        // Update the document with the modified array
+        transaction.update(userDocRef, {
+          'challengesCompleted': challengesCompleted,
+        });
+      }).catchError((error) {
+        print("Error updating challenge completion: $error");
+      });
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       final userSnapshot = await transaction.get(userDoc);
 

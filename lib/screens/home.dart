@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,6 +56,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late CurrentSkill skill;
   late CurrentUser user;
+  late List<bool> completions = [false, false, false];
   bool _isUserDataLoaded = false;
   bool _isSkillDataLoaded = false;
 
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     void initState() {
       super.initState();
       _loadSkillData();
+      _loadCompletions();
     }
 
   Future<void> _loadSkillData() async {
@@ -71,11 +74,33 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+
   Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
     setState(() {
       _isUserDataLoaded = true;
     });
+  }
+
+  Future<void> _loadCompletions() async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get();
+    if (userDoc.exists) {
+      final data = userDoc.data();
+      final challengesCompleted = data?['challengesCompleted'] as List<dynamic>;
+      if (challengesCompleted.length >= 3) {
+        for (int i = 0; i < challengesCompleted.length; ++i) {
+          if (i < completions.length) {
+            completions[i] = challengesCompleted[i] as bool;
+          }
+        }
+      }
+    }
+    else {
+      print("User document does not exist");
+    }
   }
 
   @override
@@ -235,7 +260,8 @@ class _HomePageState extends State<HomePage> {
               children: [
 
                 // Challenge 1
-                ChallengeTile(tier: 'bronze', description: skill.challenge3, finished: false),
+                ChallengeTile(tier: 'bronze', description: skill.challenge3,
+                    finished: this.completions[2]),
 
                 // Padding
                 const SizedBox(
@@ -243,7 +269,8 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 2
-                ChallengeTile(tier: 'silver', description: skill.challenge2, finished: false),
+                ChallengeTile(tier: 'silver', description: skill.challenge2,
+                    finished: this.completions[1]),
 
                 // Padding
                 const SizedBox(
@@ -251,7 +278,8 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Challenge 3
-                ChallengeTile(tier: 'gold', description: skill.challenge1, finished: false),
+                ChallengeTile(tier: 'gold', description: skill.challenge1,
+                    finished: this.completions[0]),
               ],
             ),
 
