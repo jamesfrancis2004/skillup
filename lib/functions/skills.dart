@@ -19,7 +19,7 @@ class CurrentSkill {
     this.imageUrl = '',
   });
 
-  // Create function to find the skill by date
+// Create function to find the skill by date
   static Future<CurrentSkill> create() async {
     // Query the Firestore collection to find a document where 'date' is equal to 1
     final querySnapshot = await FirebaseFirestore.instance
@@ -34,12 +34,12 @@ class CurrentSkill {
       final doc = querySnapshot.docs.first;
       final data = doc.data();
       return CurrentSkill._(
-        category: data['category'],
-        challenge1: data['challenge1'],
-        challenge2: data['challenge2'],
-        challenge3: data['challenge3'],
-        description: data['description'],
-        imageUrl: data['image_url'],
+        category: data['category'] ?? '',
+        challenge1: data['challenge1'] ?? '',
+        challenge2: data['challenge2'] ?? '',
+        challenge3: data['challenge3'] ?? '',
+        description: data['description'] ?? '',
+        imageUrl: data['imageUrl'] ?? '',
       );
     } else {
       throw Exception('Skill not found with date set to 1!');

@@ -290,6 +290,7 @@ class _ExplorePageState extends State<ExplorePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                height: MediaQuery.of(context).size.height * 0.65,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.black.withOpacity(0.4),
