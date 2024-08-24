@@ -150,10 +150,12 @@ class CurrentUser {
     }
 
     await friendDocRef.update({
-      'outboundRequests': FieldValue.arrayRemove([id])
+      'outboundRequests': FieldValue.arrayRemove([id]),
+      'friends': FieldValue.arrayUnion([id])
     });
     await FirebaseFirestore.instance.collection('users').doc(id).update({
-      'inboundRequests': FieldValue.arrayRemove([friendId])
+      'inboundRequests': FieldValue.arrayRemove([friendId]),
+      'friends': FieldValue.arrayUnion([friendId])
     });
     inboundRequests.remove(friendId);
 
