@@ -201,7 +201,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                         padding: const EdgeInsets.only(
-                            left: _selectorRowInsetHorizontal, bottom: 15),
+                            left: 0, bottom: 15),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -344,7 +344,6 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                       padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
                         bottom: 15
                       ),
                       child: Column(
@@ -457,7 +456,6 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                       padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
                         bottom: 15
                       ),
                       child: Column(
