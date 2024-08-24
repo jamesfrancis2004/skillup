@@ -350,10 +350,43 @@ class _HomePageState extends State<HomePage> {
                   // Resource 1
                   SizedBox(
                     height: _resourcesHeight,
+                    width: MediaQuery.of(context).size.width - 2 * horizontalInset,
                     child: Container(
                       decoration: BoxDecoration(
                         color: _resourcesBackgroundColour,
                         borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                      child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          left: 12, 
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10
+                            ),
+                            Container(
+                              width: 300,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            )
+                          ],
+                        )
                       ),
                     )
                   ),
@@ -366,10 +399,43 @@ class _HomePageState extends State<HomePage> {
                   // Resource 2
                   SizedBox(
                     height: _resourcesHeight,
+                    width: MediaQuery.of(context).size.width - 2 * horizontalInset,
                     child: Container(
                       decoration: BoxDecoration(
                         color: _resourcesBackgroundColour,
                         borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                      child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          left: 12, 
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10
+                            ),
+                            Container(
+                              width: 300,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            )
+                          ],
+                        )
                       ),
                     )
                   ),
@@ -382,10 +448,43 @@ class _HomePageState extends State<HomePage> {
                   // Resource 3
                   SizedBox(
                     height: _resourcesHeight,
+                    width: MediaQuery.of(context).size.width - 2 * horizontalInset,
                     child: Container(
                       decoration: BoxDecoration(
                         color: _resourcesBackgroundColour,
                         borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          left: 12, 
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10
+                            ),
+                            Container(
+                              width: 300,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 112, 147, 169),
+                                borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                              ),
+                            )
+                          ],
+                        )
                       ),
                     )
                   ),
@@ -394,9 +493,9 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Bottom spacing
-            // SizedBox(
-            //   height: MediaQuery.of(context).size.height / 4,
-            // ),
+            const SizedBox(
+              height: horizontalInset * 1.5,
+            ),
 
           ]
         )
