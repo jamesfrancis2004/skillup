@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skillup/functions/skills.dart';
 import 'package:skillup/functions/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../router.dart';
@@ -164,7 +164,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Theme.of(context).colorScheme.primary,
                                 ),
                                 onPressed: () {
-
                                   FirebaseAuth.instance.signOut();
                                   context.go(NavigationRoutes.login);
 
