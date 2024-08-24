@@ -67,10 +67,10 @@ class NavigationRoutes {
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 // The router to use for switching between pages
-GoRouter buildRouter() {
+GoRouter buildRouter(String startLocation) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: NavigationRoutes.home,
+    initialLocation: startLocation,
     routes: [
       // StatefulShellRoute to preserve page states between navigation
       StatefulShellRoute.indexedStack(
