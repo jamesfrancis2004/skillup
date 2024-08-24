@@ -177,7 +177,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           onPressed: () {
                             // Handle button press
-                            getStatusOfRequest(1);
+                            getStatusOfRequest("CHOIC");
                           },
                         ),
                       ],
