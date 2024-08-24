@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 // WIDGET 
@@ -14,12 +15,24 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('COMMUNITY', style: Theme.of(context).textTheme.headlineMedium)
-        ],
+    return Container(
+      child: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.80,
+          child: Column(
+            children: [
+              Text("Community",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+
+                  )
+              ),
+
+            ]
+          )
+        )
       )
     );
   }
