@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-/* 
-
-  NOTE
-  Current setup is designed to only work with 1 instance of HomePage at any time
-
-*/ 
-
-
 // WIDGET 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});  
+class FriendsPage extends StatefulWidget {
+  const FriendsPage({super.key});  
   
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FriendsPage> createState() => _FriendsPageState();
 
-  // Allow controlling scroll via HomePage
+  // Allow controlling scroll via FriendsPage
   static final ScrollController _scrollController = ScrollController();
   static void scrollToTop() {
     _scrollController.animateTo(
@@ -28,9 +20,10 @@ class HomePage extends StatefulWidget {
 }
 
 
-// STATE
-class _HomePageState extends State<HomePage> {
 
+
+// STATE
+class _FriendsPageState extends State<FriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,17 +36,17 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           await Future.delayed(const Duration(milliseconds: 1500));
           setState(() {
-            HomePage.scrollToTop();
+            FriendsPage.scrollToTop();
           });
         },
         child: ListView(
-          controller: HomePage._scrollController,
+          controller: FriendsPage._scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             Container(
               height: 100,
               width: 100,
-              color: Colors.amber, 
+              color: Colors.red, 
             ),
           ]
         )
