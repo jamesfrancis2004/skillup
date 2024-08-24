@@ -7,125 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-/*
-class OutgoingMessage extends StatelessWidget {
-  final String username;
-  final String message;
-  final String datetime;
 
-  const OutgoingMessage({
-    Key? key,
-    required this.username,
-    required this.message,
-    required this.datetime,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  username,
-                  style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
-                  ),
-                ),
-                SizedBox(width: 8.0),
-                Text(
-                  datetime,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 12.0,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              message,
-              style: GoogleFonts.montserrat(
-                fontSize: 14.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-class IncomingMessage extends StatelessWidget {
-  final String username;
-  final String message;
-  final String datetime;
-
-  const IncomingMessage({
-    Key? key,
-    required this.username,
-    required this.message,
-    required this.datetime,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        decoration: BoxDecoration(
-          color: Colors.grey,  // Change color to distinguish incoming messages
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  username,
-                  style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
-                  ),
-                ),
-                SizedBox(width: 8.0),
-                Text(
-                  datetime,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 12.0,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              message,
-              style: GoogleFonts.montserrat(
-                fontSize: 14.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
- */
 class OutgoingMessage extends StatelessWidget {
   final String username;
   final String message;
@@ -473,6 +355,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 controller: _textController,
                                 decoration: InputDecoration(
                                   hintText: "Add a caption...",
+                                  fillColor: Colors.grey,
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -536,257 +419,83 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 
+class VideoPlayerWidget extends StatefulWidget {
+  final String videoPath; // This is the URL of the video
 
+  const VideoPlayerWidget({Key? key, required this.videoPath}) : super(key: key);
 
+  @override
+  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
+}
 
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
 
-/*
-
-
-
-class _ExplorePageState extends State<ExplorePage> {
-  final ImagePicker _picker = ImagePicker();
-  XFile? _selectedMedia;
-  bool _isImage = true; // Track if the selected media is an image
-  TextEditingController _textController = TextEditingController();
-
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _selectedMedia = image;
-        _isImage = true;
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.videoPath);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
   }
 
-  Future<void> _pickVideo() async {
-    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-    if (video != null) {
-      setState(() {
-        _selectedMedia = video;
-        _isImage = false;
-      });
-    }
-  }
-
-  Future<void> _uploadMediaAndSendMessage() async {
-    String? mediaUrl;
-
-    // Check if there is selected media
-    if (_selectedMedia != null) {
-      // Create a unique file name for the media
-      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}_${_isImage ? 'image' : 'video'}';
-
-      try {
-        // Upload media to Firebase Storage
-        final ref = FirebaseStorage.instance.ref().child(fileName);
-        await ref.putFile(File(_selectedMedia!.path));
-        mediaUrl = await ref.getDownloadURL();
-      } catch (e) {
-        print('Failed to upload media: $e');
-        return;
-      }
-    }
-    try {
-      await FirebaseFirestore.instance.collection("messages").doc().set({
-        'uid': FirebaseAuth.instance.currentUser?.uid,
-        'message': _textController.text,
-        'mediaUrl': mediaUrl,
-        'isImage': _isImage,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-      // Clear the selected media and text field after sending
-      setState(() {
-        _selectedMedia = null;
-        _textController.clear();
-      });
-    } catch (e) {
-      print('Failed to send message: $e');
-    }
-  }
-
-  void _showAttachmentOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 150,
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.photo),
-                title: Text('Photo'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _pickImage();
-                },
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
               ),
-              ListTile(
-                leading: Icon(Icons.video_call),
-                title: Text('Video'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _pickVideo();
+              VideoProgressIndicator(
+                _controller,
+                allowScrubbing: true,
+                padding: EdgeInsets.all(8.0),
+              ),
+              IconButton(
+                icon: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+                onPressed: () {
+                  setState(() {
+                    if (_controller.value.isPlaying) {
+                      _controller.pause();
+                    } else {
+                      _controller.play();
+                    }
+                  });
                 },
               ),
             ],
-          ),
-        );
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error loading video'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
       },
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Community",
-                style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.black,
-                ),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.60,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          IncomingMessage(
-                            username: "Jimbo",
-                            message: "This is an example message",
-                            datetime: "12/11/2000 6:56pm",
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 70,
-                          ),
-                          OutgoingMessage(
-                            username: "ethtuah",
-                            message: "This is an outgoing message",
-                            datetime: "12/11/2000 6:57pm",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 70,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.grey[200],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (_selectedMedia != null)
-                            _isImage
-                                ? Image.file(
-                              File(_selectedMedia!.path),
-                              fit: BoxFit.cover,
-                              height: 150,
-                              width: double.infinity,
-                            )
-                                : VideoPlayerWidget(
-                              videoPath: _selectedMedia!.path,
-                            ),
-                          if (_selectedMedia != null)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _textController,
-                                decoration: InputDecoration(
-                                  hintText: "Add a caption...",
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          if (_selectedMedia != null)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    _selectedMedia = null;
-                                    _textController.clear();
-                                  });
-                                },
-                                child: Text('Remove'),
-                              ),
-                            ),
-                          if (_selectedMedia == null)
-                            TextField(
-                              controller: _textController,
-                              decoration: InputDecoration(
-                                hintText: "Send a message",
-                                filled: true,
-                                fillColor: Colors.grey,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              minLines: 1,
-                              maxLines: 5,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.attach_file),
-                    onPressed: () {
-                      _showAttachmentOptions(context);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: () async {
-                      await _uploadMediaAndSendMessage();
-                      _textController.clear();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
-*/
-
-
-
-// Add a VideoPlayerWidget to handle video playback
+/*
 class VideoPlayerWidget extends StatefulWidget {
-  final String videoPath;
+  final String videoPath; // This is the URL of the video
 
-  const VideoPlayerWidget({Key? key, required this.videoPath})
-      : super(key: key);
+  const VideoPlayerWidget({Key? key, required this.videoPath}) : super(key: key);
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
@@ -798,7 +507,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(widget.videoPath))
+    _controller = VideoPlayerController.network(widget.videoPath)
       ..initialize().then((_) {
         setState(() {});
       });
@@ -820,3 +529,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
   }
 }
+
+ */
+
+

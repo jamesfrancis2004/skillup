@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../router.dart';
 
 // Pull the user from the database
 // (Assume this part of the code will be implemented later)
@@ -32,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _usernameController.text =
           user.name ?? ''; // Optionally set the initial text
     });
+    print("here");
   }
 
   @override
@@ -152,6 +157,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Theme.of(context).colorScheme.primary,
                                 ),
                                 onPressed: () {
+
+                                  FirebaseAuth.instance.signOut();
+                                  context.go(NavigationRoutes.login);
+
                                   // Log out functionality
                                 },
                                 child: const Text(

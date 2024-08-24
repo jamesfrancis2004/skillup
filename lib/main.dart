@@ -17,7 +17,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   User? user = FirebaseAuth.instance.currentUser;
-  user = null;
   if (user != null) {
     runApp(const App(startLocation: NavigationRoutes.home));
   } else {

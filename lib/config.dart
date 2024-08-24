@@ -23,6 +23,12 @@ const LinearGradient highlightGradient = LinearGradient(
 );
 
 
+// GENERAL LAYOUT THEMEING ...
+
+const double horizontalInset = 20;
+const double majorVerticalSpacing = 30;
+
+
 // TEXT THEMES ...
 
 // https://api.flutter.dev/flutter/material/TextTheme-class.html

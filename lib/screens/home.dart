@@ -14,8 +14,7 @@ import 'package:skillup/config.dart';
 
 
 // CONFIG
-const double _selectorRowInsetHorizontal = 20;
-const double _verticalSpacing = 30;
+const double _verticalSpacing = majorVerticalSpacing;
 
 const double _challengesVerticalSpacing = 10;
 const double _challengesHeight = 60;
@@ -78,8 +77,8 @@ class _HomePageState extends State<HomePage> {
             // Current goal title
             Padding(
               padding: const EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal, 
+                left: horizontalInset, 
+                right: horizontalInset, 
                 bottom: 15
               ),
               child: Column(
@@ -126,8 +125,9 @@ class _HomePageState extends State<HomePage> {
             // Main skill tile
             const Padding(
               padding: EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal),
+                left: horizontalInset, 
+                right: horizontalInset
+              ),
               child: MainSkillTile()
             ),
 
@@ -139,8 +139,8 @@ class _HomePageState extends State<HomePage> {
             // Challenges title
             Padding(
               padding: const EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal, 
+                left: horizontalInset, 
+                right: horizontalInset, 
                 bottom: 15
               ),
               child: Column(
@@ -187,8 +187,9 @@ class _HomePageState extends State<HomePage> {
             // Challenges
             Padding(
               padding: const EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal),
+                left: horizontalInset, 
+                right: horizontalInset
+              ),
               child: Column(
                 children: [
 
@@ -246,8 +247,8 @@ class _HomePageState extends State<HomePage> {
             // Resources title
             Padding(
               padding: const EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal, 
+                left: horizontalInset, 
+                right: horizontalInset, 
                 bottom: 15
               ),
               child: Column(
@@ -293,8 +294,9 @@ class _HomePageState extends State<HomePage> {
             // Resources
             Padding(
               padding: const EdgeInsets.only(
-                left: _selectorRowInsetHorizontal, 
-                right: _selectorRowInsetHorizontal),
+                left: horizontalInset, 
+                right: horizontalInset
+              ),
               child: Column(
                 children: [
 
