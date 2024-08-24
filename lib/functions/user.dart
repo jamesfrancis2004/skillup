@@ -184,6 +184,10 @@ class CurrentUser {
     });
     friends.add(friendId);
 
+    await FirebaseFirestore.instance.collection('users').doc(friendId).update({
+      'friends': FieldValue.arrayUnion([id])
+    });
+
     return true;
   }
 

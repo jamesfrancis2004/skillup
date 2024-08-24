@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:skillup/config.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';  // Add this line
 
 const double _selectorRowInsetHorizontal = horizontalInset;
 const double _verticalSpacing = majorVerticalSpacing;
@@ -87,30 +88,42 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: _isUserDataLoaded
-          ? RefreshIndicator(
-              color: Theme.of(context).colorScheme.onTertiaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-              onRefresh: () async {
-                await Future.delayed(const Duration(milliseconds: 1500));
-                setState(() {
-                  FriendsPage.scrollToTop();
-                });
-              },
-              child: SingleChildScrollView(
-                controller: FriendsPage._scrollController,
+      body: _isUserDataLoaded ? RefreshIndicator(
+        color: Theme.of(context).colorScheme.onTertiaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        onRefresh: () async {
+          await Future.delayed(const Duration(milliseconds: 1500));
+          setState(() {
+            FriendsPage.scrollToTop();
+          });
+        },
+        child: SingleChildScrollView(
+          controller: FriendsPage._scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors:  [
+                      Color(0xff00274d), // Dark Blue
+                      Color(0xff001f3f), // Even Darker Blue
+                      Color(0xff000a1b)  // Nearly Black
+                    ],
+
+                    begin: Alignment.center,
+                    end: Alignment.bottomCenter,
+                  )
+              ),
+                padding: const EdgeInsets.only(
+                    left: _selectorRowInsetHorizontal,
+                    right: _selectorRowInsetHorizontal,
+                    top: 16,
+                    bottom: 16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                          left: _selectorRowInsetHorizontal,
-                          right: _selectorRowInsetHorizontal,
-                          top: 16,
-                          bottom: 16),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                           // Challenges title
                           Column(
@@ -203,33 +216,31 @@ class _FriendsPageState extends State<FriendsPage> {
                               : SizedBox(height: 1),
                           SizedBox(height: 20),
 
-                          // Challenges title
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  left: _selectorRowInsetHorizontal,
-                                  bottom: 15),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
+                    // Challenges title
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            left: 0, bottom: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // The title of the row
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // The title of the row
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Pending Request",
-                                              style: GoogleFonts.montserrat(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onBackground,
-                                                  fontSize: 15.0)),
-                                          const Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: filterHorizontalInset),
-                                              child: SizedBox(
-                                                  width: 0, height: 0)),
-                                        ]),
+                                    Text("Pending Request",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontSize: 15.0)),
+                                    const Padding(
+                                        padding: EdgeInsets.only(
+                                            right: filterHorizontalInset),
+                                        child: SizedBox(width: 0, height: 0)),
+                                  ]),
 
                                     // The gradient subheading
                                     Container(
@@ -241,160 +252,176 @@ class _FriendsPageState extends State<FriendsPage> {
                                             gradient: highlightGradient)),
                                   ])),
 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: user.inboundRequests.map((request) {
-                              return FutureBuilder<String>(
-                                future: _getNameFromId(
-                                    request), // Get the name from ID
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return ListTile(
-                                      title: Text(
-                                        'Loading...', // Placeholder text while loading
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.check,
-                                                color: Colors.green),
-                                            onPressed:
-                                                null, // Disable while loading
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.close,
-                                                color: Colors.red),
-                                            onPressed:
-                                                null, // Disable while loading
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return ListTile(
-                                      title: Text(
-                                        'Error', // Placeholder text in case of error
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.check,
-                                                color: Colors.green),
-                                            onPressed:
-                                                null, // Disable while loading
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.close,
-                                                color: Colors.red),
-                                            onPressed:
-                                                null, // Disable while loading
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    String name = snapshot.data ??
-                                        'Unknown'; // Handle null value
-                                    return ListTile(
-                                      title: Text(
-                                        name, // Display the username of the incoming request
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.check,
-                                                color: Colors.green),
-                                            onPressed: () async {
-                                              print("HERE");
-                                              bool success = await user
-                                                  .acceptFriendRequest(request);
-                                              if (success) {
-                                                print("Aceepted Friend");
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          'Friend request rejected')),
-                                                );
-                                              } else {
-                                                print("NOT HERE");
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          'Failed to reject friend request')),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.close,
-                                                color: Colors.red),
-                                            onPressed: () async {
-                                              bool success = await user
-                                                  .rejectFriendRequest(request);
-                                              if (success) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          'Friend request rejected')),
-                                                );
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          'Failed to reject friend request')),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('users')
+                              .snapshots(), // Stream of incoming friend requests
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator()); // Loading indicator
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.red)),
                               );
-                            }).toList(),
-                          ),
+                            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                              return Center(
+                                child: Text('No incoming requests', style: TextStyle(color: Colors.white)),
+                              );
+                            } 
+                            else {
+                              
+                              var userDoc = snapshot.data!.docs
+                                  .where((doc) => doc.id == FirebaseAuth.instance.currentUser!.uid)
+                                  .firstOrNull;
+
+                              // Check if userDoc is not null before accessing its fields
+                              List<String> userList = [];
+                              if (userDoc != null) {
+                                // Access the field 'inboundRequests' safely
+                                userList = List<String>.from(userDoc["inboundRequests"] ?? []);
+                              } 
+                              return Column(
+                                children: userList.map((doc) {
+                                  String requestId = doc;
+                                  print(doc);
+                                  return FutureBuilder<String>(
+                                    future: _getNameFromId(requestId), // Get the name from ID
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return ListTile(
+                                          title: Text(
+                                            'Loading...', // Placeholder text while loading
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.check, color: Colors.green),
+                                                onPressed: null, // Disable while loading
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.close, color: Colors.red),
+                                                onPressed: null, // Disable while loading
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return ListTile(
+                                          title: Text(
+                                            'Error', // Placeholder text in case of error
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.check, color: Colors.green),
+                                                onPressed: null, // Disable while loading
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.close, color: Colors.red),
+                                                onPressed: null, // Disable while loading
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        String name = snapshot.data ?? 'Unknown'; // Handle null value
+                                        return ListTile(
+                                          title: Text(
+                                            name, // Display the username of the incoming request
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.check, color: Colors.green),
+                                                onPressed: () async {
+                                                  bool success = await user.acceptFriendRequest(requestId);
+                                                  if (success) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text('Friend request accepted')),
+                                                    );
+                                                  } else {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text('Failed to accept friend request')),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.close, color: Colors.red),
+                                                onPressed: () async {
+                                                  bool success = await user.rejectFriendRequest(requestId);
+                                                  if (success) {
+                                                     setState(() {
+                                                        // Optionally update the UI to reflect the rejection
+                                                        // user.inboundRequests.remove(snapshot.id);
+                                                      });
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text('Friend request rejected')),
+                                                    );
+                                                  } else {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text('Failed to reject friend request')),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+
 
                           const SizedBox(height: 20),
 
-                          // Challenges title
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  left: _selectorRowInsetHorizontal,
-                                  bottom: 15),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // The title of the row
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Sent Requests",
-                                              style: GoogleFonts.montserrat(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onBackground,
-                                                  fontSize: 15.0)),
-                                          const Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: filterHorizontalInset),
-                                              child: SizedBox(
-                                                  width: 0, height: 0)),
-                                        ]),
+                    // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Sent Requests",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
 
                                     // The gradient subheading
                                     Container(
@@ -490,33 +517,37 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           const SizedBox(height: 20),
 
-                          // Challenges title
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  left: _selectorRowInsetHorizontal,
-                                  bottom: 15),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // The title of the row
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Current Friends",
-                                              style: GoogleFonts.montserrat(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onBackground,
-                                                  fontSize: 15.0)),
-                                          const Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: filterHorizontalInset),
-                                              child: SizedBox(
-                                                  width: 0, height: 0)),
-                                        ]),
+                    // Challenges title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 15
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+
+                          // The title of the row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Current Friends",
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold, 
+                                  color: Theme.of(context).colorScheme.onBackground, 
+                                  fontSize: 15.0
+                                )
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: filterHorizontalInset),
+                                child: SizedBox(
+                                  width: 0,
+                                  height: 0
+                                )
+                              ),
+                            ]
+                          ),
 
                                     // The gradient subheading
                                     Container(

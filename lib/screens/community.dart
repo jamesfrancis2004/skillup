@@ -33,7 +33,7 @@ class OutgoingMessage extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         decoration: BoxDecoration(
-          color: Colors.blue, // Outgoing message color
+          color: Color(0xff1565c0), // Outgoing message color
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
@@ -279,7 +279,6 @@ class _ExplorePageState extends State<ExplorePage> {
               Color(0xff001f3f), // Even Darker Blue
               Color(0xff000a1b)  // Nearly Black
             ],
-
             begin: Alignment.center,
             end: Alignment.bottomCenter,
           )

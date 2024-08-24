@@ -14,9 +14,8 @@ import 'package:skillup/config.dart';
 
 const double _borderRadius = 4.0;
 const double _height = 60;
-const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
-const Color _completedChallengeBackgroundColour = Color.fromARGB(255, 35, 35, 40);
-const Color _completionStrikethroughColour = Color.fromARGB(200, 75, 75, 75);
+const Color _challengeBackgroundColour = Color.fromARGB(255, 94, 127, 147);
+const Color _completionStrikethroughColour = Color.fromARGB(255, 20, 20, 20);
 const double _completionStrikethroughHeight = 3;
 
 // Variables
@@ -63,13 +62,24 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
         child: Row(
           children: [
             const SizedBox(
-              width: horizontalInset,
+              width: horizontalInset * 0.8,
             ),
             Icon(
               Icons.workspace_premium,
               size: 32,
               color: getMedalColour(widget.tier)
-            )
+            ),
+            const SizedBox(
+              width: horizontalInset * 0.8,
+            ),
+            Text(
+              widget.description,
+              style: GoogleFonts.montserrat(
+                fontWeight: FontWeight.bold, 
+                color: Theme.of(context).colorScheme.onPrimary, 
+                fontSize: 15.0
+              )
+            ),
           ],
         ),
       );
@@ -83,17 +93,17 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
               height: _height,
               width: MediaQuery.of(context).size.width - (2 * horizontalInset),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(100, 0, 0, 0),
+                color: const Color.fromARGB(150, 0, 0, 0),
                 borderRadius: BorderRadius.circular(_borderRadius),
               ),
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width - (3.5 * horizontalInset),
-                height: _completionStrikethroughHeight,
-                color: _completionStrikethroughColour
-              )
-            )
+            // Center(
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width - (3.25 * horizontalInset),
+            //     height: _completionStrikethroughHeight,
+            //     color: _completionStrikethroughColour
+            //   )
+            // )
           ],
         );
       }
@@ -152,6 +162,13 @@ class _ChallengeTileState extends State<ChallengeTile> {
             width: horizontalInset
           ),
 
+          widget.finished ? 
+          _SimpleChallengeTile(
+              tier: widget.tier,
+              description: widget.description,
+              finished: true,
+          )
+          : 
           Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.startToEnd,  // Swipe left to right
