@@ -271,7 +271,7 @@ class _ContributePageState extends State<ContributePage> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return CameraPreview(_controller);
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Text("No camera permissions");
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }
