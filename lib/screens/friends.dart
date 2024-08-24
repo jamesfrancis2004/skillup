@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skillup/functions/skills.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,15 +26,18 @@ class _FriendsPageState extends State<FriendsPage> {
   final TextEditingController _friendSearchController =
       TextEditingController(text: '');
   late CurrentUser user;
+  late CurrentSkill skill;
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadData();
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> _loadData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
+    skill = await CurrentSkill.create(DateTime.now());
+    print(skill);
     setState(() {});
   }
 
