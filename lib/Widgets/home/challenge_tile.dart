@@ -51,6 +51,8 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
   @override
   Widget build(BuildContext context) {
     return (() {
+
+      // Build basic tile
       Widget simpleTile = Container(
         height: _height,
         width: MediaQuery.of(context).size.width - (2 * horizontalInset),
@@ -66,12 +68,13 @@ class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
             Icon(
               Icons.workspace_premium,
               size: 32,
-              color: Theme.of(context).colorScheme.onPrimary
+              color: getMedalColour(widget.tier)
             )
           ],
         ),
       );
       
+      // Add crossout and shading if completed
       if (widget.finished) {
         simpleTile = Stack(
           children: [
