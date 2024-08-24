@@ -8,10 +8,85 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../router.dart';
 
-// Pull the user from the database
-// (Assume this part of the code will be implemented later)
 
-// WIDGET
+class MedalTally extends StatefulWidget {
+  final String medalType; // STRING | The type of the medal. One of ['gold', 'silver', 'bronze']
+
+  const MedalTally({
+    super.key,
+    required this.medalType,
+  });
+
+  @override
+  State<MedalTally> createState() => _MedalTallyState();
+}
+
+class _MedalTallyState extends State<MedalTally> {
+  late IconData _medalIcon;
+  late Color _medalColor;
+
+  @override
+  void initState() {
+    super.initState();
+    switch (widget.medalType) {
+      case 'gold':
+        _medalIcon = Icons.emoji_events;
+        _medalColor = Colors.amber;
+        break;
+      case 'silver':
+        _medalIcon = Icons.emoji_events;
+        _medalColor = Colors.grey;
+        break;
+      case 'bronze':
+        _medalIcon = Icons.emoji_events;
+        _medalColor = Colors.brown;
+        break;
+      default:
+        _medalIcon = Icons.help_outline;
+        _medalColor = Colors.black;
+    }
+  }
+
+  Future<int> _getMedalCount(String medalType) async {
+    final userDoc = await FirebaseFirestore.instance.collection("users").doc(
+        FirebaseAuth.instance.currentUser?.uid
+    ).get();
+    if (userDoc.exists) {
+      final data = userDoc.data();
+      return data?[medalType] as int;
+    } else {
+      return 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<int>(
+      future: _getMedalCount(widget.medalType),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Show loading indicator while waiting for data
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final medalCount = snapshot.data ?? 0;
+
+          return Row(
+            children: [
+              Icon(_medalIcon, color: _medalColor),
+              const SizedBox(width: 8),
+              Text(
+                '$medalCount',
+                style: TextStyle(fontSize: 24, color: _medalColor),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -197,6 +272,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
+                      MedalTally(medalType: "gold"),
+                      MedalTally(medalType: "silver"),
+                      MedalTally(medalType: "bronze"),
                     ],
                   ),
                 ),
