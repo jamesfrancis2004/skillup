@@ -11,7 +11,7 @@ import 'package:skillup/config.dart';
 
 const double _textHorizontalInset = 10.0;
 const double _testVerticalInset = 5.0;
-const double _height = 100.0;
+const double _height = 150.0;
 const double _borderRadius = 4.0;
 const double _gradientBorderWidth = 1.0;
 
@@ -73,42 +73,40 @@ class _MainSkillTileState extends State<MainSkillTile> {
               // errorWidget: BoxDecoration(),
             ),
 
-            // Text shading underlay
-            Padding(
-              padding: const EdgeInsets.only(top: _height - 50),
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color.fromARGB(0, 0, 0, 0), Color.fromARGB(150, 0, 0, 0), Color.fromARGB(150, 0, 0, 0)]
-                  )
-                ),
-              ),
-            ),
-
             // Coloured / gradient overlay for the image
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(_borderRadius),
-                border: GradientBoxBorder(
-                  gradient: (
-                    Theme.of(context).brightness == Brightness.dark ? 
-                    highlightGradient: const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [Color(0xFF4C9DD8), Color(0xFF4C9DD8)],
-                    )
-                  ),
+                border: const GradientBoxBorder(
+                  gradient: highlightGradient,
                   width: _gradientBorderWidth,
                 ),
 
                 gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0x1182F0FF), Color(0x114C9DD8), Color(0x110861A8)]
+                  colors: [Color.fromARGB(100, 61, 113, 119), Color.fromARGB(100, 34, 71, 97), Color.fromARGB(100, 3, 46, 81)]
+                  // colors: [Color(0x88000000), Color(0x66000000), Color(0x88000000)]
+                  // colors: [Color(0x1182F0FF), Color(0x114C9DD8), Color(0x110861A8)]
                 ),
               )
+            ),
+            
+            // Text shading underlay
+            Padding(
+              padding: const EdgeInsets.only(top: _height - 60),
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB(0, 0, 0, 0), Color.fromARGB(100, 0, 0, 0), 
+                      Color.fromARGB(100, 0, 0, 0), Color.fromARGB(100, 0, 0, 0)
+                    ]
+                  )
+                ),
+              ),
             ),
 
             Column(
@@ -124,7 +122,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child : Text(
-                      skill,
+                      "Current Goal",
                       softWrap: false,
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w800, 
@@ -187,7 +185,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
               ),
             ),
 
-            // NOTE: Use IgnorePointer class to allow elements on top of inkwell to let clicks through
+
 
           ]
         )
