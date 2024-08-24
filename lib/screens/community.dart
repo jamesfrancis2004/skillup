@@ -347,18 +347,16 @@ class _ExplorePageState extends State<ExplorePage> {
                                               ? OutgoingMessage(
                                             username: "You",
                                             message: message['message'],
-                                            datetime: message['timestamp']
-                                                .toDate()
-                                                .toString(),
+                                            datetime: message['timestamp'] == null ? '' :
+                                                message['timestamp'].toDate().toString(),
                                             mediaUrl: message['mediaUrl'],
                                             isImage: message['isImage'],
                                           )
                                               : IncomingMessage(
                                             username: username,
                                             message: message['message'],
-                                            datetime: message['timestamp']
-                                                .toDate()
-                                                .toString(),
+                                            datetime: message['timestamp'] == null ? '' :
+                                                message['timestamp'].toDate().toString(),
                                             mediaUrl: message['mediaUrl'],
                                             isImage: message['isImage'],
                                           ),
