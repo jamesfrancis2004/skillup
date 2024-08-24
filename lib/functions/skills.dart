@@ -33,7 +33,6 @@ class CurrentSkill {
     if (querySnapshot.docs.isNotEmpty) {
       final doc = querySnapshot.docs.first;
       final data = doc.data();
-
       return CurrentSkill._(
         category: data['category'],
         challenge1: data['challenge1'],

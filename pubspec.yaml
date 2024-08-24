@@ -60,6 +60,10 @@ dev_dependencies:
   cloud_firestore:
 
   firebase_storage:
+  image:
+
+  camera: ^0.10.0  # Check for the latest version on pub.dev
+  path_provider: ^2.0.0
 
   image_picker:
   video_player:

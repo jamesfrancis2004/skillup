@@ -3,6 +3,8 @@
 <plist version="1.0">
 <dict>
     <key>NSCameraUsageDescription</key>
+    <string>We need camera access to take pictures.</string>
+    <key>NSCameraUsageDescription</key>
     <string>We need to access your camera for taking photos.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need to access your photo library for selecting photos.</string>
