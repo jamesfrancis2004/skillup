@@ -22,13 +22,21 @@ class FriendsPage extends StatefulWidget {
 
 // STATE
 class _FriendsPageState extends State<FriendsPage> {
-  User? u = FirebaseAuth.instance.currentUser;
+  late CurrentUser user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = CurrentUser(id: FirebaseAuth.instance.currentUser!.uid);
+    user.fetchUserData();
+  }
 
   // Method to print user information
   void printUserInfo() {
-    if (u != null) {
-      print('User ID: ${u!.uid}');
-      print('User Email: ${u!.email}');
+    if (user != null) {
+      print('User ID: ${user.id}');
+      print('User Email: ${user.email}');
+      print('User Friends: ${user.friends}');
       // Add more fields if needed
     } else {
       print('No user is currently logged in.');
