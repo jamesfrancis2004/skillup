@@ -26,6 +26,7 @@ const LinearGradient highlightGradient = LinearGradient(
 // GENERAL LAYOUT THEMEING ...
 
 const double horizontalInset = 20;
+const double majorVerticalSpacing = 30;
 
 
 // TEXT THEMES ...

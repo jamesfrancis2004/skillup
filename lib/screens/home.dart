@@ -14,7 +14,7 @@ import 'package:skillup/config.dart';
 
 
 // CONFIG
-const double _verticalSpacing = 30;
+const double _verticalSpacing = majorVerticalSpacing;
 
 const double _challengesVerticalSpacing = 10;
 const double _challengesHeight = 60;
