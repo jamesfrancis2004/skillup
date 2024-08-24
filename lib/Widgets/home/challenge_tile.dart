@@ -49,17 +49,23 @@ class _ChallengeTileState extends State<ChallengeTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(_borderRadius),
-      child: SizedBox(
-        height: _challengesHeight,
-        child: Container(
-          decoration: BoxDecoration(
-            color: _challengeBackgroundColour,
-            borderRadius: BorderRadius.circular(_challengeBorderRadius),
-          ),
-        )
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: horizontalInset, 
+        right: horizontalInset,
       ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        child: SizedBox(
+          height: _challengesHeight,
+          child: Container(
+            decoration: BoxDecoration(
+              color: _challengeBackgroundColour,
+              borderRadius: BorderRadius.circular(_challengeBorderRadius),
+            ),
+          ),
+        ),
+      )
     );
   }
 }

@@ -18,9 +18,10 @@ import 'package:skillup/config.dart';
 const double _verticalSpacing = majorVerticalSpacing;
 
 const double _challengesVerticalSpacing = 10;
-const double _challengesHeight = 60;
-const double _challengeBorderRadius = 4.0;
-const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
+const double _resourcesVerticalSpacing = 10;
+const double _resourcesHeight = 60;
+const double _resourcesBorderRadius = 4.0;
+const Color _resourcesBackgroundColour = Color.fromARGB(255, 70, 70, 75);
 
 const double _subheadingGradientHeight = 3;
 const double _subheadingGradientWidth = 60;
@@ -186,34 +187,28 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Challenges
-            const Padding(
-              padding: const EdgeInsets.only(
-                left: horizontalInset, 
-                right: horizontalInset
-              ),
-              child: Column(
-                children: [
+            Column(
+              children: [
 
-                  // Challenge 1
-                  const ChallengeTile(),
+                // Challenge 1
+                const ChallengeTile(),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 2
-                  const ChallengeTile(),
+                // Challenge 2
+                const ChallengeTile(),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 3
-                  const ChallengeTile(),
-                ],
-              )
+                // Challenge 3
+                const ChallengeTile(),
+              ],
             ),
 
             // Padding
@@ -269,7 +264,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Resources
-            const Padding(
+            Padding(
               padding: const EdgeInsets.only(
                 left: horizontalInset, 
                 right: horizontalInset
@@ -277,24 +272,48 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
 
-                  // Challenge 1
-                  const ChallengeTile(),
+                  // Resource 1
+                  SizedBox(
+                    height: _resourcesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _resourcesBackgroundColour,
+                        borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                    )
+                  ),
 
                   // Padding
                   const SizedBox(
-                    height: _challengesVerticalSpacing
+                    height: _resourcesVerticalSpacing
                   ),
 
-                  // Challenge 2
-                  const ChallengeTile(),
+                  // Resource 2
+                  SizedBox(
+                    height: _resourcesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _resourcesBackgroundColour,
+                        borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                    )
+                  ),
 
                   // Padding
                   const SizedBox(
-                    height: _challengesVerticalSpacing
+                    height: _resourcesVerticalSpacing
                   ),
 
-                  // Challenge 3
-                  const ChallengeTile(),
+                  // Resource 3
+                  SizedBox(
+                    height: _resourcesHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _resourcesBackgroundColour,
+                        borderRadius: BorderRadius.circular(_resourcesBorderRadius),
+                      ),
+                    )
+                  ),
                 ],
               )
             ),
