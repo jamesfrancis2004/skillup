@@ -31,15 +31,47 @@ class CurrentUser {
     }
   }
 
+  Future<bool> sendFriendRequest(String newFriendId) async {
+    final friendDocRef =
+        FirebaseFirestore.instance.collection('users').doc(newFriendId);
+    final friendDoc = await friendDocRef.get();
+    if (!friendDoc.exists) {
+      return false;
+    }
+
+    await friendDocRef.update({
+      'inbound_requests': FieldValue.arrayUnion([id])
+    });
+
+    return true;
+  }
+
+  Future<bool> acceptFriendRequest(String acceptedFriendId) async {
+    final friendDocRef =
+        FirebaseFirestore.instance.collection('users').doc(acceptedFriendId);
+    final friendDoc = await friendDocRef.get();
+    if (!friendDoc.exists) {
+      return false;
+    }
+
+    await friendDocRef.update({
+      'outbound_requests': FieldValue.arrayRemove([id])
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(acceptedFriendId)
+        .update({
+      'inbound_requests': FieldValue.arrayRemove([acceptedFriendId])
+    });
+    return true;
+  }
+
   Future<void> addFriends(String newFriendId) async {
-    String currentUser = "9iCkGILei2p4sG17tZ7o";
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
 
-    final DocumentReference userDocRef =
-        FirebaseFirestore.instance.collection('users').doc(currentUser);
-
-    DocumentSnapshot userDoc = await userDocRef.get();
-
-    if (userDoc.exists) {
+    if (doc.exists) {
       List<String> friendIds = List<String>.from(userDoc['friendIds'] ?? []);
 
       if (!friendIds.contains(newFriendId)) {
