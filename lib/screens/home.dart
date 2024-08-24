@@ -33,6 +33,10 @@ const double _subheadingGradientWidth = 60;
 const double _filterHorizontalInset = 0;
 
 
+bool _isUserDataLoaded = false;
+bool _isSkillDataLoaded = false;
+
+
 // WIDGET 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});  
@@ -57,8 +61,6 @@ class _HomePageState extends State<HomePage> {
   late CurrentSkill skill;
   late CurrentUser user;
   late List<bool> completions = [false, false, false];
-  bool _isUserDataLoaded = false;
-  bool _isSkillDataLoaded = false;
 
   @override
     void initState() {
@@ -105,7 +107,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return (_isSkillDataLoaded) 
+    ?
+    Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
 
@@ -499,6 +503,24 @@ class _HomePageState extends State<HomePage> {
 
           ]
         )
+      )
+    )
+    :
+    Container(
+      decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors:  [
+                Color(0xff00274d), // Dark Blue
+                Color(0xff001f3f), // Even Darker Blue
+                Color(0xff000a1b)  // Nearly Black
+              ],
+
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
+            )
+        ),
+      child: const Center(
+        child: CircularProgressIndicator()
       )
     );
   }
