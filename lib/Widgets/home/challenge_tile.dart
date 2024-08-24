@@ -70,15 +70,56 @@ class _ChallengeTileState extends State<ChallengeTile> {
             width: horizontalInset
           ),
 
-          // Main challenge tile
-          Container(
-            height: _height,
-            width: MediaQuery.of(context).size.width - (2 * horizontalInset),
-            decoration: BoxDecoration(
-              color: _challengeBackgroundColour,
-              borderRadius: BorderRadius.circular(_borderRadius),
+          Dismissible(
+            key: UniqueKey(),
+            direction: DismissDirection.horizontal,  // Swipe left to right
+            onDismissed: (direction) {
+              if (direction == DismissDirection.endToStart) {
+                print("Dismissed :)");  // Run script when swiped left
+              }
+            },
+            background: const SizedBox(
+              width: 0,
+              height: 0,
+            ),
+            // Container(
+            //   height: _height,
+            //   width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+            //   color: Colors.blue,
+            //   alignment: Alignment.centerLeft,
+            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //   child: const Icon(
+            //     Icons.arrow_forward,
+            //     color: Colors.white,
+            //   ),
+            // ),
+            child: Container(
+              height: _height,
+              width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+              color: Colors.red,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                ]
+              )
             ),
           ),
+
+
+          // // Main challenge tile
+          // Container(
+          //   height: _height,
+          //   width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+          //   decoration: BoxDecoration(
+          //     color: _challengeBackgroundColour,
+          //     borderRadius: BorderRadius.circular(_borderRadius),
+          //   ),
+          // ),
 
           // Padding right
           const SizedBox(
