@@ -47,6 +47,17 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 30.0,
                     ),
                   ),
+                  Text(
+                    "Making a better you",
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    )
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 80,
+                  ),
                   TextField(
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.bold,
