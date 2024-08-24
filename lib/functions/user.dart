@@ -115,8 +115,9 @@ class CurrentUser {
       return false;
     }
 
+    print(friendName);
     final friendId = await getIdFromName(friendName);
-
+    print(friendId);
     if (friendId == null) {
       return false;
     }
@@ -124,6 +125,7 @@ class CurrentUser {
     final friendDocRef =
         FirebaseFirestore.instance.collection('users').doc(friendId);
     final friendDoc = await friendDocRef.get();
+    print(friendDoc.exists);
     if (!friendDoc.exists) {
       return false;
     }

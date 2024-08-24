@@ -19,13 +19,10 @@ const double _subheadingGradientWidth = 60;
 
 const double filterHorizontalInset = 0;
 
-const outgoingRequests = ["Bob", "CHOIC", "Daniel"];
-const incomingRequests = ["Daniel", "James", "Josh"];
-
 // WIDGET
 class FriendsPage extends StatefulWidget {
-  const FriendsPage({super.key});  
-  
+  const FriendsPage({super.key});
+
   @override
   State<FriendsPage> createState() => _FriendsPageState();
 
@@ -42,8 +39,8 @@ class FriendsPage extends StatefulWidget {
 
 // STATE
 class _FriendsPageState extends State<FriendsPage> {
-
-  final TextEditingController _friendSearchController = TextEditingController(text: '');
+  final TextEditingController _friendSearchController =
+      TextEditingController(text: '');
   late CurrentUser user;
   var showRequestError = false;
 
@@ -87,55 +84,44 @@ class _FriendsPageState extends State<FriendsPage> {
             children: [
               Container(
                 padding: const EdgeInsets.only(
-                  left: _selectorRowInsetHorizontal, 
-                  right: _selectorRowInsetHorizontal, 
-                  top: 16,
-                  bottom: 16
-                ),
+                    left: _selectorRowInsetHorizontal,
+                    right: _selectorRowInsetHorizontal,
+                    top: 16,
+                    bottom: 16),
                 child: Column(
                   children: [
                     SizedBox(height: 20),
-                    
+
                     // Challenges title
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // The title of the row
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Add Friends",
+                                    style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 15.0)),
+                                const Padding(
+                                    padding: EdgeInsets.only(
+                                        right: filterHorizontalInset),
+                                    child: SizedBox(width: 0, height: 0)),
+                              ]),
 
-                        // The title of the row
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Add Friends",
-                              style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold, 
-                                color: Theme.of(context).colorScheme.onBackground, 
-                                fontSize: 15.0
-                              )
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: filterHorizontalInset),
-                              child: SizedBox(
-                                width: 0,
-                                height: 0
-                              )
-                            ),
-                          ]
-                        ),
-
-                        // The gradient subheading 
-                        Container(
-                          height: _subheadingGradientHeight,
-                          width: _subheadingGradientWidth,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: highlightGradient
-                          )
-                        ),
-
-                      ]
-                    ),
+                          // The gradient subheading
+                          Container(
+                              height: _subheadingGradientHeight,
+                              width: _subheadingGradientWidth,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: highlightGradient)),
+                        ]),
 
                     SizedBox(height: 20),
                     Row(
@@ -177,7 +163,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           onPressed: () {
                             // Handle button press
-                            getStatusOfRequest("CHOIC");
+                            getStatusOfRequest(_friendSearchController.text);
                           },
                         ),
                       ],
@@ -185,61 +171,48 @@ class _FriendsPageState extends State<FriendsPage> {
                     showRequestError
                         ? Text(
                             'Failed to find user',
-                            style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           )
                         : SizedBox(height: 1),
                     SizedBox(height: 20),
-                    
-                    
+
                     // Challenges title
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
-                        bottom: 15
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          // The title of the row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        padding: const EdgeInsets.only(
+                            left: _selectorRowInsetHorizontal, bottom: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "Pending Request",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.bold, 
-                                  color: Theme.of(context).colorScheme.onBackground, 
-                                  fontSize: 15.0
-                                )
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: filterHorizontalInset),
-                                child: SizedBox(
-                                  width: 0,
-                                  height: 0
-                                )
-                              ),
-                            ]
-                          ),
+                              // The title of the row
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Pending Request",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontSize: 15.0)),
+                                    const Padding(
+                                        padding: EdgeInsets.only(
+                                            right: filterHorizontalInset),
+                                        child: SizedBox(width: 0, height: 0)),
+                                  ]),
 
-                          // The gradient subheading 
-                          Container(
-                            height: _subheadingGradientHeight,
-                            width: _subheadingGradientWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: highlightGradient
-                            )
-                          ),
-
-                        ]
-                      )
-                    ),
-
-
-
+                              // The gradient subheading
+                              Container(
+                                  height: _subheadingGradientHeight,
+                                  width: _subheadingGradientWidth,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: highlightGradient)),
+                            ])),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,55 +244,40 @@ class _FriendsPageState extends State<FriendsPage> {
                     ),
                     const SizedBox(height: 20),
 
-
-
                     // Challenges title
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
-                        bottom: 15
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          // The title of the row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        padding: const EdgeInsets.only(
+                            left: _selectorRowInsetHorizontal, bottom: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "Sent Requests",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.bold, 
-                                  color: Theme.of(context).colorScheme.onBackground, 
-                                  fontSize: 15.0
-                                )
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: filterHorizontalInset),
-                                child: SizedBox(
-                                  width: 0,
-                                  height: 0
-                                )
-                              ),
-                            ]
-                          ),
+                              // The title of the row
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Sent Requests",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontSize: 15.0)),
+                                    const Padding(
+                                        padding: EdgeInsets.only(
+                                            right: filterHorizontalInset),
+                                        child: SizedBox(width: 0, height: 0)),
+                                  ]),
 
-                          // The gradient subheading 
-                          Container(
-                            height: _subheadingGradientHeight,
-                            width: _subheadingGradientWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: highlightGradient
-                            )
-                          ),
-
-                        ]
-                      )
-                    ),
-
+                              // The gradient subheading
+                              Container(
+                                  height: _subheadingGradientHeight,
+                                  width: _subheadingGradientWidth,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: highlightGradient)),
+                            ])),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,57 +298,40 @@ class _FriendsPageState extends State<FriendsPage> {
                     ),
                     const SizedBox(height: 20),
 
-
-
                     // Challenges title
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
-                        bottom: 15
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          // The title of the row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        padding: const EdgeInsets.only(
+                            left: _selectorRowInsetHorizontal, bottom: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "Current Friends",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.bold, 
-                                  color: Theme.of(context).colorScheme.onBackground, 
-                                  fontSize: 15.0
-                                )
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: filterHorizontalInset),
-                                child: SizedBox(
-                                  width: 0,
-                                  height: 0
-                                )
-                              ),
-                            ]
-                          ),
+                              // The title of the row
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Current Friends",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontSize: 15.0)),
+                                    const Padding(
+                                        padding: EdgeInsets.only(
+                                            right: filterHorizontalInset),
+                                        child: SizedBox(width: 0, height: 0)),
+                                  ]),
 
-                          // The gradient subheading 
-                          Container(
-                            height: _subheadingGradientHeight,
-                            width: _subheadingGradientWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: highlightGradient
-                            )
-                          ),
-
-                        ]
-                      )
-                    ),
-
-
-
+                              // The gradient subheading
+                              Container(
+                                  height: _subheadingGradientHeight,
+                                  width: _subheadingGradientWidth,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: highlightGradient)),
+                            ])),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +349,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                         );
                       }).toList(),
-                    ),// Display current friends similarly
+                    ), // Display current friends similarly
                   ],
                 ),
               ),
