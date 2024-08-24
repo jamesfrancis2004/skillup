@@ -59,9 +59,9 @@ class _FriendsPageState extends State<FriendsPage> {
   }
 
   // Function to update whether showing error
-  void getStatusOfRequest() async {
+  void getStatusOfRequest(String name) async {
     // Simulate API call
-    await Future.delayed(Duration(seconds: 1)); // Simulating network delay
+    user.sendFriendRequest(name); // Simulating network delay
     setState(() {
       showRequestError = true; // Update state to show the error
     });
@@ -177,7 +177,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           onPressed: () {
                             // Handle button press
-                            getStatusOfRequest();
+                            getStatusOfRequest("CHOIC");
                           },
                         ),
                       ],
@@ -243,7 +243,7 @@ class _FriendsPageState extends State<FriendsPage> {
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: incomingRequests.map((request) {
+                      children: user.inboundRequests.map((request) {
                         return ListTile(
                           title: Text(
                             request, // Display the username of the incoming request
@@ -323,7 +323,7 @@ class _FriendsPageState extends State<FriendsPage> {
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: outgoingRequests.map((request) {
+                      children: user.outboundRequests.map((request) {
                         return ListTile(
                           title: Text(
                             request, // Display the username of the outgoing request
@@ -394,7 +394,7 @@ class _FriendsPageState extends State<FriendsPage> {
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: outgoingRequests.map((request) {
+                      children: user.outboundRequests.map((request) {
                         return ListTile(
                           title: Text(
                             request, // Display the username of the outgoing request
