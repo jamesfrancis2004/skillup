@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:skillup/config.dart';
 
-const double _selectorRowInsetHorizontal = 20;
-const double _verticalSpacing = 30;
+const double _selectorRowInsetHorizontal = horizontalInset;
+const double _verticalSpacing = majorVerticalSpacing;
 
 const double _challengesVerticalSpacing = 10;
 const double _challengesHeight = 60;
@@ -86,62 +86,56 @@ class _FriendsPageState extends State<FriendsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                  left: _selectorRowInsetHorizontal, 
+                  right: _selectorRowInsetHorizontal, 
+                  top: 16,
+                  bottom: 16
+                ),
                 child: Column(
                   children: [
                     SizedBox(height: 20),
                     
+                    // Challenges title
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
 
+                        // The title of the row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Add Friends",
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold, 
+                                color: Theme.of(context).colorScheme.onBackground, 
+                                fontSize: 15.0
+                              )
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: filterHorizontalInset),
+                              child: SizedBox(
+                                width: 0,
+                                height: 0
+                              )
+                            ),
+                          ]
+                        ),
 
-                  // Challenges title
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
-                        bottom: 15
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+                        // The gradient subheading 
+                        Container(
+                          height: _subheadingGradientHeight,
+                          width: _subheadingGradientWidth,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: highlightGradient
+                          )
+                        ),
 
-                          // The title of the row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Add Friends",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.bold, 
-                                  color: Theme.of(context).colorScheme.onBackground, 
-                                  fontSize: 15.0
-                                )
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: filterHorizontalInset),
-                                child: SizedBox(
-                                  width: 0,
-                                  height: 0
-                                )
-                              ),
-                            ]
-                          ),
-
-                          // The gradient subheading 
-                          Container(
-                            height: _subheadingGradientHeight,
-                            width: _subheadingGradientWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: highlightGradient
-                            )
-                          ),
-
-                        ]
-                      )
+                      ]
                     ),
-
-
-
 
                     SizedBox(height: 20),
                     Row(
