@@ -326,9 +326,10 @@ class _ExplorePageState extends State<ExplorePage> {
                             var messages = snapshot.data!.docs;
                             return ListView.builder(
                               controller: _scrollController,
+                              reverse: true,
                               itemCount: messages.length,
                               itemBuilder: (context, index) {
-                                var message = messages[index];
+                                var message = messages[messages.length - index - 1];
                                 bool isOutgoing = message['uid'] ==
                                     FirebaseAuth.instance.currentUser?.uid;
                                 return FutureBuilder<String>(
