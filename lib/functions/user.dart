@@ -154,6 +154,11 @@ class CurrentUser {
       'inboundRequests': FieldValue.arrayRemove([friendId])
     });
     inboundRequests.remove(friendId);
+    
+    await FirebaseFirestore.instance.collection('users').doc(id).update({
+      'friends': FieldValue.arrayUnion([friendId])
+    });
+    friends.add(friendId);
 
     return true;
   }

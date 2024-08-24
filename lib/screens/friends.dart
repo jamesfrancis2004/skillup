@@ -209,7 +209,6 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                       padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
                         bottom: 15
                       ),
                       child: Column(
@@ -314,12 +313,15 @@ class _FriendsPageState extends State<FriendsPage> {
                                     IconButton(
                                       icon: Icon(Icons.check, color: Colors.green),
                                       onPressed: () async {
+                                        print("HERE");
                                         bool success = await user.acceptFriendRequest(request);
                                         if (success) {
+                                          print("Aceepted Friend");
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Friend request rejected')),
                                           );
                                         } else {
+                                          print("NOT HERE");
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Failed to reject friend request')),
                                           );
@@ -357,7 +359,6 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                       padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
                         bottom: 15
                       ),
                       child: Column(
@@ -453,6 +454,10 @@ class _FriendsPageState extends State<FriendsPage> {
                                             SnackBar(content: Text('Friend request rejected')),
                                           );
                                         } else {
+                                          setState(() {
+                                            // Optionally update the UI to reflect the rejection
+                                            // user.inboundRequests.remove(request);
+                                          });
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Failed to reject friend request')),
                                           );
@@ -474,8 +479,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     // Challenges title
                     Padding(
                       padding: const EdgeInsets.only(
-                        left: _selectorRowInsetHorizontal, 
-                        bottom: 15
+                        bottom: 0
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -559,18 +563,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    IconButton(
-                                      icon: Icon(Icons.check, color: Colors.green),
-                                      onPressed: () {
-                                        // Accept friend request logic
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.close, color: Colors.red),
-                                      onPressed: () {
-                                        // Decline friend request logic
-                                      },
-                                    ),
+                                    SizedBox(height: 10),
                                   ],
                                 ),
                               );
