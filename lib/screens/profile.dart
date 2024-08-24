@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skillup/functions/skills.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -18,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _usernameController = TextEditingController(text: 'JamesHocking542');
   late CurrentUser user;
+  late CurrentSkill skill;
 
   @override
   void initState() {
@@ -27,6 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {});
+    skill = await CurrentSkill.create();
     setState(() {});
   }
   @override

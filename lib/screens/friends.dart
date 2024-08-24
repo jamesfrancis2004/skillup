@@ -31,13 +31,13 @@ class _FriendsPageState extends State<FriendsPage> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadUserData();
   }
 
-  Future<void> _loadData() async {
+  Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
-    skill = await CurrentSkill.create(DateTime.now());
-    print(skill);
+    setState(() {});
+    skill = await CurrentSkill.create();
     setState(() {});
   }
 

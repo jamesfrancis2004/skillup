@@ -9,7 +9,7 @@ class CurrentSkill {
   String description;
   String imageUrl;
 
-  // Constructor
+  // Private constructor
   CurrentSkill._({
     this.title = '',
     this.category = '',
@@ -20,32 +20,35 @@ class CurrentSkill {
     this.imageUrl = '',
   });
 
-  // Create function to find the skill by DateTime
-  static Future<CurrentSkill> create(DateTime dateTime) async {
-    // Convert the DateTime object to a Firestore Timestamp
-    Timestamp timestamp = Timestamp.fromDate(dateTime);
-
-    // Query the Firestore collection to find a document matching the given Timestamp
+  // Create function to find the skill by date
+  static Future<CurrentSkill> create() async {
+    print("Is this getting called");
+    // Query the Firestore collection to find a document where 'date' is equal to 1
     final querySnapshot = await FirebaseFirestore.instance
         .collection('skills') // Assuming your collection is named 'skills'
-        .where('date', isEqualTo: timestamp) // Replace 'timestampField' with your actual field name
+        .where('selected', isEqualTo: 1) // Assuming 'date' is the field storing the integer value
+        .limit(1) // Get only the first matching document
         .get();
+
+      print(querySnapshot);
 
     if (querySnapshot.docs.isNotEmpty) {
       final doc = querySnapshot.docs.first;
       final data = doc.data();
 
       return CurrentSkill._(
-        title: data['title'] ?? '',
-        category: data['category'] ?? '',
-        challenge1: data['challenge1'] ?? '',
-        challenge2: data['challenge2'] ?? '',
-        challenge3: data['challenge3'] ?? '',
-        description: data['description'] ?? '',
-        imageUrl: data['image_url'] ?? '',
+        title: data['title'],
+        category: data['category'],
+        challenge1: data['challenge1'],
+        challenge2: data['challenge2'],
+        challenge3: data['challenge3'],
+        description: data['description'],
+        imageUrl: data['image_url'],
       );
     } else {
-      throw Exception('Skill not found for the given DateTime!');
+      throw Exception('Skill not found with date set to 1!');
     }
   }
+
+
 }
