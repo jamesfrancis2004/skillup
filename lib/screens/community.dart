@@ -157,8 +157,287 @@ class IncomingMessage extends StatelessWidget {
     );
   }
 }
+class ExplorePage extends StatefulWidget {
+  const ExplorePage({super.key});
 
+  @override
+  _ExplorePageState createState() => _ExplorePageState();
+}
 
+class _ExplorePageState extends State<ExplorePage> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _selectedMedia;
+  bool _isImage = true;
+  TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedMedia = image;
+        _isImage = true;
+      });
+    }
+  }
+
+  Future<void> _pickVideo() async {
+    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
+    if (video != null) {
+      setState(() {
+        _selectedMedia = video;
+        _isImage = false;
+      });
+    }
+  }
+
+  Future<void> _uploadMediaAndSendMessage() async {
+    String? mediaUrl;
+
+    if (_selectedMedia != null) {
+      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}_${_isImage ? 'image' : 'video'}';
+      try {
+        final ref = FirebaseStorage.instance.ref().child(fileName);
+        await ref.putFile(File(_selectedMedia!.path));
+        mediaUrl = await ref.getDownloadURL();
+      } catch (e) {
+        print('Failed to upload media: $e');
+        return;
+      }
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection("messages").doc().set({
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+        'message': _textController.text,
+        'mediaUrl': mediaUrl,
+        'isImage': _isImage,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      setState(() {
+        _selectedMedia = null;
+        _textController.clear();
+      });
+    } catch (e) {
+      print('Failed to send message: $e');
+    }
+  }
+
+  void _showAttachmentOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 150,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.video_call),
+                title: Text('Video'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickVideo();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<String> _getUsername(String uid) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        return userDoc['name'] ?? 'Unknown User';
+      } else {
+        return 'Unknown User';
+      }
+    } catch (e) {
+      print('Failed to fetch username: $e');
+      return 'Unknown User';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Community",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.black,
+                ),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.60,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('messages')
+                        .orderBy('timestamp', descending: false)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      var messages = snapshot.data!.docs;
+                      return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          var message = messages[index];
+                          bool isOutgoing = message['uid'] == FirebaseAuth.instance.currentUser?.uid;
+                          return FutureBuilder<String>(
+                            future: _getUsername(message['uid']),
+                            builder: (context, usernameSnapshot) {
+                              String username = usernameSnapshot.data ?? 'Unknown User';
+                              return Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    isOutgoing
+                                        ? OutgoingMessage(
+                                      username: "You",
+                                      message: message['message'],
+                                      datetime: message['timestamp'].toDate().toString(),
+                                      mediaUrl: message['mediaUrl'],
+                                      isImage: message['isImage'],
+                                    )
+                                        : IncomingMessage(
+                                      username: username,
+                                      message: message['message'],
+                                      datetime: message['timestamp'].toDate().toString(),
+                                      mediaUrl: message['mediaUrl'],
+                                      isImage: message['isImage'],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 70,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.grey[200],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (_selectedMedia != null)
+                            _isImage
+                                ? Image.file(
+                              File(_selectedMedia!.path),
+                              fit: BoxFit.cover,
+                              height: 150,
+                              width: double.infinity,
+                            )
+                                : VideoPlayerWidget(
+                              videoPath: _selectedMedia!.path,
+                            ),
+                          if (_selectedMedia != null)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                controller: _textController,
+                                decoration: InputDecoration(
+                                  hintText: "Add a caption...",
+                                  fillColor: Colors.grey,
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          if (_selectedMedia != null)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    _selectedMedia = null;
+                                    _textController.clear();
+                                  });
+                                },
+                                child: Text('Remove'),
+                              ),
+                            ),
+                          if (_selectedMedia == null)
+                            TextField(
+                              controller: _textController,
+                              decoration: InputDecoration(
+                                hintText: "Send a message",
+                                filled: true,
+                                fillColor: Colors.grey,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              minLines: 1,
+                              maxLines: 5,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.attach_file),
+                    onPressed: () {
+                      _showAttachmentOptions(context);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () async {
+                      await _uploadMediaAndSendMessage();
+                      _textController.clear();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
@@ -422,6 +701,8 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 }
+
+ */
 
 
 
