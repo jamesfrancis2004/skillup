@@ -187,34 +187,28 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Challenges
-            const Padding(
-              padding: const EdgeInsets.only(
-                left: horizontalInset, 
-                right: horizontalInset
-              ),
-              child: Column(
-                children: [
+            Column(
+              children: [
 
-                  // Challenge 1
-                  const ChallengeTile(),
+                // Challenge 1
+                const ChallengeTile(),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 2
-                  const ChallengeTile(),
+                // Challenge 2
+                const ChallengeTile(),
 
-                  // Padding
-                  const SizedBox(
-                    height: _challengesVerticalSpacing
-                  ),
+                // Padding
+                const SizedBox(
+                  height: _challengesVerticalSpacing
+                ),
 
-                  // Challenge 3
-                  const ChallengeTile(),
-                ],
-              )
+                // Challenge 3
+                const ChallengeTile(),
+              ],
             ),
 
             // Padding
