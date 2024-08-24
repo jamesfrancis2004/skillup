@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skillup/functions/user.dart';
@@ -139,7 +140,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.black,
                                       size: 30.0,
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      await FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(FirebaseAuth.instance.currentUser?.uid)
+                                          .update({
+                                        'name': _usernameController.text,
+                                      });
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
