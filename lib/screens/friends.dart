@@ -61,9 +61,9 @@ class _FriendsPageState extends State<FriendsPage> {
   // Function to update whether showing error
   void getStatusOfRequest(String name) async {
     // Simulate API call
-    user.sendFriendRequest(name); // Simulating network delay
+    bool requestStatus = user.sendFriendRequest(name); // Simulating network delay
     setState(() {
-      showRequestError = true; // Update state to show the error
+      showRequestError = !requestStatus; // Update state to show the error
     });
   }
 
@@ -177,7 +177,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           onPressed: () {
                             // Handle button press
-                            getStatusOfRequest("CHOIC");
+                            getStatusOfRequest(_friendSearchController.text);
                           },
                         ),
                       ],
@@ -394,7 +394,7 @@ class _FriendsPageState extends State<FriendsPage> {
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: user.outboundRequests.map((request) {
+                      children: user.friends.map((request) {
                         return ListTile(
                           title: Text(
                             request, // Display the username of the outgoing request
