@@ -76,7 +76,21 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isUserDataLoaded
-          ? RefreshIndicator(
+          ? Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff00274d),
+                  Color(0xff001f3f),
+                  Color(0xff000a1b),
+                ],
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: RefreshIndicator(
               color: Theme.of(context).colorScheme.onTertiaryContainer,
               backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
               onRefresh: () async {
@@ -89,17 +103,6 @@ class _FriendsPageState extends State<FriendsPage> {
                 controller: FriendsPage._scrollController,
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xff00274d),
-                        Color(0xff001f3f),
-                        Color(0xff000a1b),
-                      ],
-                      begin: Alignment.center,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
                   padding: const EdgeInsets.only(
                       left: _selectorRowInsetHorizontal,
                       right: _selectorRowInsetHorizontal,
@@ -122,6 +125,7 @@ class _FriendsPageState extends State<FriendsPage> {
                 ),
               ),
             )
+          )
           : Center(child: CircularProgressIndicator()),
     );
   }
