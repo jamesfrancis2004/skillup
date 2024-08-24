@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
                 bottom: 15
               ),
               child: Column(
@@ -139,6 +140,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
                 bottom: 15
               ),
               child: Column(
@@ -245,6 +247,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(
                 left: _selectorRowInsetHorizontal, 
+                right: _selectorRowInsetHorizontal, 
                 bottom: 15
               ),
               child: Column(
