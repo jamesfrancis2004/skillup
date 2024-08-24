@@ -7,6 +7,7 @@ class CurrentUser {
   List<dynamic> friends;
   List<dynamic> inboundRequests;
   List<dynamic> outboundRequests;
+  List<dynamic> challengesCompleted;
 
   // Constructor
   CurrentUser._({
@@ -16,6 +17,7 @@ class CurrentUser {
     this.friends = const [],
     this.inboundRequests = const [],
     this.outboundRequests = const [],
+    this.challengesCompleted = const [false, false, false],
   });
 
   static Future<CurrentUser> create(String id) async {
@@ -31,6 +33,7 @@ class CurrentUser {
         friends: data['friends'],
         inboundRequests: data['inboundRequests'],
         outboundRequests: data['outboundRequests'],
+        challengesCompleted: data['challengesCompleted'],
       );
     } else {
       throw Exception('User not found!');
@@ -61,6 +64,21 @@ class CurrentUser {
     return null;
   }
 
+  Future<bool> toggleChallengeComplete(int challengeNumber) async {
+    final docRef = FirebaseFirestore.instance.collection('users').doc(id);
+    final doc = await docRef.get();
+
+    if (!doc.exists) {
+      return false;
+    }
+
+    challengesCompleted[challengeNumber] =
+        !challengesCompleted[challengeNumber];
+    docRef.update({'challengesCompleted': challengesCompleted});
+
+    return true;
+  }
+
   Future<bool> updateName(String newName) async {
     final docRef = FirebaseFirestore.instance.collection('users').doc(id);
     final doc = await docRef.get();
@@ -70,6 +88,7 @@ class CurrentUser {
     }
 
     docRef.update({'name': newName});
+    name = newName;
 
     return true;
   }
@@ -116,7 +135,6 @@ class CurrentUser {
     }
 
     final friendId = await getIdFromName(friendName);
-
     if (friendId == null) {
       return false;
     }
@@ -126,6 +144,10 @@ class CurrentUser {
     final friendDoc = await friendDocRef.get();
     if (!friendDoc.exists) {
       return false;
+    }
+    if (friendDoc['outboundRequests'].includes(friendId)) {
+      final status = await acceptFriendRequest(friendId);
+      return status;
     }
 
     await friendDocRef.update({
@@ -148,10 +170,12 @@ class CurrentUser {
     }
 
     await friendDocRef.update({
-      'outboundRequests': FieldValue.arrayRemove([id])
+      'outboundRequests': FieldValue.arrayRemove([id]),
+      'friends': FieldValue.arrayUnion([id])
     });
     await FirebaseFirestore.instance.collection('users').doc(id).update({
-      'inboundRequests': FieldValue.arrayRemove([friendId])
+      'inboundRequests': FieldValue.arrayRemove([friendId]),
+      'friends': FieldValue.arrayUnion([friendId])
     });
     inboundRequests.remove(friendId);
     
