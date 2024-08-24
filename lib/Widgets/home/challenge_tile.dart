@@ -162,6 +162,13 @@ class _ChallengeTileState extends State<ChallengeTile> {
             width: horizontalInset
           ),
 
+          widget.finished ? 
+          _SimpleChallengeTile(
+              tier: widget.tier,
+              description: widget.description,
+              finished: true,
+          )
+          : 
           Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.startToEnd,  // Swipe left to right

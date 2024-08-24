@@ -28,6 +28,7 @@ class ContributePage extends StatefulWidget {
 }
 
 // STATE
+
 class _ContributePageState extends State<ContributePage> {
   final ImagePicker _picker = ImagePicker();
   XFile? _selectedMedia;
@@ -137,27 +138,55 @@ class _ContributePageState extends State<ContributePage> {
       },
     );
   }
-
+  Stream<QuerySnapshot> _postsStream() {
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Contribute"),
+      ),
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          controller: ContributePage._scrollController,
+        child: Column(
           children: [
-            Text(
-              "Contribute",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _postsStream(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text('No posts available'));
+                  }
+
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var post = snapshot.data!.docs[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: PostSubmissionContainer(
+                          description: post['description'] ?? '',
+                          // You can add more fields from the post document as needed
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
-            SizedBox(height: 16),
-            // Container for post submissions
-            PostSubmissionContainer(description: "Sample description"),
-            SizedBox(height: 16),
             Row(
               children: <Widget>[
                 Expanded(
@@ -206,10 +235,10 @@ class _ContributePageState extends State<ContributePage> {
                                 });
                               },
                               child: Text(
-                                  'Remove',
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.bold,
-                                  )
+                                'Remove',
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -247,13 +276,15 @@ class _ContributePageState extends State<ContributePage> {
                 ),
               ],
             ),
-            // Additional text box
           ],
         ),
       ),
     );
   }
 }
+
+
+
 
 // Custom Widget for Post Submission
 class PostSubmissionContainer extends StatelessWidget {
