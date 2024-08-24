@@ -444,7 +444,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                         if (success) {
                                           setState(() {
                                             // Optionally update the UI to reflect the rejection
-                                            user.inboundRequests.remove(request);
+                                            // user.inboundRequests.remove(request);
                                           });
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Friend request rejected')),
