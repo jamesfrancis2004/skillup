@@ -54,11 +54,14 @@ dev_dependencies:
   firebase_core: ^2.27.2
   google_fonts: ^6.2.1
   firebase_auth: ^4.18.0
-<<<<<<< HEAD
+
   firebase_database: ^10.1.0
-=======
+
   cloud_firestore:
->>>>>>> 231895d36daa0f16649b05b0ed0b1c342426a754
+
+  image_picker:
+  video_player:
+
 
 
 
