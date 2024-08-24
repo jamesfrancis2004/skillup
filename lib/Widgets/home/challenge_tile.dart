@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skeleton_text/skeleton_text.dart';
@@ -31,8 +33,16 @@ const String imageUrl = "https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_1636631
 // MAIN SKILL TILE ...
 
 class ChallengeTile extends StatefulWidget {
+
+  final String description;
+  final String tier;
+  final bool finished;
+
   const ChallengeTile({
     super.key, 
+    required this.tier, // STRING | The tier of the challenge. One of ['bronze', 'silver', 'gold']
+    required this.description, // STRING | The description of the challenge
+    required this.finished, // BOOL | Whether the challenge has been completed
   });
   
   @override
@@ -42,10 +52,10 @@ class ChallengeTile extends StatefulWidget {
 
 class _ChallengeTileState extends State<ChallengeTile> {
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
