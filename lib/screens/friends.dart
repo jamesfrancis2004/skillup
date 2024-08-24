@@ -27,6 +27,7 @@ class _FriendsPageState extends State<FriendsPage> {
 
   final TextEditingController _friendSearchController = TextEditingController(text: '');
   late CurrentUser user;
+  var showRequestError = false;
 
   @override
   void initState() {
@@ -37,7 +38,15 @@ class _FriendsPageState extends State<FriendsPage> {
   Future<void> _loadUserData() async {
     user = await CurrentUser.create(FirebaseAuth.instance.currentUser!.uid);
     setState(() {});
-    
+  }
+
+  // function to update whether showing error
+  void getStatusOfRequest() async {
+    // Simulate API call
+    await Future.delayed(Duration(seconds: 1)); // Simulating network delay
+    setState(() {
+      showRequestError = true; // Update state to show the error
+    });
   }
 
   @override
@@ -107,19 +116,22 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                           onPressed: () {
                             // Handle button press
-                            print('Send button pressed');
-                            print(
-                                'Entered text: ${_friendSearchController.text}');
+                            getStatusOfRequest();
                           },
                         ),
                       ],
                     ),
-                    SizedBox(height:20),
+                    showRequestError
+                        ? Text(
+                            'Failed to find user',
+                            style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w700),
+                          )
+                        : SizedBox(height: 1),
+                    SizedBox(height: 20),
                     const Text(
                       "Current Friends",
                       style: TextStyle(color: Color.fromARGB(255, 174, 219, 255), fontSize: 36, fontWeight: FontWeight.w900),
                     )
-                    
                   ],
                 ),
               ),
