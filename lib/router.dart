@@ -10,6 +10,8 @@ import 'package:skillup/screens/profile.dart';
 import 'package:skillup/Widgets/authentication/login.dart';
 import 'package:skillup/Widgets/authentication/signup.dart';
 
+import 'Widgets/Authentication/forgot_password.dart';
+
 
 // ROUTER ...
 
@@ -106,7 +108,7 @@ GoRouter buildRouter() {
               GoRoute(
                 path: NavigationRoutes.contribute, 
                 pageBuilder: _CustomTransitions.getInstantTransitionPageBuilder(
-                  child: const CategoriesPage()
+                  child: const ContributePage()
                 )
               ),
             ]
@@ -134,7 +136,8 @@ GoRouter buildRouter() {
         ]
       ),
       GoRoute(path: NavigationRoutes.login, builder:(context, state) => const LoginPage()),
-      GoRoute(path: NavigationRoutes.signUp, builder:(context, state) => const SignUpPage())
+      GoRoute(path: NavigationRoutes.signUp, builder:(context, state) => const SignUpPage()),
+      GoRoute(path: NavigationRoutes.forgotPassword, builder:(context, state) => const ForgotPassword())
     ],
   );
 
