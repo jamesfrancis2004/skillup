@@ -1,7 +1,9 @@
 
 import 'dart:ui';
 import 'dart:ui';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -38,11 +40,14 @@ class _ContributePageState extends State<ContributePage> {
   bool _isSkillInitialized = false;
   String? _selectedChallenge;
   int _selectedChallengeIndex = 0;
+  bool cameraIsInitialised = false;
 
   @override
   void initState() {
     super.initState();
-    _loadCameras();
+    if (Platform.isIOS) {
+      _loadCameras();
+    }
     _loadSkill();
   }
 
@@ -77,17 +82,14 @@ class _ContributePageState extends State<ContributePage> {
   }
 
   Future<void> _loadCameras() async {
-    try {
-      cameras = await availableCameras();
-      _controller = CameraController(
-        cameras.first,
-        ResolutionPreset.high,
-      );
-      _initializeControllerFuture = _controller.initialize();
-      setState(() {});
-    } catch (e) {
-      print('Error initializing camera: $e');
-    }
+    cameras = await availableCameras();
+    _controller = CameraController(
+      cameras.first,
+      ResolutionPreset.high,
+    );
+    _initializeControllerFuture = _controller.initialize();
+    cameraIsInitialised = true;
+    setState(() {});
   }
 
   @override
@@ -233,19 +235,11 @@ class _ContributePageState extends State<ContributePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors:  [
-              Color(0xff00274d), // Dark Blue
-              Color(0xff001f3f), // Even Darker Blue
-              Color(0xff000a1b)  // Nearly Black
-            ],
-            begin: Alignment.center,
-            end: Alignment.bottomCenter,
-          )
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Contribute'),
       ),
-      child: Column(
+      body: Column(
         children: [
           // Dropdown for selecting the challenge
           Padding(
@@ -272,7 +266,7 @@ class _ContributePageState extends State<ContributePage> {
               hint: Text('Select Challenge'),
             ),
           ),
-          Expanded(
+          cameraIsInitialised ? Expanded(
             child: FutureBuilder<void>(
               future: _initializeControllerFuture,
               builder: (context, snapshot) {
@@ -285,7 +279,7 @@ class _ContributePageState extends State<ContributePage> {
                 }
               },
             ),
-          ),
+          ) : SizedBox(width: 0, height: 0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
