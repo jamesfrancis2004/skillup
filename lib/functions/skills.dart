@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CurrentSkill {
-  String title;
   String category;
   String challenge1;
   String challenge2;
@@ -11,7 +10,6 @@ class CurrentSkill {
 
   // Private constructor
   CurrentSkill._({
-    this.title = '',
     this.category = '',
     this.challenge1 = '',
     this.challenge2 = '',
@@ -26,18 +24,19 @@ class CurrentSkill {
     // Query the Firestore collection to find a document where 'date' is equal to 1
     final querySnapshot = await FirebaseFirestore.instance
         .collection('skills') // Assuming your collection is named 'skills'
-        .where('selected', isEqualTo: 1) // Assuming 'date' is the field storing the integer value
+        .where('selected',
+            isEqualTo:
+                1) // Assuming 'date' is the field storing the integer value
         .limit(1) // Get only the first matching document
         .get();
 
-      print(querySnapshot);
+    print(querySnapshot);
 
     if (querySnapshot.docs.isNotEmpty) {
       final doc = querySnapshot.docs.first;
       final data = doc.data();
 
       return CurrentSkill._(
-        title: data['title'],
         category: data['category'],
         challenge1: data['challenge1'],
         challenge2: data['challenge2'],
@@ -49,6 +48,4 @@ class CurrentSkill {
       throw Exception('Skill not found with date set to 1!');
     }
   }
-
-
 }
