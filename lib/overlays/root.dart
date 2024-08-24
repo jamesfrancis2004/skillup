@@ -56,7 +56,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
+              BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Friends'),
               BottomNavigationBarItem(icon: Icon(Icons.add_box), label: 'Contribute'),
               BottomNavigationBarItem(icon: Icon(Icons.forum), label: 'Community'),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),

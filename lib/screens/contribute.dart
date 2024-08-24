@@ -1,25 +1,56 @@
 import 'package:flutter/material.dart';
 
 
+
 // WIDGET 
-class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({super.key});  
+class ContributePage extends StatefulWidget {
+  const ContributePage({super.key});  
   
   @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
+  State<ContributePage> createState() => _ContributePageState();
+
+  // Allow controlling scroll via FriendsPage
+  static final ScrollController _scrollController = ScrollController();
+  static void scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
 }
 
 
+
+
 // STATE
-class _CategoriesPageState extends State<CategoriesPage> {
+class _ContributePageState extends State<ContributePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('CONTRIBUTE', style: Theme.of(context).textTheme.headlineMedium)
-        ],
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Theme.of(context).colorScheme.primary,
+      child: RefreshIndicator(
+        color: Theme.of(context).colorScheme.onTertiaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        onRefresh: () async {
+          await Future.delayed(const Duration(milliseconds: 1500));
+          setState(() {
+            ContributePage.scrollToTop();
+          });
+        },
+        child: ListView(
+          controller: ContributePage._scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            Container(
+              height: 100,
+              width: 100,
+              color: Colors.blue, 
+            ),
+          ]
+        )
       )
     );
   }

@@ -78,7 +78,7 @@ final TextTheme _textThemeDark = TextTheme(
 
 // Dark
 const _colorSchemeDark = ColorScheme(
-  
+
   brightness: Brightness.dark,
 
   // Backcompatability
