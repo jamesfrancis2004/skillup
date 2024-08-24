@@ -103,8 +103,8 @@ const _colorSchemeDark = ColorScheme(
   // Buttons on background
   surface: Color.fromARGB(255, 70, 70, 70),
   onSurface: Color.fromARGB(255, 174, 219, 255),
-  //[Color(0xFF82F0FF), Color(0xFF4C9DD8), Color(0xFF0861A8)] 
   
+  // Error colours
   error: Color(0xFFFF0000),
   onError: Color.fromARGB(255, 0, 0, 255),
 
