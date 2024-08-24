@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class OutgoingMessage extends StatelessWidget {
   final String username;
@@ -276,7 +278,20 @@ class _ExplorePageState extends State<ExplorePage> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+                                  try {
+                                    await FirebaseFirestore.instance.collection("messages")
+                                        .doc().set(
+                                        {
+                                          'uid:': FirebaseAuth.instance.currentUser?.uid,
+                                          'message': _textController.text,
+                                          'media': _selectedMedia?.path,
+                                          'is_image': _isImage,
+                                          'timestamp': FieldValue.serverTimestamp()
+                                        });
+                                  } on FirebaseAuthException catch (e) {
+                                    print(e.message);
+                                  }
                                   setState(() {
                                     _selectedMedia = null;
                                     _textController.clear();
@@ -324,6 +339,9 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 }
+
+
+
 
 // Add a VideoPlayerWidget to handle video playback
 class VideoPlayerWidget extends StatefulWidget {

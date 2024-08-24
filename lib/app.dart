@@ -6,11 +6,11 @@ import 'router.dart';
 
 // MAIN WIDGET
 class App extends StatelessWidget {
-  const App({super.key});
+  final String startLocation;
+  const App({Key? key, required this.startLocation}) : super(key: key);
 
   @override
   Widget build(BuildContext context)  {
-
     // Lock orientation to vertical
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       theme: AppTheme.darkTheme,
       darkTheme: AppTheme.darkTheme,
-      routerConfig: buildRouter(),
+      routerConfig: buildRouter(startLocation),
     );
   }
 }
