@@ -15,12 +15,99 @@ import 'package:skillup/config.dart';
 const double _borderRadius = 4.0;
 const double _height = 60;
 const Color _challengeBackgroundColour = Color.fromARGB(255, 70, 70, 75);
-
+const Color _completedChallengeBackgroundColour = Color.fromARGB(255, 35, 35, 40);
+const Color _completionStrikethroughColour = Color.fromARGB(200, 75, 75, 75);
+const double _completionStrikethroughHeight = 3;
 
 // Variables
 
 const String skill = "Baking";
 const String imageUrl = "https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg";
+
+
+
+// TILE ...
+
+
+class _SimpleChallengeTile extends StatefulWidget {
+
+  final String description;
+  final String tier;
+  final bool finished;
+
+  const _SimpleChallengeTile({
+    super.key, 
+    required this.tier, // STRING | The tier of the challenge. One of ['bronze', 'silver', 'gold']
+    required this.description, // STRING | The description of the challenge
+    required this.finished, // BOOL | Whether the challenge has been completed
+  });
+  
+  @override
+  State<_SimpleChallengeTile> createState() => _SimpleChallengeTileState();
+}
+
+class _SimpleChallengeTileState extends State<_SimpleChallengeTile> {
+
+  @override
+  Widget build(BuildContext context) {
+    return (() {
+      return widget.finished ? 
+      Stack(
+        children: [
+          Container(
+            height: _height,
+            width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+            decoration: BoxDecoration(
+              color: _completedChallengeBackgroundColour,
+              borderRadius: BorderRadius.circular(_borderRadius),
+            ),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: horizontalInset,
+                ),
+                Icon(
+                  Icons.workspace_premium,
+                  size: 32,
+                  color: Theme.of(context).colorScheme.onPrimary
+                )
+              ],
+            ),
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width - (3.5 * horizontalInset),
+              height: _completionStrikethroughHeight,
+              color: _completionStrikethroughColour
+            )
+          )
+        ],
+      )
+      : 
+      Container(
+        height: _height,
+        width: MediaQuery.of(context).size.width - (2 * horizontalInset),
+        decoration: BoxDecoration(
+          color: _challengeBackgroundColour,
+          borderRadius: BorderRadius.circular(_borderRadius),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(
+              width: horizontalInset,
+            ),
+            Icon(
+              Icons.workspace_premium,
+              size: 32,
+              color: Theme.of(context).colorScheme.onPrimary
+            )
+          ],
+        ),
+      );
+    })();
+  }
+}
+
 
 
 // MAIN SKILL TILE ...
@@ -72,41 +159,21 @@ class _ChallengeTileState extends State<ChallengeTile> {
 
           Dismissible(
             key: UniqueKey(),
-            direction: DismissDirection.horizontal,  // Swipe left to right
+            direction: DismissDirection.startToEnd,  // Swipe left to right
             onDismissed: (direction) {
               if (direction == DismissDirection.endToStart) {
                 print("Dismissed :)");  // Run script when swiped left
               }
             },
-            background: const SizedBox(
-              width: 0,
-              height: 0,
+            background: _SimpleChallengeTile(
+              tier: widget.tier,
+              description: widget.description,
+              finished: true,
             ),
-            // Container(
-            //   height: _height,
-            //   width: MediaQuery.of(context).size.width - (2 * horizontalInset),
-            //   color: Colors.blue,
-            //   alignment: Alignment.centerLeft,
-            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //   child: const Icon(
-            //     Icons.arrow_forward,
-            //     color: Colors.white,
-            //   ),
-            // ),
-            child: Container(
-              height: _height,
-              width: MediaQuery.of(context).size.width - (2 * horizontalInset),
-              color: Colors.red,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: const Row(
-                children: [
-                  Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  ),
-                ]
-              )
+            child: _SimpleChallengeTile(
+              tier: widget.tier,
+              description: widget.description,
+              finished: widget.finished,
             ),
           ),
 
