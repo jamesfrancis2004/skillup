@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:skillup/functions/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 import '../router.dart';
 
@@ -267,6 +269,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         onPressed: () {
                           FirebaseAuth.instance.signOut();
+                          try {
+                            FirebaseFirestore.instance.clearPersistence();
+                          } catch (e) {
+                            print("Error clearing Firestore cache: $e");
+                          }
                           context.go(NavigationRoutes.login);
                         },
                         child: Text(
