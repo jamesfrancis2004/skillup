@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // Resources
-            Padding(
+            const Padding(
               padding: const EdgeInsets.only(
                 left: horizontalInset, 
                 right: horizontalInset
@@ -278,15 +278,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
 
                   // Challenge 1
-                  SizedBox(
-                    height: _challengesHeight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _challengeBackgroundColour,
-                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
-                      ),
-                    )
-                  ),
+                  const ChallengeTile(),
 
                   // Padding
                   const SizedBox(
@@ -294,15 +286,7 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   // Challenge 2
-                  SizedBox(
-                    height: _challengesHeight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _challengeBackgroundColour,
-                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
-                      ),
-                    )
-                  ),
+                  const ChallengeTile(),
 
                   // Padding
                   const SizedBox(
@@ -310,15 +294,7 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   // Challenge 3
-                  SizedBox(
-                    height: _challengesHeight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _challengeBackgroundColour,
-                        borderRadius: BorderRadius.circular(_challengeBorderRadius),
-                      ),
-                    )
-                  ),
+                  const ChallengeTile(),
                 ],
               )
             ),
