@@ -29,7 +29,6 @@ const LinearGradient highlightGradient = LinearGradient(
 // Using GoogleFonts.montserratTextTheme() has issues when overriding weight
 
 // General config
-const double _displayLargeFontSize = 32.0;
 const double _displayMediumFonstSize = 24.0;
 const double _titleSmallFontSize = 8.0;
 
@@ -81,13 +80,10 @@ final TextTheme _textThemeDark = TextTheme(
 const _colorSchemeDark = ColorScheme(
   
   brightness: Brightness.dark,
-  
-  // Screen background colours
-  background: Color.fromARGB(255, 23, 23, 23),
-  onBackground: Color.fromARGB(255, 250, 250, 250),
 
-  primary: Color(0xFFFF00FF), // TBD
-  onPrimary: Color(0xFFFF00FF), // TBD
+  // Main background and stuff
+  primary: Color.fromARGB(255, 23, 23, 23),
+  onPrimary: Color.fromARGB(255, 250, 250, 250),
   
   secondary: Color(0xFFFF00FF), // TBD
   onSecondary: Color(0xFFFF00FF), // TBD

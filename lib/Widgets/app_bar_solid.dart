@@ -48,7 +48,7 @@ class _AppBarState extends State<AppBarSolid>  {
         surfaceTintColor: null,
         scrolledUnderElevation: 0.0,
         toolbarHeight: _expandedheight,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         leadingWidth: 150,
 
@@ -74,7 +74,7 @@ class _AppBarState extends State<AppBarSolid>  {
               child: Icon(
                 Icons.notifications,
                 size: 32,
-                color: Theme.of(context).colorScheme.onBackground
+                color: Theme.of(context).colorScheme.onPrimary
               )
             )
           ),

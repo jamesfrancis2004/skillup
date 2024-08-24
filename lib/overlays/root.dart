@@ -53,7 +53,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             // showUnselectedLabels: false,
             selectedItemColor: Theme.of(context).colorScheme.onTertiary,
             unselectedItemColor: Theme.of(context).colorScheme.tertiary,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
