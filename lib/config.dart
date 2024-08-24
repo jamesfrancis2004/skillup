@@ -29,6 +29,11 @@ const double horizontalInset = 20;
 const double majorVerticalSpacing = 30;
 
 
+// HACKY WORKAROUND ...
+
+double toolbarHeight = 0; // This is overwritten by the toolbar height when initialised. Used for formatting.
+
+
 // CHALLENGE CONFIG ...
 
 Color getMedalColour(String tier) {
