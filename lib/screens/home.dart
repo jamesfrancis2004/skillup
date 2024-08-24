@@ -201,6 +201,7 @@ class _HomePageState extends State<HomePage> {
               child: MainSkillTile(
                 category: skill.category,
                 description: skill.description,
+                imageUrl: skill.imageUrl,
               )
             ),
 

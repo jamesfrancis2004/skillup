@@ -44,7 +44,7 @@ class _ContributePageState extends State<ContributePage> {
   @override
   void initState() {
     super.initState();
-    if (true) {
+    if (Platform.isIOS) {
       _loadCameras();
     }
     _loadSkill();

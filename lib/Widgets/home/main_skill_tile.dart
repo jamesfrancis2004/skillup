@@ -29,11 +29,13 @@ const String imageUrl = "https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_1636631
 class MainSkillTile extends StatefulWidget {
   final String category;
   final String description;
+  final String imageUrl;
 
   const MainSkillTile({
     super.key, 
     required this.category,
     required this.description,
+    required this.imageUrl
   });
   
   @override
@@ -42,13 +44,8 @@ class MainSkillTile extends StatefulWidget {
 
 
 class _MainSkillTileState extends State<MainSkillTile> {
-  String _skillDataFuture = "";
 
-  @override
-  void initState() {
-    super.initState();
-    _skillDataFuture = imageUrl; // skill
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +61,7 @@ class _MainSkillTileState extends State<MainSkillTile> {
             // Background image for the widget
             CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: _skillDataFuture, // https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg
+              imageUrl: widget.imageUrl, // https://as2.ftcdn.net/v2/jpg/01/63/66/31/1000_F_163663122_eVANz0UTseAdSbmaZMOBT6tTLv49hvzC.jpg
               placeholder: (context, url) => SkeletonAnimation(
                 shimmerColor: Theme.of(context).colorScheme.onTertiaryContainer,
                 child: Container(
