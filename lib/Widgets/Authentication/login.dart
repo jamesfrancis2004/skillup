@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextButton(
                               onPressed: (){
-                                //return context.go(NavigationRoutes.forgotPassword);
+                                return context.go(NavigationRoutes.forgotPassword);
                               },
                               child: Row(
                                   children: [
