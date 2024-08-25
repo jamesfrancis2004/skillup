@@ -55,7 +55,7 @@ class _AppBarState extends State<AppBarSolid> {
                   left: _edgePadding, bottom: _bottomPadding),
               child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text('Upskill',
+                  child: Text('SkillUp',
                       softWrap: false,
                       style: Theme.of(context).textTheme.displayMedium))),
 
